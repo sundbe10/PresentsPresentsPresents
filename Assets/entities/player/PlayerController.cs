@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip throwSound;
 	public AudioClip catchSound;
 	public AudioClip tauntSound;
+	public AudioClip multiplier2x;
+	public AudioClip multiplier3x;
+	public AudioClip multiplier4x;
 	public float moveSpeed = 4f;
 	public float throwSpeed = 1f;
 	public GameObject present;
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour {
 	//Private vars
 	Animator animator;
 	Animator bodyAnimator;
-	AudioSource playerAudio;
+	AudioSource audioSource;	
 	bool canThrow = true;
 	int catches = 0;
 	int playerScore = 0;
@@ -41,8 +44,8 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		playerAudio = gameObject.GetComponent<AudioSource>();
 		animator = gameObject.GetComponent<Animator>();
+		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
@@ -73,11 +76,9 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//Print buttons for debugging
-		foreach(KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
-		{
-			//if (Input.GetKeyDown(kcode))
-				//Debug.Log("KeyCode down: " + kcode);
-		}
+//		foreach(KeyCode kcode in Enum.GetValues(typeof(KeyCode))){
+//			if (Input.GetKeyDown(kcode)) Debug.Log("KeyCode down: " + kcode);
+//		}
 	}
 
 	void LateUpdate(){
@@ -115,12 +116,15 @@ public class PlayerController : MonoBehaviour {
 		switch (catches){
 		case 4:
 			scoreMultiplier = 2;
+			PlaySound(multiplier2x);
 			break;
 		case 6:
 			scoreMultiplier = 3;
+			PlaySound(multiplier3x);
 			break;
 		case 8:
 			scoreMultiplier = 4;
+			PlaySound(multiplier4x);
 			break;
 		}
 		PlaySound(catchSound);
@@ -196,7 +200,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void PlaySound(AudioClip sound){
-		playerAudio.PlayOneShot(sound,1f);
+		audioSource.PlayOneShot(sound);
 	}
 
 }

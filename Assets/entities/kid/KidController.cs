@@ -5,6 +5,7 @@ public class KidController : MonoBehaviour {
 
 	//State
 	enum State{
+		ENTERING,
 		WALKING,
 		RUNNING,
 		DISABLED
@@ -16,13 +17,14 @@ public class KidController : MonoBehaviour {
 	public string[] possibleSprites;
 	public GameObject[] powerups;
 	public float powerupProbability = 0.1f;
+	public AudioClip runSound;
 
 	//Private Vars
 	GameObject powerup;
 	float walkSpeed;
 	float runSpeed = 2.5f;
 	AudioSource audioSource;
-	State _state = State.WALKING;
+	State _state = State.ENTERING;
 
 	// Use this for initialization
 	void Start () {
@@ -32,18 +34,7 @@ public class KidController : MonoBehaviour {
 		walkSpeed = Random.Range(walkSpeedMin, walkSpeedMax);
 
 		//Set random walk left or right
-		float leftOrRight = Random.value;
-		Vector3 worldPosition = Camera.main.WorldToScreenPoint(transform.position);
-		float percentAcrossScreen = worldPosition.x / Screen.width;
-		
-		if(transform.position.x <= -Screen.width/2){
-			//Walk Right (default)
-		}
-		else if(transform.position.x > Screen.width/2 || leftOrRight < percentAcrossScreen){
-			//Walk Left
-			transform.localScale = new Vector3(-1,1,1);
-			walkSpeed = -walkSpeed;
-		}
+		SetRandomDirection();
 
 		//Set Random sprite
 		string randomSprite = possibleSprites[Random.Range(0, possibleSprites.Length)];
@@ -54,6 +45,9 @@ public class KidController : MonoBehaviour {
 		if(Random.value < powerupProbability){
 			GivePowerup();
 		}
+
+		//Start Entry
+		StartCoroutine(EnterKid());
 	}
 	
 	// Update is called once per frame
@@ -80,7 +74,7 @@ public class KidController : MonoBehaviour {
 		}
 		HoldObject (thrownObject);
 
-		audioSource.Play();
+		PlaySound (runSound);
 		if(walkSpeed > 0 ){
 			walkSpeed = runSpeed;
 		}else{
@@ -95,8 +89,29 @@ public class KidController : MonoBehaviour {
 
 
 	//Private Functions
+	void SetRandomDirection(){
+		float leftOrRight = Random.value;
+		Vector3 worldPosition = Camera.main.WorldToScreenPoint(transform.position);
+		float percentAcrossScreen = worldPosition.x / Screen.width;
+		
+		if(transform.position.x <= -Screen.width/2){
+			//Walk Right (default)
+			transform.localScale = new Vector3(1,1,1);
+			walkSpeed = Mathf.Abs(walkSpeed);
+		}
+		else if(transform.position.x > Screen.width/2 || leftOrRight < percentAcrossScreen){
+			//Walk Left
+			transform.localScale = new Vector3(-1,1,1);
+			walkSpeed = -Mathf.Abs(walkSpeed);
+		}
+	}
+
 	void MoveKid(){
-		transform.position = new Vector3(transform.position.x+walkSpeed, transform.position.y, transform.position.z);
+		 if(_state == State.ENTERING){
+			transform.position = new Vector3(transform.position.x, transform.position.y + -0.2f, transform.position.z);
+		}else{
+			transform.position = new Vector3(transform.position.x+walkSpeed, transform.position.y, transform.position.z);
+		}
 	}
 
 	void RemoveKid(){
@@ -113,5 +128,15 @@ public class KidController : MonoBehaviour {
 	void HoldObject(GameObject heldObject){
 		heldObject.transform.parent = transform;
 		heldObject.transform.position = transform.position + new Vector3(6*transform.localScale.x,-2,-1);
+	}
+
+	void PlaySound(AudioClip sound){
+		audioSource.PlayOneShot(sound);
+	}
+	
+	IEnumerator EnterKid(){
+		yield return new WaitForSeconds(0.4f);
+		SetRandomDirection();
+		_state = State.WALKING;
 	}
 }

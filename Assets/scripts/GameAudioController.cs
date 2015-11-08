@@ -42,6 +42,10 @@ public class GameAudioController : MonoBehaviour {
 		PlaySound(winTextSound);
 	}
 
+	public void PlaySound(AudioClip sound){
+		gameAudio.PlayOneShot(sound,1f);
+	}
+
 	//Private Functions
 	IEnumerator PlayGameAudio(){
 		yield return new WaitForSeconds(6);
@@ -51,7 +55,5 @@ public class GameAudioController : MonoBehaviour {
 
 	}
 
-	void PlaySound(AudioClip sound){
-		gameAudio.PlayOneShot(sound,1f);
-	}
+
 }
