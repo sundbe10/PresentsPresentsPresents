@@ -25,6 +25,7 @@ public class KidController : MonoBehaviour {
 	float runSpeed = 2.5f;
 	AudioSource audioSource;
 	State _state = State.ENTERING;
+	bool gameEnded = false;
 
 	// Use this for initialization
 	void Start () {
@@ -84,7 +85,10 @@ public class KidController : MonoBehaviour {
 	}
 
 	public void DisableKid(){
-		_state = State.DISABLED;
+		gameEnded = true;
+		if(_state == State.WALKING){
+			_state = State.DISABLED;
+		}
 	}
 
 
@@ -107,7 +111,7 @@ public class KidController : MonoBehaviour {
 	}
 
 	void MoveKid(){
-		 if(_state == State.ENTERING){
+		if(_state == State.ENTERING){
 			transform.position = new Vector3(transform.position.x, transform.position.y + -0.2f, transform.position.z);
 		}else{
 			transform.position = new Vector3(transform.position.x+walkSpeed, transform.position.y, transform.position.z);
@@ -137,6 +141,6 @@ public class KidController : MonoBehaviour {
 	IEnumerator EnterKid(){
 		yield return new WaitForSeconds(0.4f);
 		SetRandomDirection();
-		_state = State.WALKING;
+		_state = gameEnded ? State.DISABLED : State.WALKING;
 	}
 }

@@ -155,10 +155,10 @@ public class PlayerController : MonoBehaviour {
 	void MovePlayer(){
 		if(Input.GetButton("Horizontal_P"+playerNum)){
 			float deltaX = 0;
-			if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
 				deltaX = (float) playerAttrs["speed"];
 				transform.localScale = new Vector3(1,1,1);
-			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
 				deltaX = -(float) playerAttrs["speed"];
 				transform.localScale = new Vector3(-1,1,1);
 			}	
