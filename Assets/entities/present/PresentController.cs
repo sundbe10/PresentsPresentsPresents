@@ -65,7 +65,6 @@ public class PresentController : MonoBehaviour {
 	}
 	
 	void PresentCaught(GameObject catcher){
-		thrower.GetComponent<PlayerController>().IncrementScore(100);
 		catcher.GetComponent<KidController>().PresentCaught(gameObject, thrower);
 		_state = State.CAUGHT;
 	}

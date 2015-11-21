@@ -45,15 +45,21 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\entities\ground\GroundController.cs" />
      <Compile Include="Assets\entities\kid\KidController.cs" />
+     <Compile Include="Assets\entities\main\MainController.cs" />
      <Compile Include="Assets\entities\player\PlayerController.cs" />
      <Compile Include="Assets\entities\powerup\PowerupController.cs" />
      <Compile Include="Assets\entities\present\PresentController.cs" />
+     <Compile Include="Assets\entities\scoring text\ScoringTextController.cs" />
      <Compile Include="Assets\entities\spawner\KidSpawnController.cs" />
+     <Compile Include="Assets\entities\splash\SplashController.cs" />
      <Compile Include="Assets\scripts\CameraController.cs" />
      <Compile Include="Assets\scripts\CountdownController.cs" />
      <Compile Include="Assets\scripts\GameAudioController.cs" />
      <Compile Include="Assets\scripts\GameController.cs" />
+     <Compile Include="Assets\scripts\GamePlayersController.cs" />
+     <Compile Include="Assets\scripts\MenuController.cs" />
      <Compile Include="Assets\scripts\PixelPerfect.cs" />
      <Compile Include="Assets\scripts\SpriteSwitch.cs" />
  <Reference Include="UnityEngine.UI">

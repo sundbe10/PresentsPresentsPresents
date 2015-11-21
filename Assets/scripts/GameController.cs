@@ -5,7 +5,10 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
 	//State
-	enum State {};
+	enum State {
+		PLAYING,
+		ENDED
+	};
 
 	//Public vars
 	public int introTime = 3;
@@ -16,6 +19,7 @@ public class GameController : MonoBehaviour {
 	GameObject countdownObject;
 	GameObject timerObject;
 	GameAudioController audioController;
+	State _state = State.PLAYING;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +33,11 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if(_state == State.ENDED){
+			if(Input.GetButton("Throw_P1")){
+				Application.LoadLevel(Application.loadedLevel);
+			}
+		}
 	}
 
 
@@ -77,6 +85,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void DeclareWinner(){
+
 		//Stop music and play fall sound effect
 		audioController.PlayFallSound();
 
@@ -126,10 +135,12 @@ public class GameController : MonoBehaviour {
 			yield return new WaitForSeconds(1);
 			winnerText.text += "\nWINS";
 			audioController.WinText();
+			_state = State.ENDED;
 		}else{
 			yield return new WaitForSeconds(3);
 			winnerText.text = "DRAW";
 			audioController.WinText();
+			_state = State.ENDED;
 		}
 	}
 

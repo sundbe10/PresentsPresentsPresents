@@ -12,12 +12,14 @@ public class KidController : MonoBehaviour {
 	}
 
 	//Public Vars
+	public int scoreValue = 100;
 	public float walkSpeedMin = 0.5f;
 	public float walkSpeedMax = 1f;
 	public string[] possibleSprites;
 	public GameObject[] powerups;
 	public float powerupProbability = 0.1f;
 	public AudioClip runSound;
+	public GameObject scoreText;
 
 	//Private Vars
 	GameObject powerup;
@@ -69,13 +71,17 @@ public class KidController : MonoBehaviour {
 	}
 
 	public void PresentCaught( GameObject thrownObject, GameObject thrower){
+		//Score
+		int multiplier = thrower.GetComponent<PlayerController>().IncrementScore(scoreValue);
+		//Show score text
+		CreateScoreText(multiplier);
+		//Hold new object
+		HoldObject (thrownObject);
 		//Powerup
+
 		if(powerup){
 			powerup.GetComponent<PowerupController>().ApplyPowerup(thrower);
-		}
-		HoldObject (thrownObject);
-
-		PlaySound (runSound);
+		}	PlaySound (runSound);
 		if(walkSpeed > 0 ){
 			walkSpeed = runSpeed;
 		}else{
@@ -134,13 +140,18 @@ public class KidController : MonoBehaviour {
 		heldObject.transform.position = transform.position + new Vector3(6*transform.localScale.x,-2,-1);
 	}
 
-	void PlaySound(AudioClip sound){
-		audioSource.PlayOneShot(sound);
+	void CreateScoreText(int multiplier){
+		GameObject newScoreText = Instantiate(scoreText, transform.position, Quaternion.identity) as GameObject;
+		newScoreText.GetComponent<ScoringTextController>().SetText(scoreValue, multiplier);
 	}
-	
+
 	IEnumerator EnterKid(){
 		yield return new WaitForSeconds(0.4f);
 		SetRandomDirection();
 		_state = gameEnded ? State.DISABLED : State.WALKING;
+	}
+
+	void PlaySound(AudioClip sound){
+		audioSource.PlayOneShot(sound);
 	}
 }

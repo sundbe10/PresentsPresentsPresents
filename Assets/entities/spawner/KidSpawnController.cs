@@ -4,8 +4,6 @@ using System.Collections;
 public class KidSpawnController : MonoBehaviour {
 
 	public GameObject kid;
-	//public float spawnTimeMin;
-	//public float spawnTimeMax;
 	public float spawnProbability = 1f; 
 
 	SpriteRenderer bodySpriteRenderer;
@@ -33,4 +31,5 @@ public class KidSpawnController : MonoBehaviour {
 			bodySpriteRenderer.enabled = false;
 		}
 	}
+	
 }

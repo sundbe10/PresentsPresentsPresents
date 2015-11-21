@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour {
 		_state = State.CELEBRATE;
 	}
 	
-	public void IncrementScore(int score){
+	public int IncrementScore(int score){
 		catches++;
 		switch (catches){
 		case 4:
@@ -128,13 +128,20 @@ public class PlayerController : MonoBehaviour {
 			break;
 		}
 		PlaySound(catchSound);
-		playerScore += score*scoreMultiplier;
+
+		int scoreIncrement = score*scoreMultiplier;
+		playerScore += scoreIncrement;
 		playerScoreText.text = playerScore.ToString();
+		return scoreMultiplier;
 	}
 	
 	public void RemoveMultiplier(){
 		scoreMultiplier = 1;
 		catches = 0;
+	}
+
+	public int GetMultipiler(){
+		return scoreMultiplier;
 	}
 
 	public int GetScore(){
