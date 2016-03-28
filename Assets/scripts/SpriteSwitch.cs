@@ -28,4 +28,8 @@ public class SpriteSwitch : MonoBehaviour {
 			}
 		}
 	}
+
+	public void SetSpriteSheet(string spriteSheet){
+		newSprites = Resources.LoadAll<Sprite>(spriteSheet);
+	}
 }

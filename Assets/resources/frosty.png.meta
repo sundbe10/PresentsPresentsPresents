@@ -1,12 +1,15 @@
 fileFormatVersion: 2
 guid: 0efa4d8d8c0aa450096a26a379050cd2
-timeCreated: 1443060641
+timeCreated: 1458497217
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: idle
     21300002: throw
     21300004: dead
+    21300006: avatar1
+    21300008: avatar2
+    21300010: avatar3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -20,7 +23,7 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
@@ -40,11 +43,12 @@ TextureImporter:
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
+  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
@@ -56,32 +60,124 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 32
-        height: 32
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 8, y: 16}
+        - {x: -13, y: 16}
+        - {x: -15, y: 7}
+        - {x: -15, y: -8}
+        - {x: -8, y: -14}
+        - {x: 6, y: -14}
+        - {x: 13, y: -3}
+        - {x: 13, y: 6}
     - name: throw
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
+        x: 48
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 16}
+        - {x: -15, y: 9}
+        - {x: -15, y: -5}
+        - {x: -11, y: -14}
+        - {x: 6, y: -14}
+        - {x: 12, y: -7}
+        - {x: 12, y: 6}
+        - {x: 6, y: 16}
     - name: dead
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
+        x: 96
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 10}
+        - {x: -15, y: 5}
+        - {x: -16, y: 2}
+        - {x: -16, y: -10}
+        - {x: -6, y: -16}
+        - {x: 10, y: -16}
+        - {x: 19, y: -10}
+        - {x: 19, y: 1}
+        - {x: 3, y: 10}
+    - name: avatar1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -14, y: 23}
+        - {x: -22, y: -2}
+        - {x: -22, y: -13}
+        - {x: -16, y: -23}
+        - {x: -14, y: -24}
+        - {x: 13, y: -24}
+        - {x: 17, y: -23}
+        - {x: 17, y: 11}
+        - {x: 10, y: 24}
+    - name: avatar2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -14, y: 23}
+        - {x: -22, y: -2}
+        - {x: -22, y: -13}
+        - {x: -16, y: -23}
+        - {x: -14, y: -24}
+        - {x: 13, y: -24}
+        - {x: 17, y: -23}
+        - {x: 17, y: 11}
+        - {x: 10, y: 24}
+    - name: avatar3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -11, y: 24}
+        - {x: -14, y: 23}
+        - {x: -22, y: -2}
+        - {x: -22, y: -13}
+        - {x: -16, y: -23}
+        - {x: -14, y: -24}
+        - {x: 13, y: -24}
+        - {x: 17, y: -23}
+        - {x: 17, y: 11}
+        - {x: 10, y: 24}
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

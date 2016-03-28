@@ -7,17 +7,30 @@ public class GamePlayersController : MonoBehaviour {
 
 	float worldWidth = 500;
 	int maxPlayers = 4;
+	GameData gameData;
 
 	// Use this for initialization
 	void Start () {
+		gameData = GameObject.FindGameObjectWithTag("Game Data").GetComponent<GameData>();
+		SetPlayers();
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
+
+	void SetPlayers(){
 		for(int i = 1; i <= maxPlayers; i++){
 
 			//Position/Remove players based on the current number of players
-			GameObject player = GameObject.Find("Player"+i);
+			GameObject player = GameObject.Find("Player "+i+" Group");
 			GameObject playerScore = GameObject.Find ("Player "+i+" Score");
-			if(i <= numberOfPlayers){
-				float startX = worldWidth*i/(numberOfPlayers+1)-worldWidth/2;
-				player.transform.position = new Vector3(startX, player.transform.position.y, player.transform.position.z);
+			CharacterCollection.Character character = gameData.GetCharacter(i);
+			if(character != null){
+				//float startX = worldWidth*i/(numberOfPlayers+1)-worldWidth/2;
+				//player.transform.position = new Vector3(startX, player.transform.position.y, player.transform.position.z);
+				player.GetComponentInChildren<PlayerController>().SetCharacter(character);
 			}else{
 				Destroy(player);
 				Destroy (playerScore);
@@ -32,10 +45,5 @@ public class GamePlayersController : MonoBehaviour {
 
 			//TODO Set characters based on character selection
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }
