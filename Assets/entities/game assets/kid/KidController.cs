@@ -80,7 +80,7 @@ public class KidController : MonoBehaviour {
 		//Powerup
 
 		if(powerup){
-			powerup.GetComponent<PowerupController>().ApplyPowerup(thrower);
+			powerup.GetComponent<ApplyPowerupController>().ApplyPowerup(thrower);
 		}	PlaySound (runSound);
 		if(walkSpeed > 0 ){
 			walkSpeed = runSpeed;

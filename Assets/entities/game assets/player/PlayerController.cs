@@ -30,7 +30,11 @@ public class PlayerController : MonoBehaviour {
 	public Sprite[] presentSprites;
 	public string name;
 	public Hashtable playerAttrs = new Hashtable();
-
+	public enum Attributes{
+		SPEED,
+		THROWSPEED,
+		FROZEN
+	}
 
 	//Private vars
 	Animator animator;
@@ -54,8 +58,9 @@ public class PlayerController : MonoBehaviour {
 		playerScoreText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Score").gameObject.GetComponent<Text>();
 		playerNameText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Player Name").gameObject.GetComponent<Text>();
 		//Populate Attrs Hashtable
-		playerAttrs.Add ("speed", moveSpeed);
-		playerAttrs.Add ("throwSpeed", throwSpeed);
+		playerAttrs.Add (Attributes.SPEED, moveSpeed);
+		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
+		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
 	}
 	
 	// Update is called once per frame
@@ -94,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 	//Public Functions
 	public void SetCharacter(CharacterCollection.Character character){
 		Debug.Log(character.displayName);
-		playerNameText.text = character.displayName;
+		name = playerNameText.text = character.displayName;
 		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
 		presentSprites = character.presentSprites;
 	}
@@ -163,7 +168,7 @@ public class PlayerController : MonoBehaviour {
 		return name;
 	}
 
-	public void ApplyPowerup(string attribute, float multiplier, float timeout){
+	public void ApplyPowerup(Attributes attribute, float multiplier, float timeout){
 		Debug.Log ("Increase "+name+" "+attribute+" by "+multiplier.ToString());
 		//TODO: Add in switch statement for different object types (float and bool at least)
 		StartCoroutine(PowerupTimeout(attribute, multiplier, timeout));
@@ -174,10 +179,10 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetButton("Horizontal_P"+playerNum)){
 			float deltaX = 0;
 			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
-				deltaX = (float) playerAttrs["speed"];
+				deltaX = (float) playerAttrs[Attributes.SPEED];
 				transform.localScale = new Vector3(1,1,1);
 			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
-				deltaX = -(float) playerAttrs["speed"];
+				deltaX = -(float) playerAttrs[Attributes.SPEED];
 				transform.localScale = new Vector3(-1,1,1);
 			}	
 			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
@@ -205,16 +210,21 @@ public class PlayerController : MonoBehaviour {
 
 
 	IEnumerator ThrowCooldown(){
-		yield return new WaitForSeconds((float) playerAttrs["throwSpeed"]);
+		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
 		canThrow = true;
 	}
 
-	IEnumerator PowerupTimeout(string attribute, float multiplier, float timeout){
-		playerAttrs[attribute] = (float) playerAttrs[attribute] * multiplier;
-		Debug.Log (playerAttrs[attribute]);
-		yield return new WaitForSeconds(timeout);
-		playerAttrs[attribute] = (float) playerAttrs[attribute] /  multiplier;
-		Debug.Log(playerAttrs[attribute]);
+	IEnumerator PowerupTimeout(Attributes attribute, float multiplier, float timeout){
+		var attributeType = playerAttrs[attribute].GetType();
+		if(attributeType == typeof(float)){
+			playerAttrs[attribute] = (float) playerAttrs[attribute] * multiplier;
+			yield return new WaitForSeconds(timeout);
+			playerAttrs[attribute] = (float) playerAttrs[attribute] /  multiplier;
+		}else if(attributeType == typeof(State)){
+			_state = (State)playerAttrs[attribute];
+			yield return new WaitForSeconds(timeout);
+			if(_state == (State)playerAttrs[attribute]) _state = State.ACTIVE;
+		}
 	}
 
 	void PlaySound(AudioClip sound){

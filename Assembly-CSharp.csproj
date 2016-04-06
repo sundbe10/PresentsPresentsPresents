@@ -48,6 +48,7 @@
      <Compile Include="Assets\entities\backgrounds\clouds\CloudController.cs" />
      <Compile Include="Assets\entities\backgrounds\stars\StarController.cs" />
      <Compile Include="Assets\entities\character select\AddPlayer.cs" />
+     <Compile Include="Assets\entities\character select\AvatarController.cs" />
      <Compile Include="Assets\entities\character select\CharacterSelectController.cs" />
      <Compile Include="Assets\entities\character select\ConfirmCharacterSelect.cs" />
      <Compile Include="Assets\entities\data\GameData.cs" />
@@ -56,7 +57,10 @@
      <Compile Include="Assets\entities\game assets\ground\GroundController.cs" />
      <Compile Include="Assets\entities\game assets\kid\KidController.cs" />
      <Compile Include="Assets\entities\game assets\player\PlayerController.cs" />
-     <Compile Include="Assets\entities\game assets\powerup\PowerupController.cs" />
+     <Compile Include="Assets\entities\game assets\powerup\ApplyPowerupController.cs" />
+     <Compile Include="Assets\entities\game assets\powerup\PowerController.cs" />
+     <Compile Include="Assets\entities\game assets\powerup\freeze\FreezePower.cs" />
+     <Compile Include="Assets\entities\game assets\powerup\speed\SuperSpeedPowerup.cs" />
      <Compile Include="Assets\entities\game assets\present\PresentController.cs" />
      <Compile Include="Assets\entities\game assets\scoring text\ScoringTextController.cs" />
      <Compile Include="Assets\entities\game assets\spawner\KidSpawnController.cs" />
