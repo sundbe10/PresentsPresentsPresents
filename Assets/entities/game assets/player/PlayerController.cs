@@ -11,9 +11,20 @@ public class PlayerController : MonoBehaviour {
 		MOVE_ONLY,
 		THROW_ONLY,
 		ACTIVE,
+		WINDING,
 		FALLING,
 		DEAD,
 		CELEBRATE
+	}
+
+	enum AnimatorState{
+		IDLE,
+		RUNNING,
+		JUMPING,
+		LANDING,
+		THROWING,
+		WINDING,
+		HIT
 	}
 
 	//Public vars
@@ -25,42 +36,45 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip multiplier4x;
 	public float moveSpeed = 4f;
 	public float throwSpeed = 1f;
+	public float jumpSpeed = -10f;
+	public float throwVelocity = 200f;
 	public GameObject present;
 	public int playerNum = 1;	
 	public Sprite[] presentSprites;
 	public string name;
 	public Hashtable playerAttrs = new Hashtable();
+	public LayerMask groundCheckMask;
 	public enum Attributes{
 		SPEED,
 		THROWSPEED,
+		THROWVELOCITY,
 		FROZEN
 	}
 
 	//Private vars
 	Animator animator;
 	Animator bodyAnimator;
-	AudioSource audioSource;	
+	AudioSource audioSource;
+	Rigidbody2D rigidBody;
 	bool canThrow = true;
+	bool canJump = true;
 	int catches = 0;
 	int playerScore = 0;
 	int scoreMultiplier = 1;
 	State _state = State.ENTRY;
-	Text playerScoreText;
-	Text playerNameText;
 
 	// Use this for initialization
 	void Awake () {
+		rigidBody = gameObject.GetComponent<Rigidbody2D>();
 		animator = gameObject.GetComponent<Animator>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
 		bodyAnimator.logWarnings = false;
-		//Get correct score component
-		playerScoreText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Score").gameObject.GetComponent<Text>();
-		playerNameText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Player Name").gameObject.GetComponent<Text>();
 		//Populate Attrs Hashtable
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
 		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
+		playerAttrs.Add (Attributes.THROWVELOCITY, throwVelocity);
 	}
 	
 	// Update is called once per frame
@@ -69,14 +83,30 @@ public class PlayerController : MonoBehaviour {
 		case State.ENTRY:
 			break;
 		case State.MOVE_ONLY:
+			animator.applyRootMotion = false;
+			DetectGround();
 			MovePlayer();
-			break;
-		case State.THROW_ONLY:
-			ThrowPresent();
+			Jump();
 			break;
 		case State.ACTIVE:
+			DetectGround();
 			MovePlayer();
+			Jump();
 			ThrowPresent();
+			break;
+		case State.WINDING:
+			DetectGround();
+			Jump();
+			ThrowPresent();
+			MoveTarget();
+			if(canJump){
+				PivotPlayer();
+			}else{
+				MovePlayer();
+			}
+			if(rigidBody.velocity.x == 0){
+				SetBodyAnimationState(AnimatorState.IDLE);
+			}
 			break;
 		case State.FALLING:
 			break;
@@ -98,8 +128,6 @@ public class PlayerController : MonoBehaviour {
 
 	//Public Functions
 	public void SetCharacter(CharacterCollection.Character character){
-		Debug.Log(character.displayName);
-		name = playerNameText.text = character.displayName;
 		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
 		presentSprites = character.presentSprites;
 	}
@@ -147,7 +175,6 @@ public class PlayerController : MonoBehaviour {
 
 		int scoreIncrement = score*scoreMultiplier;
 		playerScore += scoreIncrement;
-		playerScoreText.text = playerScore.ToString();
 		return scoreMultiplier;
 	}
 	
@@ -170,30 +197,62 @@ public class PlayerController : MonoBehaviour {
 
 	public void ApplyPowerup(Attributes attribute, float multiplier, float timeout){
 		Debug.Log ("Increase "+name+" "+attribute+" by "+multiplier.ToString());
-		//TODO: Add in switch statement for different object types (float and bool at least)
 		StartCoroutine(PowerupTimeout(attribute, multiplier, timeout));
 	}
 
 	//Private Functions
 	void MovePlayer(){
-		if(Input.GetButton("Horizontal_P"+playerNum)){
-			float deltaX = 0;
+		float deltaX = 0;
+		if(Input.GetAxis("Horizontal_P"+playerNum) != 0){
+			//TODO: Set player to move with incline of platforms, eliminate jitter
 			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
 				deltaX = (float) playerAttrs[Attributes.SPEED];
 				transform.localScale = new Vector3(1,1,1);
 			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
 				deltaX = -(float) playerAttrs[Attributes.SPEED];
 				transform.localScale = new Vector3(-1,1,1);
-			}	
-			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
+			}
+			SetBodyAnimationState(AnimatorState.RUNNING);
+		}else{
+			SetBodyAnimationState(AnimatorState.IDLE);
+		}
+		if(deltaX != 0){
+			rigidBody.velocity = new Vector2(deltaX, rigidBody.velocity.y);
+		}
+	}
+
+	void MoveTarget(){
+		var x = Input.GetAxis("Horizontal_P"+playerNum)*25f + 5 + transform.position.x ;
+		var y = -Input.GetAxis("Vertical_P"+playerNum)*25f + transform.position.y;
+		Transform target = transform.Find("target");
+		target.position = new Vector3(x, y, 0);
+	}
+
+	void PivotPlayer(){
+		if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+			transform.localScale = new Vector3(1,1,1);
+		}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+			transform.localScale = new Vector3(-1,1,1);
+		}
+	}
+
+	void Jump(){
+		float deltaX = 0;
+		if(Input.GetButtonDown("Jump_P"+playerNum) && canJump){
+			SetBodyAnimationState(AnimatorState.JUMPING);
+			rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
+			canJump = false;
 		}
 	}
 
 	void ThrowPresent(){
 		if(Input.GetButton("Throw_P"+playerNum) && canThrow){
+			SetBodyAnimationState(AnimatorState.WINDING);
+		}
+		if(Input.GetButtonUp("Throw_P"+playerNum) && canThrow && bodyAnimator.GetBool("isWinding")){
 			//Play throw sound
 			PlaySound(throwSound);
-			bodyAnimator.SetBool("isThrowing",true);
+			SetBodyAnimationState(AnimatorState.THROWING);
 
 			//Create Present
 			Vector3 initialPosition = transform.position + new Vector3(8*transform.localScale.x,-5,0);
@@ -201,16 +260,70 @@ public class PlayerController : MonoBehaviour {
 			PresentController presentController = newPresent.GetComponent<PresentController>();
 			presentController.SetThrower(gameObject);
 			presentController.SetPresentSprite(presentSprites[UnityEngine.Random.Range (0, presentSprites.Length)]);
-			canThrow = false;
+
+			//Set Present velocity
+			Vector2 relativeVelocity;
+			var xVelocity = rigidBody.velocity.x/2;
+			var yVelocity = rigidBody.velocity.y/2;
+			if(Input.GetAxis("Horizontal_P"+playerNum) != 0 || Input.GetAxis("Vertical_P"+playerNum) != 0){
+				relativeVelocity = new Vector2(Input.GetAxis("Horizontal_P"+playerNum)*throwVelocity + xVelocity, -Input.GetAxis("Vertical_P"+playerNum)*throwVelocity + yVelocity);
+			}else{
+				relativeVelocity = new Vector2(xVelocity,-throwVelocity+yVelocity);
+			}
+			presentController.SetVelocity(relativeVelocity);
 
 			//Prevent player from being able to throw immidiately 
+			canThrow = false;
 			StartCoroutine(ThrowCooldown());
+		}
+	}
+
+	void DetectGround(){
+		//Test Diagonally from bottom
+		RaycastHit2D hitLeft = Physics2D.Raycast(transform.position-new Vector3(9f,12f,0), new Vector2(-1,-1), 5f, groundCheckMask);
+		RaycastHit2D hitRight = Physics2D.Raycast(transform.position-new Vector3(-9f,12f,0), new Vector2(1,-1), 5f, groundCheckMask);
+		Debug.DrawLine(transform.position-new Vector3(9f,12f,0), transform.position-new Vector3(11.7f,14.7f,0), Color.red);
+		Debug.DrawLine(transform.position-new Vector3(-9f,12f,0), transform.position-new Vector3(-11.7f,14.7f,0), Color.red);
+		if (hitLeft || hitRight){
+			canJump = true;
+			SetBodyAnimationState(AnimatorState.LANDING);
+		}else{
+			canJump = false;
+			SetBodyAnimationState(AnimatorState.JUMPING);
+		}
+			
+	}
+
+	void SetBodyAnimationState(AnimatorState state){
+		switch(state){
+		case AnimatorState.IDLE:
+			bodyAnimator.SetBool("isRunning",false);
+			break;
+		case AnimatorState.RUNNING:
+			bodyAnimator.SetBool("isRunning",true);
+			break;
+		case AnimatorState.JUMPING:
+			bodyAnimator.SetBool("isJumping",true);
+			break;
+		case AnimatorState.LANDING:
+			bodyAnimator.SetBool("isJumping",false);
+			break;
+		case AnimatorState.WINDING:
+			_state = State.WINDING;
+			bodyAnimator.SetBool("isWinding",true);
+			break;
+		case AnimatorState.THROWING:
+			bodyAnimator.SetBool("isWinding",false);
+			bodyAnimator.SetBool("isThrowing",true);
+			break;
 		}
 	}
 
 
 	IEnumerator ThrowCooldown(){
 		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
+		SetBodyAnimationState(AnimatorState.IDLE);
+		_state = State.ACTIVE;
 		canThrow = true;
 	}
 

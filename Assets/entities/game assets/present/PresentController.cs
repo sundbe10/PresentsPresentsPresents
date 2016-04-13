@@ -12,17 +12,17 @@ public class PresentController : MonoBehaviour {
 	//Private Vars
 	GameObject thrower;
 	State _state = State.FALLING;
+	Rigidbody2D rigidBody;
 
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+		rigidBody = gameObject.GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		switch(_state){
 		case State.FALLING:
-			transform.position += new Vector3(0,-2.5f,0);
 			break;
 		case State.CAUGHT:
 			break;
@@ -59,12 +59,17 @@ public class PresentController : MonoBehaviour {
 		spriteRender.sprite = presentSprite;
 	}
 
+	public void SetVelocity(Vector2 velocity){
+		rigidBody.velocity = velocity;
+	}
+
 	//Private Functions
 	void RemovePresent(){
 		Destroy(gameObject);
 	}
 	
 	void PresentCaught(GameObject catcher){
+		rigidBody.isKinematic = true;
 		catcher.GetComponent<KidController>().PresentCaught(gameObject, thrower);
 		_state = State.CAUGHT;
 	}

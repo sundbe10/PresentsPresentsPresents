@@ -1,15 +1,41 @@
 fileFormatVersion: 2
 guid: d13601965dc8b41dbb50f2a752fc97f3
-timeCreated: 1458495134
+timeCreated: 1460304519
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: idle
-    21300002: throw
+    21300000: throw1
+    21300002: throw2
     21300004: dead
     21300006: avatar1
     21300008: avatar2
     21300010: avatar3
+    21300012: idle1
+    21300014: idle2
+    21300016: idle3
+    21300018: idle4
+    21300020: santa_7
+    21300022: santa_8
+    21300024: santa_9
+    21300026: santa_0
+    21300028: santa_1
+    21300030: santa_2
+    21300032: santa_3
+    21300034: santa_4
+    21300036: santa_5
+    21300038: santa_6
+    21300040: santa_10
+    21300042: santa_11
+    21300044: santa_12
+    21300046: santa_13
+    21300048: santa_14
+    21300050: santa_15
+    21300052: santa_16
+    21300054: santa_17
+    21300056: santa_18
+    21300058: santa_19
+    21300060: santa_20
+    21300062: santa_21
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,57 +82,289 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: idle
+    - name: santa_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
+        y: 336
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -10, y: 14}
-        - {x: -14, y: 13}
-        - {x: -15, y: 10}
-        - {x: -15, y: -16}
-        - {x: 14, y: -16}
-        - {x: 15, y: -13}
-        - {x: 15, y: 2}
-        - {x: 9, y: 14}
-    - name: throw
+      - - {x: -15, y: -8}
+        - {x: -13, y: -13}
+        - {x: 13, y: -13}
+        - {x: 13, y: 2}
+        - {x: 9, y: 12}
+        - {x: 7, y: 16}
+        - {x: -4, y: 16}
+        - {x: -15, y: 12}
+    - name: santa_1
       rect:
         serializedVersion: 2
         x: 48
-        y: 48
+        y: 336
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 7, y: 14}
-        - {x: -4, y: 14}
-        - {x: -12, y: 12}
+      - - {x: -7, y: 15}
         - {x: -15, y: 7}
         - {x: -15, y: -6}
-        - {x: -14, y: -14}
-        - {x: -11, y: -16}
-        - {x: 2, y: -16}
-        - {x: 12, y: -15}
-        - {x: 15, y: -12}
-        - {x: 15, y: 4}
-        - {x: 13, y: 11}
-    - name: dead
+        - {x: -6, y: -17}
+        - {x: 13, y: -17}
+        - {x: 13, y: 6}
+        - {x: 6, y: 15}
+    - name: santa_2
       rect:
         serializedVersion: 2
         x: 96
-        y: 48
+        y: 336
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -1, y: 14}
+        - {x: -6, y: 14}
+        - {x: -15, y: 6}
+        - {x: -15, y: -6}
+        - {x: -5, y: -17}
+        - {x: 5, y: -17}
+        - {x: 14, y: -10}
+        - {x: 14, y: 3}
+        - {x: 11, y: 9}
+    - name: santa_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 288
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 16}
+        - {x: -15, y: 13}
+        - {x: -15, y: -2}
+        - {x: -7, y: -13}
+        - {x: 14, y: -13}
+        - {x: 14, y: 9}
+        - {x: 9, y: 16}
+    - name: santa_4
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 288
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4, y: 15}
+        - {x: -9, y: 15}
+        - {x: -12, y: 13}
+        - {x: -15, y: 7}
+        - {x: -15, y: -7}
+        - {x: -6, y: -16}
+        - {x: 0, y: -17}
+        - {x: 8, y: -17}
+        - {x: 13, y: -9}
+        - {x: 13, y: 12}
+    - name: santa_5
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 288
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 4, y: 12}
+        - {x: -1, y: 14}
+        - {x: -6, y: 14}
+        - {x: -15, y: 6}
+        - {x: -15, y: -5}
+        - {x: -5, y: -17}
+        - {x: 3, y: -17}
+        - {x: 12, y: -8}
+        - {x: 12, y: 0}
+        - {x: 10, y: 8}
+    - name: santa_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 240
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 5, y: 15}
+        - {x: -7, y: 15}
+        - {x: -15, y: 8}
+        - {x: -15, y: -6}
+        - {x: -6, y: -17}
+        - {x: 9, y: -17}
+        - {x: 14, y: -9}
+        - {x: 14, y: 7}
+        - {x: 11, y: 11}
+    - name: santa_7
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 240
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 15}
+        - {x: -6, y: 15}
+        - {x: -15, y: 7}
+        - {x: -15, y: -6}
+        - {x: -6, y: -17}
+        - {x: 8, y: -17}
+        - {x: 14, y: -6}
+        - {x: 14, y: 3}
+        - {x: 5, y: 14}
+    - name: santa_8
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 240
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 13}
+        - {x: -15, y: 10}
+        - {x: -15, y: -8}
+        - {x: -8, y: -17}
+        - {x: 10, y: -17}
+        - {x: 14, y: -9}
+        - {x: 14, y: 5}
+        - {x: 9, y: 13}
+    - name: santa_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 6, y: 14}
+        - {x: -8, y: 14}
+        - {x: -13, y: 13}
+        - {x: -15, y: 7}
+        - {x: -15, y: -6}
+        - {x: -4, y: -17}
+        - {x: 9, y: -17}
+        - {x: 14, y: -11}
+        - {x: 14, y: 4}
+        - {x: 12, y: 10}
+    - name: santa_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 144
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -14, y: 14}
+        - {x: -17, y: 11}
+        - {x: -17, y: -4}
+        - {x: -12, y: -17}
+        - {x: 5, y: -17}
+        - {x: 13, y: -15}
+        - {x: 13, y: 8}
+        - {x: 2, y: 14}
+    - name: santa_11
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 144
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 15}
+        - {x: -10, y: 6}
+        - {x: -10, y: -6}
+        - {x: -9, y: -13}
+        - {x: -3, y: -17}
+        - {x: 9, y: -17}
+        - {x: 16, y: -10}
+        - {x: 16, y: 10}
+        - {x: 5, y: 15}
+    - name: santa_12
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 144
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -5, y: 14}
+        - {x: -9, y: 13}
+        - {x: -10, y: 9}
+        - {x: -10, y: -16}
+        - {x: -7, y: -17}
+        - {x: 15, y: -17}
+        - {x: 16, y: -13}
+        - {x: 16, y: 14}
+    - name: santa_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 14}
+        - {x: -16, y: 7}
+        - {x: -16, y: -4}
+        - {x: -9, y: -16}
+        - {x: 13, y: -16}
+        - {x: 14, y: -13}
+        - {x: 14, y: 6}
+        - {x: 4, y: 14}
+    - name: santa_14
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 96
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -4, y: 9}
@@ -117,7 +375,7 @@ TextureImporter:
         - {x: 18, y: -12}
         - {x: 18, y: -3}
         - {x: 7, y: 7}
-    - name: avatar1
+    - name: santa_15
       rect:
         serializedVersion: 2
         x: 0
@@ -125,7 +383,7 @@ TextureImporter:
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -19, y: 23}
@@ -136,7 +394,7 @@ TextureImporter:
         - {x: 22, y: -16}
         - {x: 22, y: 3}
         - {x: 12, y: 23}
-    - name: avatar2
+    - name: santa_16
       rect:
         serializedVersion: 2
         x: 48
@@ -144,7 +402,7 @@ TextureImporter:
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -23, y: 22}
@@ -154,7 +412,7 @@ TextureImporter:
         - {x: 23, y: -15}
         - {x: 23, y: 17}
         - {x: 9, y: 22}
-    - name: avatar3
+    - name: santa_17
       rect:
         serializedVersion: 2
         x: 96
@@ -162,7 +420,7 @@ TextureImporter:
         width: 48
         height: 48
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
       - - {x: -19, y: 23}

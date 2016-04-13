@@ -19,7 +19,7 @@ public class SpriteSwitch : MonoBehaviour {
 	void LateUpdate () {
 		if(character != ""){
 			foreach(SpriteRenderer renderer in spriteRenderer){
-				if(renderer){
+				if(renderer && renderer.sprite){
 					//Debug.Log(renderer);
 					string spriteName = renderer.sprite.name;
 					Sprite newSprite = Array.Find(newSprites, item => item.name == spriteName);
