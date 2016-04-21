@@ -17,6 +17,7 @@ public class PresentController : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		rigidBody = gameObject.GetComponent<Rigidbody2D>();
+		StartCoroutine(PresentFall());
 	}
 	
 	// Update is called once per frame
@@ -72,5 +73,13 @@ public class PresentController : MonoBehaviour {
 		rigidBody.isKinematic = true;
 		catcher.GetComponent<KidController>().PresentCaught(gameObject, thrower);
 		_state = State.CAUGHT;
+	}
+
+	IEnumerator PresentFall(){
+		Debug.Log("waiting");
+		yield return new WaitForSeconds(0.5f);
+		Debug.Log("fall");
+		rigidBody.gravityScale = 3;
+		rigidBody.drag = 0.5f;
 	}
 }

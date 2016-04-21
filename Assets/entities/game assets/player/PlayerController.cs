@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip throwSound;
 	public AudioClip catchSound;
 	public AudioClip tauntSound;
+	public AudioClip jumpSound;
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
@@ -203,15 +204,14 @@ public class PlayerController : MonoBehaviour {
 	//Private Functions
 	void MovePlayer(){
 		float deltaX = 0;
-		if(Input.GetAxis("Horizontal_P"+playerNum) != 0){
-			//TODO: Set player to move with incline of platforms, eliminate jitter
-			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
-				deltaX = (float) playerAttrs[Attributes.SPEED];
-				transform.localScale = new Vector3(1,1,1);
-			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
-				deltaX = -(float) playerAttrs[Attributes.SPEED];
-				transform.localScale = new Vector3(-1,1,1);
-			}
+		//TODO: Set player to move with incline of platforms, eliminate jitter
+		if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
+			deltaX = (float) playerAttrs[Attributes.SPEED];
+			transform.localScale = new Vector3(1,1,1);
+			SetBodyAnimationState(AnimatorState.RUNNING);
+		}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
+			deltaX = -(float) playerAttrs[Attributes.SPEED];
+			transform.localScale = new Vector3(-1,1,1);
 			SetBodyAnimationState(AnimatorState.RUNNING);
 		}else{
 			SetBodyAnimationState(AnimatorState.IDLE);
@@ -240,6 +240,7 @@ public class PlayerController : MonoBehaviour {
 		float deltaX = 0;
 		if(Input.GetButtonDown("Jump_P"+playerNum) && canJump){
 			SetBodyAnimationState(AnimatorState.JUMPING);
+			PlaySound(jumpSound);
 			rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpSpeed);
 			canJump = false;
 		}
@@ -263,12 +264,14 @@ public class PlayerController : MonoBehaviour {
 
 			//Set Present velocity
 			Vector2 relativeVelocity;
-			var xVelocity = rigidBody.velocity.x/2;
-			var yVelocity = rigidBody.velocity.y/2;
-			if(Input.GetAxis("Horizontal_P"+playerNum) != 0 || Input.GetAxis("Vertical_P"+playerNum) != 0){
-				relativeVelocity = new Vector2(Input.GetAxis("Horizontal_P"+playerNum)*throwVelocity + xVelocity, -Input.GetAxis("Vertical_P"+playerNum)*throwVelocity + yVelocity);
+			var xVelocity = rigidBody.velocity.x;
+			var yVelocity = rigidBody.velocity.y;
+			if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+				relativeVelocity = new Vector2(throwVelocity,0);
+			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+				relativeVelocity = new Vector2(-throwVelocity,0);
 			}else{
-				relativeVelocity = new Vector2(xVelocity,-throwVelocity+yVelocity);
+				relativeVelocity = new Vector2(0,-throwVelocity);
 			}
 			presentController.SetVelocity(relativeVelocity);
 
@@ -315,6 +318,7 @@ public class PlayerController : MonoBehaviour {
 		case AnimatorState.THROWING:
 			bodyAnimator.SetBool("isWinding",false);
 			bodyAnimator.SetBool("isThrowing",true);
+			_state = State.ACTIVE;
 			break;
 		}
 	}
@@ -323,7 +327,6 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator ThrowCooldown(){
 		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
 		SetBodyAnimationState(AnimatorState.IDLE);
-		_state = State.ACTIVE;
 		canThrow = true;
 	}
 
