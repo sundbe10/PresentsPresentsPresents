@@ -1,20 +1,20 @@
 fileFormatVersion: 2
-guid: 0efa4d8d8c0aa450096a26a379050cd2
-timeCreated: 1461433522
+guid: 2ad223cd0caa74b1ab9c54ce2808d4f9
+timeCreated: 1461445712
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: idle
     21300002: throw
     21300004: dead
-    21300006: avatar1
-    21300008: avatar2
-    21300010: avatar3
-    21300012: present
+    21300006: present
+    21300008: avatar1
+    21300010: avatar2
+    21300012: avatar3
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -30,7 +30,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 8
+  cubemapConvolutionSteps: 7
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
@@ -68,14 +68,12 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 8, y: 16}
-        - {x: -13, y: 16}
-        - {x: -15, y: 7}
-        - {x: -15, y: -8}
-        - {x: -8, y: -14}
-        - {x: 6, y: -14}
-        - {x: 13, y: -3}
-        - {x: 13, y: 6}
+      - - {x: -9, y: 15}
+        - {x: -15, y: 8}
+        - {x: -15, y: -16}
+        - {x: 15, y: -16}
+        - {x: 15, y: 8}
+        - {x: 8, y: 15}
     - name: throw
       rect:
         serializedVersion: 2
@@ -87,14 +85,17 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -3, y: 16}
-        - {x: -15, y: 9}
-        - {x: -15, y: -5}
-        - {x: -11, y: -14}
-        - {x: 6, y: -14}
-        - {x: 12, y: -7}
-        - {x: 12, y: 6}
-        - {x: 6, y: 16}
+      - - {x: 6, y: 15}
+        - {x: -5, y: 15}
+        - {x: -15, y: 8}
+        - {x: -15, y: -9}
+        - {x: -13, y: -14}
+        - {x: -11, y: -16}
+        - {x: 2, y: -16}
+        - {x: 12, y: -15}
+        - {x: 15, y: -12}
+        - {x: 15, y: 5}
+        - {x: 13, y: 12}
     - name: dead
       rect:
         serializedVersion: 2
@@ -106,76 +107,14 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -8, y: 10}
-        - {x: -15, y: 5}
-        - {x: -16, y: 2}
-        - {x: -16, y: -10}
-        - {x: -6, y: -16}
-        - {x: 10, y: -16}
-        - {x: 19, y: -10}
-        - {x: 19, y: 1}
-        - {x: 3, y: 10}
-    - name: avatar1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -11, y: 24}
-        - {x: -14, y: 23}
-        - {x: -22, y: -2}
-        - {x: -22, y: -13}
-        - {x: -16, y: -23}
-        - {x: -14, y: -24}
-        - {x: 13, y: -24}
-        - {x: 17, y: -23}
-        - {x: 17, y: 11}
-        - {x: 10, y: 24}
-    - name: avatar2
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -22, y: -17}
-        - {x: -16, y: -24}
-        - {x: 14, y: -24}
-        - {x: 19, y: -22}
-        - {x: 19, y: 3}
-        - {x: 14, y: 24}
-        - {x: -8, y: 24}
-        - {x: -22, y: -7}
-    - name: avatar3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 48
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -11, y: 24}
-        - {x: -14, y: 23}
-        - {x: -22, y: -2}
-        - {x: -22, y: -13}
-        - {x: -16, y: -23}
-        - {x: -14, y: -24}
-        - {x: 13, y: -24}
-        - {x: 17, y: -23}
-        - {x: 17, y: 11}
-        - {x: 10, y: 24}
+      - - {x: -4, y: 9}
+        - {x: -11, y: 9}
+        - {x: -18, y: 2}
+        - {x: -18, y: -10}
+        - {x: -16, y: -12}
+        - {x: 18, y: -12}
+        - {x: 18, y: -3}
+        - {x: 7, y: 7}
     - name: present
       rect:
         serializedVersion: 2
@@ -187,14 +126,70 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -2, y: 5}
-        - {x: -6, y: 1}
-        - {x: -6, y: -2}
-        - {x: -2, y: -6}
-        - {x: 1, y: -6}
-        - {x: 5, y: -2}
-        - {x: 5, y: 1}
-        - {x: 1, y: 5}
+      - - {x: -6, y: 6}
+        - {x: -6, y: -6}
+        - {x: 5, y: -6}
+        - {x: 5, y: 4}
+        - {x: 3, y: 6}
+    - name: avatar1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 24}
+        - {x: -13, y: 24}
+        - {x: -23, y: -4}
+        - {x: -23, y: -18}
+        - {x: -21, y: -24}
+        - {x: 21, y: -24}
+        - {x: 22, y: -20}
+        - {x: 22, y: -4}
+        - {x: 19, y: 18}
+    - name: avatar2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 24}
+        - {x: -12, y: 24}
+        - {x: -23, y: 21}
+        - {x: -23, y: -24}
+        - {x: 13, y: -24}
+        - {x: 23, y: -14}
+        - {x: 23, y: 3}
+        - {x: 17, y: 16}
+    - name: avatar3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 11, y: 24}
+        - {x: -13, y: 24}
+        - {x: -23, y: -4}
+        - {x: -23, y: -18}
+        - {x: -21, y: -24}
+        - {x: 21, y: -24}
+        - {x: 22, y: -20}
+        - {x: 22, y: -4}
+        - {x: 19, y: 18}
     outline: []
   spritePackingTag: 
   userData: 

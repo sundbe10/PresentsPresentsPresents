@@ -6,8 +6,10 @@ public class Blink : MonoBehaviour {
 
 	public float blinkSpeed = 30f;
 
-	private CanvasRenderer canvasRenderer;
-	private int direction = 1;
+	CanvasRenderer canvasRenderer;
+	int direction = 1;
+	bool canFade = true;
+	float opacity = 1f;
 
 	// Use this for initialization
 	void Start () {
@@ -20,15 +22,18 @@ public class Blink : MonoBehaviour {
 
 	}
 
+	public void StartBlink(){
+		canFade = true;
+	}
+
+	public void StopBlink(){
+		canFade = false;
+		canvasRenderer.SetAlpha(1);
+	}
+
 	void Fade(){
-		/*if(text.color.a <= 0.1){
-			direction = 1;
-		}else if(text.color.a >= 1){
-			direction = -1;
-		}
-		text.color += new Color(0,0,0,0.1f*direction);*/
-		Debug.Log(canvasRenderer.GetAlpha());
-		canvasRenderer.SetAlpha(canvasRenderer.GetAlpha() == 1f ? 0 : 1f);
+		opacity = opacity == 1f ? 0 : 1f;
+		if(canFade) canvasRenderer.SetAlpha(opacity);
 		Invoke("Fade", blinkSpeed*Time.deltaTime);
 	}
 }

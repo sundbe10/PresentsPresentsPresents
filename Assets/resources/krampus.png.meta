@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 755723e67b2a04e8bb3e542105d5939e
-timeCreated: 1458496566
+timeCreated: 1461433645
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -12,6 +12,7 @@ TextureImporter:
     21300010: avatar1
     21300012: avatar2
     21300014: avatar3
+    21300016: present
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -69,11 +70,11 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 13, y: 14}
-        - {x: -9, y: 14}
-        - {x: -15, y: 11}
-        - {x: -15, y: -9}
-        - {x: -13, y: -12}
+      - - {x: 11, y: 14}
+        - {x: -7, y: 14}
+        - {x: -15, y: 7}
+        - {x: -15, y: -5}
+        - {x: -13, y: -11}
         - {x: -9, y: -15}
         - {x: 11, y: -15}
         - {x: 15, y: -13}
@@ -89,16 +90,12 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 12, y: 12}
-        - {x: 8, y: 14}
-        - {x: -7, y: 14}
+      - - {x: -7, y: 14}
         - {x: -15, y: 7}
-        - {x: -15, y: -7}
-        - {x: -14, y: -12}
-        - {x: -11, y: -15}
-        - {x: 12, y: -15}
-        - {x: 15, y: -12}
-        - {x: 15, y: -8}
+        - {x: -15, y: -15}
+        - {x: 15, y: -15}
+        - {x: 15, y: 6}
+        - {x: 13, y: 14}
     - name: dead
       rect:
         serializedVersion: 2
@@ -130,12 +127,14 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -23, y: 19}
-        - {x: -23, y: -22}
-        - {x: -17, y: -24}
-        - {x: 15, y: -24}
-        - {x: 22, y: -17}
-        - {x: 22, y: 16}
+      - - {x: -16, y: 19}
+        - {x: -21, y: 16}
+        - {x: -23, y: 9}
+        - {x: -23, y: -15}
+        - {x: -13, y: -24}
+        - {x: 14, y: -24}
+        - {x: 23, y: -15}
+        - {x: 23, y: 12}
         - {x: 20, y: 19}
     - name: avatar2
       rect:
@@ -148,13 +147,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -23, y: 19}
-        - {x: -23, y: -22}
-        - {x: -17, y: -24}
-        - {x: 15, y: -24}
-        - {x: 22, y: -17}
-        - {x: 22, y: 16}
-        - {x: 20, y: 19}
+      - - {x: -17, y: 19}
+        - {x: -22, y: 17}
+        - {x: -23, y: 15}
+        - {x: -23, y: -18}
+        - {x: -16, y: -24}
+        - {x: 11, y: -24}
+        - {x: 23, y: -15}
+        - {x: 23, y: 10}
+        - {x: 21, y: 19}
     - name: avatar3
       rect:
         serializedVersion: 2
@@ -166,13 +167,36 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -23, y: 19}
-        - {x: -23, y: -22}
-        - {x: -17, y: -24}
-        - {x: 15, y: -24}
-        - {x: 22, y: -17}
-        - {x: 22, y: 16}
-        - {x: 20, y: 19}
+      - - {x: 19, y: 18}
+        - {x: -18, y: 18}
+        - {x: -22, y: 15}
+        - {x: -24, y: -1}
+        - {x: -24, y: -10}
+        - {x: -23, y: -16}
+        - {x: -14, y: -24}
+        - {x: 11, y: -24}
+        - {x: 23, y: -19}
+        - {x: 23, y: 2}
+        - {x: 22, y: 12}
+    - name: present
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 6}
+        - {x: -4, y: 6}
+        - {x: -5, y: 4}
+        - {x: -5, y: -3}
+        - {x: -2, y: -6}
+        - {x: 2, y: -6}
+        - {x: 5, y: -3}
+        - {x: 5, y: 3}
     outline: []
   spritePackingTag: 
   userData: 

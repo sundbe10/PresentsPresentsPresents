@@ -5,88 +5,149 @@ using System.Collections.Generic;
 public class CharacterCollection : MonoBehaviour {
 
 	[System.Serializable]
-	public class Character{
+	public class CharacterModel{
 		public string identifierName;
 		public string displayName;
-		public string characterSpriteSheetName;
-		public Sprite characterThumb;
-		public Sprite[] presentSprites;
 		public AudioClip taunt;
+		public Costume[] costumes;
+	}
+
+	[System.Serializable]
+	public class Costume{
+		public string characterSpriteSheetName;
 		public bool taken = false;
 	}
 
-	public Character[] characters;
-
-	private List<Character> characterCollection;
-
-	// Use this for initialization
-	void Awake () {
-		characterCollection = new List<Character>();
-		foreach(Character character in characters){
-			characterCollection.Add(character);
+	public class Character{
+		public string identifierName;
+		public string displayName;
+		public AudioClip taunt;
+		public string characterSpriteSheetName;
+		public Character(CharacterModel characterModel, Costume costume){
+			identifierName = characterModel.identifierName;
+			displayName = characterModel.displayName;
+			taunt = characterModel.taunt;
+			characterSpriteSheetName = costume.characterSpriteSheetName;
 		}
 	}
+
+	public CharacterModel[] characterModels;
+	public Costume[] playerChoices;
+
+	// Use this for initialization
+	void Start () {
+		playerChoices = new Costume[4];
+	}
 		
-	public Character GetFirstOpenCharacter(){
-		foreach(Character character in characters){
-			if(character.taken == false){
-				character.taken = true;
-				return character;
+	public Character GetFirstOpenCharacter(int playerNumber){
+		foreach(CharacterModel characterModel in characterModels){
+			//If no costumes in a character are taken, assign the player the first costume for the given character
+			if(!AnyCostumesTaken(characterModel)){
+				SelectCharacter(playerNumber, characterModel.costumes[0]);
+				return new Character(characterModel, characterModel.costumes[0]);
 			}
+		}
+		return null;
+	} 
+
+	public void SelectCharacter(int playerNumber, Costume costume){
+		costume.taken = true;
+		playerChoices[playerNumber-1] = costume;
+	}
+
+	public void DeselectCharacter(int playerNumber){
+		playerChoices[playerNumber-1].taken = false;
+		playerChoices[playerNumber-1] = null;
+	}
+
+	public Character GetNextOpenCharacter(int playerNumber){
+		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
+		playerChoices[playerNumber-1].taken = false;
+
+		if(characterPosition == characterModels.Length-1){
+			characterPosition = 0;
+		}else{
+			characterPosition++;
+		}
+
+		Costume nextCharacterCostume = GetFirstOpenCostume(characterModels[characterPosition].costumes);
+		SelectCharacter(playerNumber, nextCharacterCostume);
+
+		return new Character(characterModels[characterPosition], nextCharacterCostume);
+	}
+
+	public Character GetPreviousOpenCharacter(int playerNumber){
+		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
+		playerChoices[playerNumber-1].taken = false;
+
+		if(characterPosition == 0){
+			characterPosition = characterModels.Length-1;
+		}else{
+			characterPosition--;
+		}
+
+		Costume prevCharacterCostume = GetFirstOpenCostume(characterModels[characterPosition].costumes);
+		SelectCharacter(playerNumber, prevCharacterCostume);
+
+		return new Character(characterModels[characterPosition], prevCharacterCostume);
+	}
+
+	public Character GetNextOpenCostume(int playerNumber){
+		Costume nextCharacterCostume = null;
+		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
+		int costumePosition = GetCostumeIndex(playerChoices[playerNumber-1]);
+		playerChoices[playerNumber-1].taken = false;
+
+		while(nextCharacterCostume == null){
+			if(costumePosition == characterModels[characterPosition].costumes.Length-1){
+				costumePosition = 0;
+			}else{
+				costumePosition++;
+			}
+			if(characterModels[characterPosition].costumes[costumePosition].taken == false){
+				nextCharacterCostume = characterModels[characterPosition].costumes[costumePosition];
+			}
+		}
+
+		SelectCharacter(playerNumber, nextCharacterCostume);
+
+		return new Character(characterModels[characterPosition], nextCharacterCostume);
+	}
+
+	private Costume GetFirstOpenCostume(Costume[] costumes){
+		foreach(Costume _costume in costumes){
+			if(_costume.taken == false) return _costume;
 		}
 		return null;
 	}
 
-	public Character GetNextOpenCharacter(Character currentCharacter){
-		Character nextCharacter = null;
-		int characterPosition = characterCollection.IndexOf(currentCharacter);
-		characters[characterPosition].taken = false;
-
-		while(nextCharacter == null){
-			if(characterPosition == characterCollection.Count - 1){
-				characterPosition = 0;
-			}else{
-				characterPosition++;
+	private int GetCharacterModelIndex(Costume costume){
+		int i = 0;
+		foreach(CharacterModel _characterModel in characterModels){
+			foreach(Costume _costume in _characterModel.costumes){
+				if(_costume == costume) return i;
 			}
-
-			if(characterCollection[characterPosition].taken == false){
-				nextCharacter = characterCollection[characterPosition];
-				characters[characterPosition].taken = true;
-			}
+			i++;
 		}
-		return nextCharacter;
+		return 0;
 	}
 
-	public Character GetPreviousOpenCharacter(Character currentCharacter){
-		Character prevCharacter = null;
-		int characterPosition = characterCollection.IndexOf(currentCharacter);
-		characters[characterPosition].taken = false;
-
-		while(prevCharacter == null){
-			if(characterPosition == 0){
-				characterPosition = characterCollection.Count-1;
-			}else{
-				characterPosition--;
-			}
-
-			if(characterCollection[characterPosition].taken == false){
-				prevCharacter = characterCollection[characterPosition];
-				characters[characterPosition].taken = true;
+	private int GetCostumeIndex(Costume costume){
+		foreach(CharacterModel _characterModel in characterModels){
+			int i = 0;
+			foreach(Costume _costume in _characterModel.costumes){
+				if(_costume == costume) return i;
+				i++;
 			}
 		}
-		Debug.Log(prevCharacter.displayName);
-		return prevCharacter;
+		return 0;
 	}
 
-	private List<Character> GetAvailableCharacters(){
-		List<Character> availableCharacters = characterCollection;
-		foreach(Character character in availableCharacters){
-			if(character.taken){
-				availableCharacters.Remove(character);
-			}
+	private bool AnyCostumesTaken(CharacterModel characterModel){
+		foreach(Costume _costume in characterModel.costumes){
+			if(_costume.taken) return true;
 		}
-		return availableCharacters;
-
+		return false;
 	}
 
 }

@@ -1,12 +1,16 @@
 fileFormatVersion: 2
 guid: 9cfd918759623481e9cba955dc426386
-timeCreated: 1458435778
+timeCreated: 1461441840
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: idle
     21300002: throw
     21300004: dead
+    21300006: avatar1
+    21300008: avatar2
+    21300010: avatar3
+    21300012: present
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -57,61 +61,140 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 32
-        height: 32
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 9, y: 14}
-        - {x: -12, y: 14}
-        - {x: -15, y: 9}
-        - {x: -15, y: -11}
+      - - {x: 11, y: 14}
+        - {x: -7, y: 14}
+        - {x: -15, y: 7}
+        - {x: -15, y: -5}
+        - {x: -13, y: -11}
         - {x: -9, y: -15}
         - {x: 11, y: -15}
         - {x: 15, y: -13}
-        - {x: 15, y: 3}
-        - {x: 12, y: 11}
+        - {x: 15, y: 2}
     - name: throw
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
+        x: 48
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: 15, y: 13}
-        - {x: 12, y: 14}
-        - {x: -13, y: 14}
-        - {x: -15, y: 13}
-        - {x: -15, y: -12}
-        - {x: -14, y: -15}
-        - {x: 13, y: -15}
-        - {x: 15, y: -13}
+      - - {x: -7, y: 14}
+        - {x: -15, y: 7}
+        - {x: -15, y: -15}
+        - {x: 15, y: -15}
+        - {x: 15, y: 6}
+        - {x: 13, y: 14}
     - name: dead
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
+        x: 96
+        y: 48
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -2, y: 11}
-        - {x: -11, y: 11}
-        - {x: -16, y: 4}
-        - {x: -16, y: -8}
-        - {x: -13, y: -12}
-        - {x: 15, y: -12}
-        - {x: 16, y: -11}
-        - {x: 16, y: -1}
-        - {x: 5, y: 10}
+      - - {x: 0, y: 11}
+        - {x: -10, y: 11}
+        - {x: -17, y: -1}
+        - {x: -17, y: -9}
+        - {x: -8, y: -12}
+        - {x: 14, y: -12}
+        - {x: 18, y: -10}
+        - {x: 18, y: -3}
+        - {x: 6, y: 10}
+    - name: avatar1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 19}
+        - {x: -21, y: 16}
+        - {x: -23, y: 9}
+        - {x: -23, y: -15}
+        - {x: -13, y: -24}
+        - {x: 14, y: -24}
+        - {x: 23, y: -15}
+        - {x: 23, y: 12}
+        - {x: 20, y: 19}
+    - name: avatar2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -17, y: 19}
+        - {x: -22, y: 17}
+        - {x: -23, y: 15}
+        - {x: -23, y: -18}
+        - {x: -16, y: -24}
+        - {x: 11, y: -24}
+        - {x: 23, y: -15}
+        - {x: 23, y: 10}
+        - {x: 21, y: 19}
+    - name: avatar3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 19, y: 18}
+        - {x: -18, y: 18}
+        - {x: -22, y: 15}
+        - {x: -24, y: -1}
+        - {x: -24, y: -10}
+        - {x: -23, y: -16}
+        - {x: -14, y: -24}
+        - {x: 11, y: -24}
+        - {x: 23, y: -19}
+        - {x: 23, y: 2}
+        - {x: 22, y: 12}
+    - name: present
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 6}
+        - {x: -4, y: 6}
+        - {x: -5, y: 4}
+        - {x: -5, y: -3}
+        - {x: -2, y: -6}
+        - {x: 2, y: -6}
+        - {x: 5, y: -3}
+        - {x: 5, y: 3}
     outline: []
   spritePackingTag: 
   userData: 

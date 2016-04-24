@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d13601965dc8b41dbb50f2a752fc97f3
-timeCreated: 1458495134
+timeCreated: 1461433366
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -10,6 +10,7 @@ TextureImporter:
     21300006: avatar1
     21300008: avatar2
     21300010: avatar3
+    21300012: present
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -173,6 +174,22 @@ TextureImporter:
         - {x: 22, y: -16}
         - {x: 22, y: 3}
         - {x: 12, y: 23}
+    - name: present
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -6, y: 6}
+        - {x: -6, y: -6}
+        - {x: 5, y: -6}
+        - {x: 5, y: 4}
+        - {x: 3, y: 6}
     outline: []
   spritePackingTag: 
   userData: 

@@ -10,7 +10,7 @@ public class SpriteSwitch : MonoBehaviour {
 	Sprite[] newSprites;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		spriteRenderer = gameObject.GetComponentsInChildren<SpriteRenderer>();
 		newSprites = Resources.LoadAll<Sprite>(character);
 	}

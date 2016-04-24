@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 	public float throwSpeed = 1f;
 	public GameObject present;
 	public int playerNum = 1;	
-	public Sprite[] presentSprites;
+	public Sprite presentSprite;
 	public string name;
 	public Hashtable playerAttrs = new Hashtable();
 	public enum Attributes{
@@ -101,7 +101,8 @@ public class PlayerController : MonoBehaviour {
 		Debug.Log(character.displayName);
 		name = playerNameText.text = character.displayName;
 		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
-		presentSprites = character.presentSprites;
+		Sprite[] newSprites = Resources.LoadAll<Sprite>(character.characterSpriteSheetName);
+		presentSprite = Array.Find(newSprites, item => item.name == "present");
 	}
 
 	public void EnableMovement(){
@@ -200,7 +201,7 @@ public class PlayerController : MonoBehaviour {
 			GameObject newPresent = Instantiate(present, initialPosition, Quaternion.identity) as GameObject;
 			PresentController presentController = newPresent.GetComponent<PresentController>();
 			presentController.SetThrower(gameObject);
-			presentController.SetPresentSprite(presentSprites[UnityEngine.Random.Range (0, presentSprites.Length)]);
+			presentController.SetPresentSprite(presentSprite);
 			canThrow = false;
 
 			//Prevent player from being able to throw immidiately 
