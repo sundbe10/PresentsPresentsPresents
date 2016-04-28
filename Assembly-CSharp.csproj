@@ -46,14 +46,14 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\entities\backgrounds\clouds\CloudController.cs" />
+     <Compile Include="Assets\entities\backgrounds\scene fade\FadeOut.cs" />
      <Compile Include="Assets\entities\backgrounds\stars\StarController.cs" />
      <Compile Include="Assets\entities\character select\AddPlayer.cs" />
      <Compile Include="Assets\entities\character select\AvatarController.cs" />
      <Compile Include="Assets\entities\character select\CharacterSelectController.cs" />
      <Compile Include="Assets\entities\character select\ConfirmCharacterSelect.cs" />
      <Compile Include="Assets\entities\data\GameData.cs" />
-     <Compile Include="Assets\entities\fade\FadeIn.cs" />
-     <Compile Include="Assets\entities\fade\FadeOut.cs" />
+     <Compile Include="Assets\entities\data\SceneLoader.cs" />
      <Compile Include="Assets\entities\game assets\ground\GroundController.cs" />
      <Compile Include="Assets\entities\game assets\kid\KidController.cs" />
      <Compile Include="Assets\entities\game assets\player\PlayerController.cs" />
@@ -66,6 +66,7 @@
      <Compile Include="Assets\entities\game assets\spawner\KidSpawnController.cs" />
      <Compile Include="Assets\entities\game assets\splash\SplashController.cs" />
      <Compile Include="Assets\entities\initializer\InitializerController.cs" />
+     <Compile Include="Assets\entities\ui\menus\GameMenuController.cs" />
      <Compile Include="Assets\scripts\Blink.cs" />
      <Compile Include="Assets\scripts\CameraController.cs" />
      <Compile Include="Assets\scripts\CharacterCollection.cs" />
@@ -78,10 +79,8 @@
      <Compile Include="Assets\scripts\MenuSceneController.cs" />
      <Compile Include="Assets\scripts\MusicControlller.cs" />
      <Compile Include="Assets\scripts\PixelPerfect.cs" />
-     <Compile Include="Assets\scripts\SceneLoader.cs" />
      <Compile Include="Assets\scripts\SpriteSwitch.cs" />
      <Compile Include="Assets\scripts\StartGame.cs" />
-     <Compile Include="Assets\scripts\SwitchToSceneOnKeypress.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

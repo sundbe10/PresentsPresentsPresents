@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour {
 	//Public vars
 	public AudioClip throwSound;
 	public AudioClip catchSound;
-	public AudioClip tauntSound;
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
@@ -27,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 	public float throwSpeed = 1f;
 	public GameObject present;
 	public int playerNum = 1;	
-	public Sprite presentSprite;
+	public CharacterCollection.Character currentCharacter;
 	public string name;
 	public Hashtable playerAttrs = new Hashtable();
 	public enum Attributes{
@@ -47,12 +46,14 @@ public class PlayerController : MonoBehaviour {
 	State _state = State.ENTRY;
 	Text playerScoreText;
 	Text playerNameText;
+	Transform playerTag;
 
 	// Use this for initialization
 	void Awake () {
 		animator = gameObject.GetComponent<Animator>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
+		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
 		playerScoreText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Score").gameObject.GetComponent<Text>();
@@ -98,11 +99,9 @@ public class PlayerController : MonoBehaviour {
 
 	//Public Functions
 	public void SetCharacter(CharacterCollection.Character character){
-		Debug.Log(character.displayName);
 		name = playerNameText.text = character.displayName;
 		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
-		Sprite[] newSprites = Resources.LoadAll<Sprite>(character.characterSpriteSheetName);
-		presentSprite = Array.Find(newSprites, item => item.name == "present");
+		currentCharacter = character;
 	}
 
 	public void EnableMovement(){
@@ -182,16 +181,18 @@ public class PlayerController : MonoBehaviour {
 			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
 				deltaX = (float) playerAttrs[Attributes.SPEED];
 				transform.localScale = new Vector3(1,1,1);
+				playerTag.localScale = new Vector3(1,1,1);
 			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
 				deltaX = -(float) playerAttrs[Attributes.SPEED];
 				transform.localScale = new Vector3(-1,1,1);
+				playerTag.localScale = new Vector3(-1,1,1);
 			}	
 			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
 		}
 	}
 
 	void ThrowPresent(){
-		if(Input.GetButton("Throw_P"+playerNum) && canThrow){
+		if(Input.GetButtonDown("Throw_P"+playerNum) && canThrow){
 			//Play throw sound
 			PlaySound(throwSound);
 			bodyAnimator.SetBool("isThrowing",true);
@@ -201,7 +202,7 @@ public class PlayerController : MonoBehaviour {
 			GameObject newPresent = Instantiate(present, initialPosition, Quaternion.identity) as GameObject;
 			PresentController presentController = newPresent.GetComponent<PresentController>();
 			presentController.SetThrower(gameObject);
-			presentController.SetPresentSprite(presentSprite);
+			presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
 			canThrow = false;
 
 			//Prevent player from being able to throw immidiately 

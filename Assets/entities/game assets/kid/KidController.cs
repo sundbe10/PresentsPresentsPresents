@@ -24,7 +24,7 @@ public class KidController : MonoBehaviour {
 	//Private Vars
 	GameObject powerup;
 	float walkSpeed;
-	float runSpeed = 2.5f;
+	float runSpeed = 150f;
 	AudioSource audioSource;
 	State _state = State.ENTERING;
 	bool gameEnded = false;
@@ -42,7 +42,7 @@ public class KidController : MonoBehaviour {
 		//Set Random sprite
 		string randomSprite = possibleSprites[Random.Range(0, possibleSprites.Length)];
 		SpriteSwitch switcher = gameObject.GetComponent<SpriteSwitch>();
-		switcher.character = randomSprite;
+		switcher.SetSpriteSheet(randomSprite);
 
 		//Give Powerup
 		if(Random.value < powerupProbability){
@@ -118,9 +118,9 @@ public class KidController : MonoBehaviour {
 
 	void MoveKid(){
 		if(_state == State.ENTERING){
-			transform.position = new Vector3(transform.position.x, transform.position.y + -0.2f, transform.position.z);
+			transform.position = new Vector3(transform.position.x, transform.position.y + -8f*Time.deltaTime, transform.position.z);
 		}else{
-			transform.position = new Vector3(transform.position.x+walkSpeed, transform.position.y, transform.position.z);
+			transform.position = new Vector3(transform.position.x+walkSpeed*Time.deltaTime, transform.position.y, transform.position.z);
 		}
 	}
 

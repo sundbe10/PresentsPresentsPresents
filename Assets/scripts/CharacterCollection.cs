@@ -114,6 +114,28 @@ public class CharacterCollection : MonoBehaviour {
 		return new Character(characterModels[characterPosition], nextCharacterCostume);
 	}
 
+	public Character GetPreviousOpenCostume(int playerNumber){
+		Costume previousCharacterCostume = null;
+		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
+		int costumePosition = GetCostumeIndex(playerChoices[playerNumber-1]);
+		playerChoices[playerNumber-1].taken = false;
+
+		while(previousCharacterCostume == null){
+			if(costumePosition == 0){
+				costumePosition = characterModels[characterPosition].costumes.Length-1;
+			}else{
+				costumePosition--;
+			}
+			if(characterModels[characterPosition].costumes[costumePosition].taken == false){
+				previousCharacterCostume = characterModels[characterPosition].costumes[costumePosition];
+			}
+		}
+
+		SelectCharacter(playerNumber, previousCharacterCostume);
+
+		return new Character(characterModels[characterPosition], previousCharacterCostume);
+	}
+
 	private Costume GetFirstOpenCostume(Costume[] costumes){
 		foreach(Costume _costume in costumes){
 			if(_costume.taken == false) return _costume;

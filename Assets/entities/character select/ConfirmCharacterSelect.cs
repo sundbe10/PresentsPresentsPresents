@@ -13,16 +13,12 @@ public class ConfirmCharacterSelect : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetButtonDown("Start")){
-			if(AllPlayersReady()){
-				GameObject.Find("Fade").GetComponent<FadeOut>().StartFade();
-				StartCoroutine(GoToGame());
-			}
-		}
+		
 	}
 
-	bool AllPlayersReady(){
+	public bool AllPlayersReady(){
 		players = GameObject.FindGameObjectsWithTag("Player");
+		Debug.Log(players.Length);
 		//If no active player, return false
 		if(players.Length == 0) return false;
 		//Determine if active players are ready
@@ -35,8 +31,9 @@ public class ConfirmCharacterSelect : MonoBehaviour {
 		return ready;
 	}
 
-	IEnumerator GoToGame(){
-		yield return new WaitForSeconds(1.5f);
-		_sceneLoader.LoadScene("Game");
+	public bool NoActivePlayers(){
+		players = GameObject.FindGameObjectsWithTag("Player");
+		return players.Length == 0;
 	}
+		
 }

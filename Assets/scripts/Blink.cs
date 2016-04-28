@@ -25,6 +25,7 @@ public class Blink : MonoBehaviour {
 	public void StartBlink(){
 		canFade = true;
 	}
+		
 
 	public void StopBlink(){
 		canFade = false;
@@ -36,4 +37,5 @@ public class Blink : MonoBehaviour {
 		if(canFade) canvasRenderer.SetAlpha(opacity);
 		Invoke("Fade", blinkSpeed*Time.deltaTime);
 	}
+		
 }

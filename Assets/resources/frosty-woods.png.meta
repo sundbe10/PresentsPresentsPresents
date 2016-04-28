@@ -1,0 +1,198 @@
+fileFormatVersion: 2
+guid: f2fe2333749e24cab84012304e84869e
+timeCreated: 1461774809
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: idle
+    21300002: throw
+    21300004: dead
+    21300006: present
+    21300008: avatar1
+    21300010: avatar2
+    21300012: avatar3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: idle
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 15}
+        - {x: -12, y: 12}
+        - {x: -15, y: 4}
+        - {x: -15, y: -8}
+        - {x: -12, y: -14}
+        - {x: 7, y: -14}
+        - {x: 13, y: -12}
+        - {x: 13, y: 11}
+        - {x: 7, y: 15}
+    - name: throw
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -3, y: 15}
+        - {x: -15, y: 11}
+        - {x: -15, y: -7}
+        - {x: -7, y: -14}
+        - {x: 6, y: -14}
+        - {x: 12, y: -5}
+        - {x: 12, y: 6}
+        - {x: 9, y: 15}
+    - name: dead
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -8, y: 10}
+        - {x: -15, y: 5}
+        - {x: -16, y: 2}
+        - {x: -16, y: -10}
+        - {x: -6, y: -16}
+        - {x: 10, y: -16}
+        - {x: 19, y: -10}
+        - {x: 19, y: 1}
+        - {x: 3, y: 10}
+    - name: present
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -2, y: 5}
+        - {x: -6, y: 1}
+        - {x: -6, y: -2}
+        - {x: -2, y: -6}
+        - {x: 1, y: -6}
+        - {x: 5, y: -2}
+        - {x: 5, y: 1}
+        - {x: 1, y: 5}
+    - name: avatar1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: -20}
+        - {x: -17, y: -24}
+        - {x: 23, y: -24}
+        - {x: 23, y: 10}
+        - {x: 21, y: 20}
+        - {x: 20, y: 21}
+        - {x: -20, y: 21}
+        - {x: -22, y: 16}
+    - name: avatar2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -9, y: 20}
+        - {x: -16, y: 19}
+        - {x: -22, y: 11}
+        - {x: -22, y: -24}
+        - {x: 24, y: -24}
+        - {x: 24, y: 12}
+        - {x: 16, y: 20}
+    - name: avatar3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: -20}
+        - {x: -17, y: -24}
+        - {x: 23, y: -24}
+        - {x: 23, y: 10}
+        - {x: 21, y: 20}
+        - {x: 20, y: 21}
+        - {x: -20, y: 21}
+        - {x: -22, y: 16}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

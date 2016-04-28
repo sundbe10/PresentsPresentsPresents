@@ -52,7 +52,7 @@ public class AddPlayer : MonoBehaviour {
 
 	void HandleAddPlayer(){
 		text.text = startText;
-		if(Input.GetButtonDown("Start_P"+playerNumber)){
+		if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
 			currentCharacter = characterCollection.GetFirstOpenCharacter(playerNumber);
 			GameObject newPlayer = Instantiate(playerObject, new Vector3(transform.position.x, transform.position.y-40,0), Quaternion.identity) as GameObject;
 			newPlayerController = newPlayer.GetComponent<CharacterSelectController>();
@@ -77,14 +77,21 @@ public class AddPlayer : MonoBehaviour {
 			PlaySound(selectionSound);
 		}
 		//Select Costume
-		if(Input.GetButtonDown("Throw_P"+playerNumber)){
-			currentCharacter = characterCollection.GetNextOpenCostume(playerNumber);
+		if(Input.GetButtonDown("Vertical_P"+playerNumber)){
+			var axis = Input.GetAxis("Vertical_P"+playerNumber);
+			if(axis > 0){
+				currentCharacter = characterCollection.GetNextOpenCostume(playerNumber);
+			}
+			else if(axis < 0){
+				currentCharacter = characterCollection.GetPreviousOpenCostume(playerNumber);
+			}
+
 			newPlayerController.SetCharacter(currentCharacter);
 			PlaySound(selectionSound);
 		}
 		text.text = currentCharacter.displayName.ToUpper();
 		//Finalize Selection
-		if(Input.GetButtonDown("Start_P"+playerNumber)){
+		if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
 			PlaySound(currentCharacter.taunt);
 			newPlayerController.FinalizeSelection();
 			gameData.SetCharacter(playerNumber, currentCharacter);
@@ -110,10 +117,6 @@ public class AddPlayer : MonoBehaviour {
 				characterCollection.DeselectCharacter(playerNumber);
 				newPlayerController.RemoveCharacter();
 				gameObject.GetComponent<Blink>().StartBlink();
-				break;
-			case State.ADD:
-				PlaySound(backSound);
-				Application.LoadLevel ("Start");
 				break;
 			}
 			PlaySound(backSound);

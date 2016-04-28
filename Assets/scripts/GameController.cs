@@ -7,12 +7,16 @@ public class GameController : MonoBehaviour {
 	//State
 	enum State {
 		PLAYING,
-		ENDED
+		PAUSED,
+		ENDED,
+		POSTEND
 	};
 
 	//Public vars
 	public int introTime = 3;
 	public int gameTime = 60;
+	public GameObject pauseMenu;
+	public GameObject endMenu;
 
 
 	//Private vars
@@ -20,6 +24,7 @@ public class GameController : MonoBehaviour {
 	GameObject timerObject;
 	GameAudioController audioController;
 	State _state = State.PLAYING;
+	GameObject menu;
 
 	// Use this for initialization
 	void Start () {
@@ -33,16 +38,58 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(_state == State.ENDED){
-			if(Input.GetButton("Throw_P1")){
-				Application.LoadLevel(Application.loadedLevel);
+		if(_state == State.PLAYING){
+			if(Input.GetButtonDown("Start")){
+				_state = State.PAUSED;
+				audioController.PlayPauseSound();
+				menu = Instantiate(pauseMenu, Vector3.zero, Quaternion.identity) as GameObject;
+				menu.transform.parent = GameObject.Find("Game Canvas").transform;
+				PauseGame();
+			}
+		}else if(_state == State.PAUSED){
+			if(Input.GetButtonDown("Cancel")){
+				GameObject.FindGameObjectWithTag("Scene Manager").GetComponent<SceneLoader>().GoToScene("CharacterSelect", false);
+				audioController.FadeOutMusic();
+				audioController.PlayBackSound();
+				Destroy(menu);
+				ResumeGame();
+			}else if(Input.GetButtonDown("Confirm") || Input.GetButtonDown("Start")){
+				_state = State.PLAYING;
+				audioController.PlayConfirmSound();
+				Destroy(menu);
+				ResumeGame();
+			}
+		}else if(_state == State.ENDED){
+			if(Input.GetButtonDown("Confirm")){
+				if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
+					menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
+					menu.transform.parent = GameObject.Find("Game Canvas").transform;
+					audioController.PlayPauseSound();
+					_state = State.POSTEND;
+				}
+			}
+		}else if(_state == State.POSTEND){
+			if(Input.GetButtonDown("Cancel")){
+				GameObject.FindGameObjectWithTag("Scene Manager").GetComponent<SceneLoader>().GoToScene("CharacterSelect", false);
+				audioController.PlayBackSound();
+			}else if(Input.GetButtonDown("Confirm") || Input.GetButtonDown("Start")){
+				GameObject.FindGameObjectWithTag("Scene Manager").GetComponent<SceneLoader>().GoToScene("Game", true);
+				audioController.PlayConfirmSound();
 			}
 		}
 	}
 
 
 	//Public Functions
+	public void PauseGame(){
+		audioController.PauseMusic();
+		Time.timeScale = 0;
+	}
 
+	public void ResumeGame(){
+		audioController.ResumeMusic();
+		Time.timeScale = 1.0f;
+	}
 
 	//Private Functions
 	IEnumerator StartCountdown(){

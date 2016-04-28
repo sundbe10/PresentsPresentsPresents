@@ -54,9 +54,9 @@ public class PresentController : MonoBehaviour {
 		thrower = throwerObject;
 	}
 
-	public void SetPresentSprite(Sprite presentSprite){
-		SpriteRenderer spriteRender = gameObject.GetComponent<SpriteRenderer>();
-		spriteRender.sprite = presentSprite;
+	public void SetPresentSprite(string spriteSheetName){
+		SpriteSwitch switcher = gameObject.GetComponent<SpriteSwitch>();
+		switcher.SetSpriteSheet(spriteSheetName);
 	}
 
 	//Private Functions
