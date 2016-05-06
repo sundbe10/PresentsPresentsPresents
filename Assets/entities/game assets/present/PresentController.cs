@@ -22,7 +22,7 @@ public class PresentController : MonoBehaviour {
 	void Update () {
 		switch(_state){
 		case State.FALLING:
-			transform.position += new Vector3(0,-2.5f,0);
+			transform.position += new Vector3(0,-150f*Time.deltaTime,0);
 			break;
 		case State.CAUGHT:
 			break;

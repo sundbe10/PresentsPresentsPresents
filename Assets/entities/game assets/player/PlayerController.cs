@@ -189,6 +189,15 @@ public class PlayerController : MonoBehaviour {
 			}	
 			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
 		}
+		/*if(Input.GetButton("Vertical_P"+playerNum)){
+			float deltaX = 0;
+			if(Input.GetAxis("Vertical_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).y < Screen.height*0.7f){
+				deltaX = (float) playerAttrs[Attributes.SPEED];
+			}else if(Input.GetAxis("Vertical_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).y > Screen.height*0.3f){
+				deltaX = -(float) playerAttrs[Attributes.SPEED];
+			}	
+			transform.position += new Vector3(0,deltaX,0)*Time.deltaTime;
+		}*/
 	}
 
 	void ThrowPresent(){
