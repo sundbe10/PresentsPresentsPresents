@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour {
 		THROW_ONLY,
 		ACTIVE,
 		FALLING,
+		PUNCHING,
+		HIT,
 		DEAD,
 		CELEBRATE
 	}
@@ -22,7 +24,9 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
-	public float moveSpeed = 4f;
+	public float moveSpeed = 100f;
+	public float moveForce = 1000f;
+	public float hitForce = 2000f;
 	public float throwSpeed = 1f;
 	public GameObject present;
 	public int playerNum = 1;	
@@ -32,7 +36,8 @@ public class PlayerController : MonoBehaviour {
 	public enum Attributes{
 		SPEED,
 		THROWSPEED,
-		FROZEN
+		FROZEN,
+		HITFORCE
 	}
 
 	//Private vars
@@ -43,6 +48,7 @@ public class PlayerController : MonoBehaviour {
 	int catches = 0;
 	int playerScore = 0;
 	int scoreMultiplier = 1;
+	Rigidbody2D rigidBody;
 	State _state = State.ENTRY;
 	Text playerScoreText;
 	Text playerNameText;
@@ -55,6 +61,7 @@ public class PlayerController : MonoBehaviour {
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
 		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
+		rigidBody = gameObject.GetComponent<Rigidbody2D>();
 		//Get correct score component
 		playerScoreText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Score").gameObject.GetComponent<Text>();
 		playerNameText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Player Name").gameObject.GetComponent<Text>();
@@ -62,10 +69,12 @@ public class PlayerController : MonoBehaviour {
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
 		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
+		playerAttrs.Add(Attributes.HITFORCE, hitForce);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log(_state);
 		switch(_state){
 		case State.ENTRY:
 			break;
@@ -78,6 +87,10 @@ public class PlayerController : MonoBehaviour {
 		case State.ACTIVE:
 			MovePlayer();
 			ThrowPresent();
+			ThrowPunch();
+			break;
+		case State.PUNCHING:
+			Punch();
 			break;
 		case State.FALLING:
 			break;
@@ -177,27 +190,26 @@ public class PlayerController : MonoBehaviour {
 	//Private Functions
 	void MovePlayer(){
 		if(Input.GetButton("Horizontal_P"+playerNum)){
-			float deltaX = 0;
-			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
-				deltaX = (float) playerAttrs[Attributes.SPEED];
+			if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+				rigidBody.AddForce(new Vector2(moveForce,0));
 				transform.localScale = new Vector3(1,1,1);
 				playerTag.localScale = new Vector3(1,1,1);
-			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
-				deltaX = -(float) playerAttrs[Attributes.SPEED];
+			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+				rigidBody.AddForce(new Vector2(-moveForce,0));
 				transform.localScale = new Vector3(-1,1,1);
 				playerTag.localScale = new Vector3(-1,1,1);
 			}	
-			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
+
 		}
-		/*if(Input.GetButton("Vertical_P"+playerNum)){
+		if(Input.GetButton("Vertical_P"+playerNum)){
 			float deltaX = 0;
 			if(Input.GetAxis("Vertical_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).y < Screen.height*0.7f){
-				deltaX = (float) playerAttrs[Attributes.SPEED];
+				rigidBody.AddForce(new Vector2(0,moveForce));
 			}else if(Input.GetAxis("Vertical_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).y > Screen.height*0.3f){
-				deltaX = -(float) playerAttrs[Attributes.SPEED];
-			}	
-			transform.position += new Vector3(0,deltaX,0)*Time.deltaTime;
-		}*/
+				rigidBody.AddForce(new Vector2(0,-moveForce));
+			}
+		}
+		rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, (float) playerAttrs[Attributes.SPEED]);
 	}
 
 	void ThrowPresent(){
@@ -219,6 +231,27 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+	void ThrowPunch(){
+		if(Input.GetButtonDown("Back_P"+playerNum) && canThrow){
+			canThrow = false;
+			bodyAnimator.SetBool("isHitting",true);
+			_state = State.PUNCHING;
+			StartCoroutine(PunchCooldown());
+			StartCoroutine(ThrowCooldown());
+		}
+	}
+
+	void Punch(){
+		rigidBody.velocity = new Vector2((float) playerAttrs[Attributes.SPEED] * 3f * transform.localScale.x, 0);
+		bodyAnimator.SetBool("isHitting",false);
+	}
+
+	IEnumerator PunchCooldown(){
+		yield return new WaitForSeconds(0.1f);
+		_state = State.DEAD;
+		yield return new WaitForSeconds(0.4f);
+		_state = State.ACTIVE;
+	}
 
 	IEnumerator ThrowCooldown(){
 		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
