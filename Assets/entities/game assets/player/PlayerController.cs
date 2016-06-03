@@ -128,22 +128,26 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public int IncrementScore(int score){
-		catches++;
-		switch (catches){
-		case 4:
-			scoreMultiplier = 2;
-			PlaySound(multiplier2x);
-			break;
-		case 6:
-			scoreMultiplier = 3;
-			PlaySound(multiplier3x);
-			break;
-		case 8:
-			scoreMultiplier = 4;
-			PlaySound(multiplier4x);
-			break;
+		if(score > 0){
+			catches++;
+			switch (catches){
+			case 4:
+				scoreMultiplier = 2;
+				PlaySound(multiplier2x);
+				break;
+			case 6:
+				scoreMultiplier = 3;
+				PlaySound(multiplier3x);
+				break;
+			case 8:
+				scoreMultiplier = 4;
+				PlaySound(multiplier4x);
+				break;
+			}
+			PlaySound(catchSound);
+		}else{
+			RemoveMultiplier();
 		}
-		PlaySound(catchSound);
 
 		int scoreIncrement = score*scoreMultiplier;
 		playerScore += scoreIncrement;
@@ -202,21 +206,32 @@ public class PlayerController : MonoBehaviour {
 
 	void ThrowPresent(){
 		if(Input.GetButtonDown("Throw_P"+playerNum) && canThrow){
-			//Play throw sound
-			PlaySound(throwSound);
-			bodyAnimator.SetBool("isThrowing",true);
-
-			//Create Present
-			Vector3 initialPosition = transform.position + new Vector3(8*transform.localScale.x,-5,0);
-			GameObject newPresent = Instantiate(present, initialPosition, Quaternion.identity) as GameObject;
-			PresentController presentController = newPresent.GetComponent<PresentController>();
-			presentController.SetThrower(gameObject);
-			presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
-			canThrow = false;
-
-			//Prevent player from being able to throw immidiately 
-			StartCoroutine(ThrowCooldown());
+			CreateDropItem(true);
+		}else if(Input.GetButtonDown("Back_P"+playerNum) && canThrow){
+			CreateDropItem(false);
 		}
+	}
+
+	void CreateDropItem(bool isPresent){
+		//Play throw sound
+		PlaySound(throwSound);
+		bodyAnimator.SetBool("isThrowing",true);
+
+		//Create Present
+		Vector3 initialPosition = transform.position + new Vector3(8*transform.localScale.x,-5,0);
+		GameObject newPresent = Instantiate(present, initialPosition, Quaternion.identity) as GameObject;
+		PresentController presentController = newPresent.GetComponent<PresentController>();
+		if(isPresent){
+			presentController.SetAsPresent();
+		}else{
+			presentController.SetAsCoal();
+		}
+		presentController.SetThrower(gameObject);
+		presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
+		canThrow = false;
+
+		//Prevent player from being able to throw immidiately 
+		StartCoroutine(ThrowCooldown());
 	}
 
 

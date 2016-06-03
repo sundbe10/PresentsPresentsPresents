@@ -8,6 +8,8 @@ public class KidController : MonoBehaviour {
 		ENTERING,
 		WALKING,
 		RUNNING,
+		HIT,
+		CRYING,
 		DISABLED
 	}
 
@@ -15,6 +17,7 @@ public class KidController : MonoBehaviour {
 	public int scoreValue = 100;
 	public float walkSpeedMin = 0.5f;
 	public float walkSpeedMax = 1f;
+	public float runSpeed = 100f;
 	public string[] possibleSprites;
 	public GameObject[] powerups;
 	public float powerupProbability = 0.1f;
@@ -24,14 +27,15 @@ public class KidController : MonoBehaviour {
 	//Private Vars
 	GameObject powerup;
 	float walkSpeed;
-	float runSpeed = 150f;
 	AudioSource audioSource;
 	State _state = State.ENTERING;
 	bool gameEnded = false;
+	Animator animator;
 
 	// Use this for initialization
 	void Start () {
 		audioSource = gameObject.GetComponent<AudioSource>();
+		animator = gameObject.GetComponent<Animator>();
 
 		//Set random walk speed
 		walkSpeed = Random.Range(walkSpeedMin, walkSpeedMax);
@@ -55,12 +59,22 @@ public class KidController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		MoveKid();
+		switch(_state){
+		case State.ENTERING:
+		case State.WALKING:
+		case State.RUNNING:
+		case State.CRYING:
+		case State.DISABLED:
+			MoveKid();
+			break;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
-		if(collider.gameObject.tag == "Destroyer"){
+		if(collider.CompareTag("Destroyer")){
 			RemoveKid ();
+		}else if(collider.CompareTag("Hit Box") && _state == State.WALKING){
+			HitKid(collider);
 		}
 	}
 
@@ -78,10 +92,11 @@ public class KidController : MonoBehaviour {
 		//Hold new object
 		HoldObject (thrownObject);
 		//Powerup
-
 		if(powerup){
 			powerup.GetComponent<ApplyPowerupController>().ApplyPowerup(thrower);
-		}	PlaySound (runSound);
+		}	
+
+		PlaySound (runSound);
 		if(walkSpeed > 0 ){
 			walkSpeed = runSpeed;
 		}else{
@@ -90,10 +105,45 @@ public class KidController : MonoBehaviour {
 		_state = State.RUNNING;
 	}
 
+	public void CoalCaught(GameObject thrownObject, GameObject thrower){
+		//Show score text
+		thrower.GetComponent<PlayerController>().IncrementScore(-scoreValue);
+		//Show score text
+		CreateScoreText(-1);
+		//Hold new object
+		HoldObject (thrownObject);
+		//Powerup
+		if(powerup){
+			powerup.GetComponent<ApplyPowerupController>().ApplyPowerup(thrower);
+		}
+
+		CryKid();
+	}
+
 	public void DisableKid(){
 		gameEnded = true;
 		if(_state == State.WALKING){
 			_state = State.DISABLED;
+		}
+	}
+
+	public void CryKid(){
+		gameObject.GetComponent<Animator>().SetBool("isCrying",true);
+		_state = State.CRYING;
+		PlaySound (runSound);
+
+		//Flip tears if kid is flipped
+		Transform[] tears = transform.Find("Body").GetComponentsInChildren<Transform>(true);
+		foreach(Transform tear in tears){
+			if(tear.gameObject.name != "Body" && transform.localScale.x == -1){
+				tear.rotation = new Quaternion(0, 180, 0, 0);
+			}
+		}
+
+		if(walkSpeed > 0 ){
+			walkSpeed = runSpeed;
+		}else{
+			walkSpeed = -runSpeed;
 		}
 	}
 
@@ -128,8 +178,22 @@ public class KidController : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
+	void HitKid(Collider2D collider){
+		_state = State.HIT;
+		float hitDirection = collider.transform.parent.localScale.x;
+		if(hitDirection != transform.localScale.x){
+			transform.localScale = new Vector2(hitDirection, 1);
+			walkSpeed = -walkSpeed;
+		}
+		animator.CrossFade("Fall", 0f);
+
+		//Remove powerup
+		if(powerup){
+			Destroy(powerup);
+		}
+	}
+
 	void GivePowerup(){
-		Debug.Log ("Powerup Created...");
 		GameObject randomPowerup = powerups[Random.Range(0, powerups.Length)];
 		powerup = Instantiate(randomPowerup, transform.position, Quaternion.identity) as GameObject;
 		HoldObject(powerup);

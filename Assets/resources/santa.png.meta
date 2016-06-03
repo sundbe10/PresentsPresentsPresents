@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d13601965dc8b41dbb50f2a752fc97f3
-timeCreated: 1461433366
+timeCreated: 1464543809
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -11,6 +11,7 @@ TextureImporter:
     21300008: avatar2
     21300010: avatar3
     21300012: present
+    21300014: coal
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -190,6 +191,25 @@ TextureImporter:
         - {x: 5, y: -6}
         - {x: 5, y: 4}
         - {x: 3, y: 6}
+    - name: coal
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 0, y: 6}
+        - {x: -4, y: 6}
+        - {x: -5, y: 4}
+        - {x: -5, y: -3}
+        - {x: -2, y: -6}
+        - {x: 2, y: -6}
+        - {x: 5, y: -3}
+        - {x: 5, y: 3}
     outline: []
   spritePackingTag: 
   userData: 

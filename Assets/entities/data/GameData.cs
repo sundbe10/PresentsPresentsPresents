@@ -24,6 +24,10 @@ public class GameData : MonoBehaviour {
 		return playerCharacters[playerNumber-1];
 	}
 
+	public void RemoveCharacter(int playerNumber){
+		playerCharacters[playerNumber-1] = null;
+	}
+
 	public void SetLevel(){
 		//Set Level
 	}

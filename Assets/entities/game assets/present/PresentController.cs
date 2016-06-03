@@ -9,13 +9,19 @@ public class PresentController : MonoBehaviour {
 		CAUGHT
 	}
 
+	//Public Vars
+	public Sprite presentSprite;
+	public Sprite coalSprite;
+
 	//Private Vars
+	bool isPresent;
 	GameObject thrower;
 	State _state = State.FALLING;
+	SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
-	void Start () {
-	
+	void Awake () {
+		spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -34,7 +40,11 @@ public class PresentController : MonoBehaviour {
 		switch(_state){
 		case State.FALLING:
 			if(collider.gameObject.tag == "Kid" && !collider.GetComponent<KidController>().KidHasPresent()){
-				PresentCaught(collider.gameObject);
+				if(isPresent){
+					PresentCaught(collider.gameObject);
+				}else{
+					CoalCaught(collider.gameObject);
+				}
 			}else if(collider.gameObject.tag == "Destroyer"){
 				thrower.GetComponent<PlayerController>().RemoveMultiplier();
 				RemovePresent();
@@ -54,6 +64,16 @@ public class PresentController : MonoBehaviour {
 		thrower = throwerObject;
 	}
 
+	public void SetAsPresent(){
+		spriteRenderer.sprite = presentSprite;
+		isPresent = true;
+	}
+
+	public void SetAsCoal(){
+		spriteRenderer.sprite = coalSprite;
+		isPresent = false;
+	}
+
 	public void SetPresentSprite(string spriteSheetName){
 		SpriteSwitch switcher = gameObject.GetComponent<SpriteSwitch>();
 		switcher.SetSpriteSheet(spriteSheetName);
@@ -66,6 +86,11 @@ public class PresentController : MonoBehaviour {
 	
 	void PresentCaught(GameObject catcher){
 		catcher.GetComponent<KidController>().PresentCaught(gameObject, thrower);
+		_state = State.CAUGHT;
+	}
+
+	void CoalCaught(GameObject catcher){
+		catcher.GetComponent<KidController>().CoalCaught(gameObject, thrower);
 		_state = State.CAUGHT;
 	}
 }

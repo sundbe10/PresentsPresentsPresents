@@ -26,7 +26,7 @@ public class AddPlayer : MonoBehaviour {
 	Text text;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		_state = State.ADD;
 		text = gameObject.GetComponent<Text>();
 		characterCollection = GameObject.Find("CharacterCollection").GetComponent<CharacterCollection>();
@@ -48,6 +48,14 @@ public class AddPlayer : MonoBehaviour {
 			break;
 		}
 		HandleBack();
+	}
+
+	//Reset all players when navigating to charcter select screen
+	void OnLevelWasLoaded(int level) {
+		if (level == 1){
+			Debug.Log("character");
+			gameData.RemoveCharacter(playerNumber);
+		}
 	}
 
 	void HandleAddPlayer(){
