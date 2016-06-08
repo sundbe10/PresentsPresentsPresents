@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 	//Public vars
 	public AudioClip throwSound;
 	public AudioClip catchSound;
+	public AudioClip badCatchSound;
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
@@ -44,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 	int playerScore = 0;
 	int scoreMultiplier = 1;
 	State _state = State.ENTRY;
-	Text playerScoreText;
+	PlayerScoreController playerScoreBar;
 	Text playerNameText;
 	Transform playerTag;
 
@@ -56,8 +57,9 @@ public class PlayerController : MonoBehaviour {
 		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
-		playerScoreText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Score").gameObject.GetComponent<Text>();
-		playerNameText = GameObject.Find("Player "+playerNum+" Score").transform.Find("Player Name").gameObject.GetComponent<Text>();
+		GameObject playerScoreGroup = GameObject.FindGameObjectsWithTag("Player Score")[playerNum-1];
+		playerScoreBar = playerScoreGroup.GetComponent<PlayerScoreController>();
+		playerNameText = playerScoreGroup.transform.FindChild("Player Name").gameObject.GetComponent<Text>();
 		//Populate Attrs Hashtable
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
@@ -128,6 +130,8 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public int IncrementScore(int score){
+		int scoreIncrement;
+		if(scoreMultiplier == -1) scoreMultiplier = 1;
 		if(score > 0){
 			catches++;
 			switch (catches){
@@ -144,14 +148,15 @@ public class PlayerController : MonoBehaviour {
 				PlaySound(multiplier4x);
 				break;
 			}
-			PlaySound(catchSound);
+			scoreIncrement = score*scoreMultiplier;
 		}else{
 			RemoveMultiplier();
+			scoreMultiplier = -1;
+			scoreIncrement = score;
 		}
-
-		int scoreIncrement = score*scoreMultiplier;
+			
 		playerScore += scoreIncrement;
-		playerScoreText.text = playerScore.ToString();
+		playerScoreBar.SetScore(playerScore);
 		return scoreMultiplier;
 	}
 	
@@ -193,21 +198,12 @@ public class PlayerController : MonoBehaviour {
 			}	
 			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
 		}
-		/*if(Input.GetButton("Vertical_P"+playerNum)){
-			float deltaX = 0;
-			if(Input.GetAxis("Vertical_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).y < Screen.height*0.7f){
-				deltaX = (float) playerAttrs[Attributes.SPEED];
-			}else if(Input.GetAxis("Vertical_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).y > Screen.height*0.3f){
-				deltaX = -(float) playerAttrs[Attributes.SPEED];
-			}	
-			transform.position += new Vector3(0,deltaX,0)*Time.deltaTime;
-		}*/
 	}
 
 	void ThrowPresent(){
-		if(Input.GetButtonDown("Throw_P"+playerNum) && canThrow){
+		if(Input.GetButton("Throw_P"+playerNum) && canThrow){
 			CreateDropItem(true);
-		}else if(Input.GetButtonDown("Back_P"+playerNum) && canThrow){
+		}else if(Input.GetButton("Back_P"+playerNum) && canThrow){
 			CreateDropItem(false);
 		}
 	}

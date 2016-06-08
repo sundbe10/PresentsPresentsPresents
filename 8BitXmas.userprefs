@@ -1,16 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/entities/character select/AddPlayer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/CharacterCollection.cs">
     <Files>
-      <File FileName="Assets/scripts/IntervalObjectSpawner.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/PixelPerfect.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/SpriteSwitch.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/GameController.cs" Line="1" Column="1" />
-      <File FileName="Assets/entities/game assets/kid/KidController.cs" Line="1" Column="1" />
       <File FileName="Assets/scripts/GameAudioController.cs" Line="1" Column="1" />
-      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="29" Column="12" />
+      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="41" Column="7" />
       <File FileName="Assets/entities/data/GameData.cs" Line="28" Column="43" />
-      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/character select/AvatarController.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="230" Column="1" />
+      <File FileName="Assets/entities/game assets/kid/KidController.cs" Line="14" Column="3" />
+      <File FileName="Assets/entities/game assets/bully/BullyController.cs" Line="100" Column="44" />
+      <File FileName="Assets/scripts/GamePlayersController.cs" Line="14" Column="1" />
+      <File FileName="Assets/entities/game assets/spawner/KidSpawnController.cs" Line="44" Column="12" />
+      <File FileName="Assets/scripts/CharacterCollection.cs" Line="7" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

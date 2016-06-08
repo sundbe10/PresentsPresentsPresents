@@ -57,6 +57,7 @@
      <Compile Include="Assets\entities\game assets\bully\BullyController.cs" />
      <Compile Include="Assets\entities\game assets\ground\GroundController.cs" />
      <Compile Include="Assets\entities\game assets\kid\KidController.cs" />
+     <Compile Include="Assets\entities\game assets\player score\PlayerScoreController.cs" />
      <Compile Include="Assets\entities\game assets\player\PlayerController.cs" />
      <Compile Include="Assets\entities\game assets\powerup\ApplyPowerupController.cs" />
      <Compile Include="Assets\entities\game assets\powerup\PowerController.cs" />

@@ -22,6 +22,9 @@ public class KidController : MonoBehaviour {
 	public GameObject[] powerups;
 	public float powerupProbability = 0.1f;
 	public AudioClip runSound;
+	public AudioClip presentCatchSound;
+	public AudioClip coalCatchSound;
+	public AudioClip screamSound;
 	public GameObject scoreText;
 
 	//Private Vars
@@ -53,8 +56,6 @@ public class KidController : MonoBehaviour {
 			GivePowerup();
 		}
 
-		//Start Entry
-		StartCoroutine(EnterKid());
 	}
 	
 	// Update is called once per frame
@@ -71,10 +72,14 @@ public class KidController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
-		if(collider.CompareTag("Destroyer")){
+		if(collider.CompareTag("Present") && !KidHasPresent()){
+			PresentCaught(collider.gameObject);
+		}else if(collider.CompareTag("Destroyer")){
 			RemoveKid ();
 		}else if(collider.CompareTag("Hit Box") && _state == State.WALKING){
 			HitKid(collider);
+		}else if(collider.CompareTag("Ground") && _state == State.ENTERING){
+			SetAsActive();
 		}
 	}
 
@@ -84,69 +89,12 @@ public class KidController : MonoBehaviour {
 		return _state != State.WALKING;
 	}
 
-	public void PresentCaught( GameObject thrownObject, GameObject thrower){
-		//Score
-		int multiplier = thrower.GetComponent<PlayerController>().IncrementScore(scoreValue);
-		//Show score text
-		CreateScoreText(multiplier);
-		//Hold new object
-		HoldObject (thrownObject);
-		//Powerup
-		if(powerup){
-			powerup.GetComponent<ApplyPowerupController>().ApplyPowerup(thrower);
-		}	
-
-		PlaySound (runSound);
-		if(walkSpeed > 0 ){
-			walkSpeed = runSpeed;
-		}else{
-			walkSpeed = -runSpeed;
-		}
-		_state = State.RUNNING;
-	}
-
-	public void CoalCaught(GameObject thrownObject, GameObject thrower){
-		//Show score text
-		thrower.GetComponent<PlayerController>().IncrementScore(-scoreValue);
-		//Show score text
-		CreateScoreText(-1);
-		//Hold new object
-		HoldObject (thrownObject);
-		//Powerup
-		if(powerup){
-			powerup.GetComponent<ApplyPowerupController>().ApplyPowerup(thrower);
-		}
-
-		CryKid();
-	}
-
 	public void DisableKid(){
 		gameEnded = true;
 		if(_state == State.WALKING){
 			_state = State.DISABLED;
 		}
 	}
-
-	public void CryKid(){
-		gameObject.GetComponent<Animator>().SetBool("isCrying",true);
-		_state = State.CRYING;
-		PlaySound (runSound);
-
-		//Flip tears if kid is flipped
-		Transform[] tears = transform.Find("Body").GetComponentsInChildren<Transform>(true);
-		foreach(Transform tear in tears){
-			if(tear.gameObject.name != "Body" && transform.localScale.x == -1){
-				tear.rotation = new Quaternion(0, 180, 0, 0);
-			}
-		}
-
-		if(walkSpeed > 0 ){
-			walkSpeed = runSpeed;
-		}else{
-			walkSpeed = -runSpeed;
-		}
-	}
-
 
 	//Private Functions
 	void SetRandomDirection(){
@@ -174,6 +122,61 @@ public class KidController : MonoBehaviour {
 		}
 	}
 
+	void PresentCaught( GameObject thrownObject ){
+
+		PresentController presentController = thrownObject.GetComponent<PresentController>();
+		PlayerController throwerController = presentController.GetThrower().GetComponent<PlayerController>();
+		if(presentController.IsCaught()) return;
+
+		//Score
+		int multiplier;
+		if(presentController.IsPresent()){
+			multiplier = throwerController.IncrementScore(scoreValue);
+			PlaySound(presentCatchSound);
+			//Powerup
+			if(powerup) powerup.GetComponent<ApplyPowerupController>().ApplyPowerup(presentController.GetThrower());
+			//Run
+			RunKid();
+		}else{
+			multiplier = throwerController.IncrementScore(-scoreValue);
+			PlaySound(coalCatchSound);
+			//Run Cry
+			CryKid();
+		}
+
+		//Show score text
+		CreateScoreText(multiplier);
+		//Hold new object
+		HoldObject (thrownObject);
+		presentController.SetCaught(true);
+
+	}
+
+	void RunKid(){
+		PlaySound (runSound);
+		if(walkSpeed > 0 ){
+			walkSpeed = runSpeed;
+		}else{
+			walkSpeed = -runSpeed;
+		}
+		_state = State.RUNNING;
+	}
+
+	void CryKid(){
+		gameObject.GetComponent<Animator>().SetBool("isCrying",true);
+
+		//Flip tears if kid is flipped
+		Transform[] tears = transform.Find("Body").GetComponentsInChildren<Transform>(true);
+		foreach(Transform tear in tears){
+			if(tear.gameObject.name != "Body" && transform.localScale.x == -1){
+				tear.rotation = new Quaternion(0, 180, 0, 0);
+			}
+		}
+
+		RunKid();
+		_state = State.CRYING;
+	}
+
 	void RemoveKid(){
 		Destroy(gameObject);
 	}
@@ -186,6 +189,7 @@ public class KidController : MonoBehaviour {
 			walkSpeed = -walkSpeed;
 		}
 		animator.CrossFade("Fall", 0f);
+		PlaySound(screamSound);
 
 		//Remove powerup
 		if(powerup){
@@ -209,9 +213,12 @@ public class KidController : MonoBehaviour {
 		newScoreText.GetComponent<ScoringTextController>().SetText(scoreValue, multiplier);
 	}
 
-	IEnumerator EnterKid(){
-		yield return new WaitForSeconds(0.4f);
+	void SetAsActive(){
 		SetRandomDirection();
+		SpriteRenderer[] spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+		foreach(SpriteRenderer spriteRenderer in spriteRenderers){
+			spriteRenderer.sortingOrder = 1;
+		}
 		_state = gameEnded ? State.DISABLED : State.WALKING;
 	}
 
