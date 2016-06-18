@@ -171,12 +171,11 @@ public class BullyController : MonoBehaviour {
 		float leftOrRight = Mathf.Round(Random.value);
 		Vector3 worldPosition = Camera.main.WorldToScreenPoint(transform.position);
 		int direction = 1;
-
-		if(worldPosition.x < -Screen.width*3/8){
+		if(worldPosition.x < Screen.width*1/8){
 			//Walk Right
 			direction = 1;
 		}
-		else if(worldPosition.x > Screen.width*3/8 || leftOrRight == 1){
+		else if(worldPosition.x > Screen.width*7/8 || leftOrRight == 1){
 			//Walk Left
 			direction = -1;
 		}

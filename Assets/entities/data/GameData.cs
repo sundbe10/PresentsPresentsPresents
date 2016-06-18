@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameData : MonoBehaviour {
 
@@ -10,10 +11,14 @@ public class GameData : MonoBehaviour {
 		DontDestroyOnLoad(gameObject);
 		playerCharacters = new CharacterCollection.Character[4];
 	}
+
+	void Start(){
+		
+	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		
 	}
 
 	public void SetCharacter(int playerNumber, CharacterCollection.Character character){

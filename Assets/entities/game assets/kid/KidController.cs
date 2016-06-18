@@ -102,12 +102,12 @@ public class KidController : MonoBehaviour {
 		Vector3 worldPosition = Camera.main.WorldToScreenPoint(transform.position);
 		float percentAcrossScreen = worldPosition.x / Screen.width;
 		
-		if(transform.position.x <= -Screen.width/2){
+		if(worldPosition.x <= 0){
 			//Walk Right (default)
 			transform.localScale = new Vector3(1,1,1);
 			walkSpeed = Mathf.Abs(walkSpeed);
 		}
-		else if(transform.position.x > Screen.width/2 || leftOrRight < percentAcrossScreen){
+		else if(worldPosition.x >= Screen.width || leftOrRight < percentAcrossScreen){
 			//Walk Left
 			transform.localScale = new Vector3(-1,1,1);
 			walkSpeed = -Mathf.Abs(walkSpeed);

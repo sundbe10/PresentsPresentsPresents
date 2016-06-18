@@ -53,7 +53,6 @@ public class AddPlayer : MonoBehaviour {
 	//Reset all players when navigating to charcter select screen
 	void OnLevelWasLoaded(int level) {
 		if (level == 1){
-			Debug.Log("character");
 			gameData.RemoveCharacter(playerNumber);
 		}
 	}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour {
 
@@ -25,9 +26,10 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip multiplier4x;
 	public float moveSpeed = 4f;
 	public float throwSpeed = 1f;
+	public int startScore = 5000;
 	public GameObject present;
 	public int playerNum = 1;	
-	public CharacterCollection.Character currentCharacter;
+	public CharacterCollection.Character currentCharacter = null;
 	public string name;
 	public Hashtable playerAttrs = new Hashtable();
 	public enum Attributes{
@@ -42,23 +44,26 @@ public class PlayerController : MonoBehaviour {
 	AudioSource audioSource;	
 	bool canThrow = true;
 	int catches = 0;
-	int playerScore = 0;
+	int playerScore;
 	int scoreMultiplier = 1;
 	State _state = State.ENTRY;
-	PlayerScoreController playerScoreBar;
+	GameObject playerScoreGroup;
+	PlayerScoreController playerScoreBar = null;
 	Text playerNameText;
 	Transform playerTag;
 
 	// Use this for initialization
 	void Awake () {
+		playerScore = startScore;
 		animator = gameObject.GetComponent<Animator>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
 		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
-		GameObject playerScoreGroup = GameObject.FindGameObjectsWithTag("Player Score")[playerNum-1];
+		playerScoreGroup = GameObject.FindGameObjectsWithTag("Player Score").OrderBy(g=>g.transform.GetSiblingIndex()).ToArray()[playerNum-1];
 		playerScoreBar = playerScoreGroup.GetComponent<PlayerScoreController>();
+		playerScoreBar.SetInitialScore(playerScore);
 		playerNameText = playerScoreGroup.transform.FindChild("Player Name").gameObject.GetComponent<Text>();
 		//Populate Attrs Hashtable
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
@@ -80,13 +85,14 @@ public class PlayerController : MonoBehaviour {
 		case State.ACTIVE:
 			MovePlayer();
 			ThrowPresent();
+			Score();
 			break;
 		case State.FALLING:
 			break;
 		case State.DEAD:
 			break;
 		}
-
+			
 		//Print buttons for debugging
 //		foreach(KeyCode kcode in Enum.GetValues(typeof(KeyCode))){
 //			if (Input.GetKeyDown(kcode)) Debug.Log("KeyCode down: " + kcode);
@@ -103,6 +109,8 @@ public class PlayerController : MonoBehaviour {
 	public void SetCharacter(CharacterCollection.Character character){
 		name = playerNameText.text = character.displayName;
 		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
+		Debug.Log(playerScoreGroup);
+		playerScoreGroup.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
 		currentCharacter = character;
 	}
 
@@ -156,7 +164,7 @@ public class PlayerController : MonoBehaviour {
 		}
 			
 		playerScore += scoreIncrement;
-		playerScoreBar.SetScore(playerScore);
+		if(playerScore > startScore) playerScore = startScore;
 		return scoreMultiplier;
 	}
 	
@@ -184,6 +192,15 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//Private Functions
+	void Score(){
+		if(playerScore > 0){
+			playerScore -= 3;
+		}else{
+			FallPlayer();
+		}
+		if(playerScoreBar != null) playerScoreBar.SetScore(playerScore, scoreMultiplier);
+	}
+
 	void MovePlayer(){
 		if(Input.GetButton("Horizontal_P"+playerNum)){
 			float deltaX = 0;
@@ -223,7 +240,7 @@ public class PlayerController : MonoBehaviour {
 			presentController.SetAsCoal();
 		}
 		presentController.SetThrower(gameObject);
-		presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
+		if(currentCharacter != null) presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
 		canThrow = false;
 
 		//Prevent player from being able to throw immidiately 

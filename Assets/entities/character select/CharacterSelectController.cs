@@ -11,7 +11,7 @@ public class CharacterSelectController : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		spriteSwitch = gameObject.GetComponent<SpriteSwitch>();
-		avatarAnimator = transform.Find("porthole/avatar").gameObject.GetComponent<Animator>();
+		avatarAnimator = transform.Find("Canvas/Avatar Mask/Avatar").gameObject.GetComponent<Animator>();
 	}
 
 	// Update is called once per frame
