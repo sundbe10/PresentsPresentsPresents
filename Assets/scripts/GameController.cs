@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour {
+public class GameController : Singleton<GameController> {
 
 	//State
 	enum State {
@@ -12,26 +12,42 @@ public class GameController : MonoBehaviour {
 		POSTEND
 	};
 
+	enum Mode{
+		BATTLE,
+		SURVIVAL
+	}
+
 	//Public vars
 	public int introTime = 3;
 	public int gameTime = 60;
+	public int playToScore = 5000;
 	public GameObject pauseMenu;
 	public GameObject endMenu;
 
 
 	//Private vars
-	GameObject countdownObject;
-	GameObject timerObject;
-	GameAudioController audioController;
-	State _state = State.PLAYING;
-	GameObject menu;
+	private GameObject countdownObject;
+	private GameObject timerObject;
+	private GameAudioController audioController;
+	private State _state = State.PLAYING;
+	private Mode _mode = Mode.BATTLE;
+	private GameObject menu;
 
 	// Use this for initialization
 	void Start () {
 		audioController = gameObject.GetComponent<GameAudioController>();
 		countdownObject = GameObject.Find("Countdown");
 		timerObject = GameObject.Find("Timer");
-		SetTimerText ();
+		switch(Instance._mode){
+		case Mode.BATTLE:
+		case Mode.SURVIVAL:
+			SetTimerText(-1);
+			break;
+		default:
+			SetTimerText(gameTime);
+			break;
+		}
+		SetTimerText(gameTime);
 		//Initiate countdown
 		StartCoroutine(StartCountdown());
 	}
@@ -79,6 +95,24 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	//Static
+	static public int GetMaxGameScore(){
+		return Instance.playToScore;
+	}
+	static public int GetInitialGameScore(){
+		switch(Instance._mode){
+		case Mode.BATTLE:
+			return 0;
+		case Mode.SURVIVAL:
+			return Instance.playToScore;
+		default:
+			return 0;
+		}
+	}
+	static public void RecordPlayerScore(int playerNum, int score){
+	
+	}
+
 
 	//Public Functions
 	public void PauseGame(){
@@ -97,7 +131,9 @@ public class GameController : MonoBehaviour {
 		int countdownTime = countdownObject.GetComponent<CountdownController>().StartTimer();
 		yield return new WaitForSeconds(countdownTime);
 		EnablePlayers();
-		StartCoroutine(IncrementTimer());
+		if(gameTime > 0){
+			StartCoroutine(IncrementTimer());
+		}
 	}
 
 	void EnablePlayers(){
@@ -112,7 +148,7 @@ public class GameController : MonoBehaviour {
 	IEnumerator IncrementTimer(){
 		yield return new WaitForSeconds(1);
 		gameTime--;
-		SetTimerText();
+		SetTimerText(gameTime);
 		if(gameTime == 0){
 			DeclareWinner();
 		}else{
@@ -121,8 +157,9 @@ public class GameController : MonoBehaviour {
 		}
 	}
 	
-	void SetTimerText(){
-		timerObject.GetComponent<Text>().text = gameTime.ToString();
+	void SetTimerText(int time){
+		string timeString = time == -1 ? "" : time.ToString(); 
+		timerObject.GetComponent<Text>().text = timeString;
 	}
 
 	void TimerWarning(){

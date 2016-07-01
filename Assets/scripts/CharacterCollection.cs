@@ -10,6 +10,7 @@ public class CharacterCollection : MonoBehaviour {
 		public string displayName;
 		public AudioClip taunt;
 		public Costume[] costumes;
+		public bool locked;
 	}
 
 	[System.Serializable]
@@ -23,10 +24,12 @@ public class CharacterCollection : MonoBehaviour {
 		public string displayName;
 		public AudioClip taunt;
 		public string characterSpriteSheetName;
+		public bool locked;
 		public Character(CharacterModel characterModel, Costume costume){
 			identifierName = characterModel.identifierName;
 			displayName = characterModel.displayName;
 			taunt = characterModel.taunt;
+			locked = characterModel.locked;
 			characterSpriteSheetName = costume.characterSpriteSheetName;
 		}
 	}

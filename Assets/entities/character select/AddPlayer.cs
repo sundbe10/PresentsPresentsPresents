@@ -96,9 +96,9 @@ public class AddPlayer : MonoBehaviour {
 			newPlayerController.SetCharacter(currentCharacter);
 			PlaySound(selectionSound);
 		}
-		text.text = currentCharacter.displayName.ToUpper();
+		text.text = currentCharacter.locked ? "???" : currentCharacter.displayName.ToUpper();
 		//Finalize Selection
-		if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
+		if(Input.GetButtonDown("Throw_P"+playerNumber) && !currentCharacter.locked){
 			PlaySound(currentCharacter.taunt);
 			newPlayerController.FinalizeSelection();
 			gameData.SetCharacter(playerNumber, currentCharacter);

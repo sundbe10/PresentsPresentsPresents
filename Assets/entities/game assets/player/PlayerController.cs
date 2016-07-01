@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip multiplier4x;
 	public float moveSpeed = 4f;
 	public float throwSpeed = 1f;
-	public int startScore = 5000;
 	public GameObject present;
 	public int playerNum = 1;	
 	public CharacterCollection.Character currentCharacter = null;
@@ -44,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 	AudioSource audioSource;	
 	bool canThrow = true;
 	int catches = 0;
+	int maxScore;
 	int playerScore;
 	int scoreMultiplier = 1;
 	State _state = State.ENTRY;
@@ -53,17 +53,18 @@ public class PlayerController : MonoBehaviour {
 	Transform playerTag;
 
 	// Use this for initialization
-	void Awake () {
-		playerScore = startScore;
+	void Start () {
 		animator = gameObject.GetComponent<Animator>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
 		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
+		maxScore = GameController.GetMaxGameScore();
+		playerScore = GameController.GetInitialGameScore();
 		playerScoreGroup = GameObject.FindGameObjectsWithTag("Player Score").OrderBy(g=>g.transform.GetSiblingIndex()).ToArray()[playerNum-1];
 		playerScoreBar = playerScoreGroup.GetComponent<PlayerScoreController>();
-		playerScoreBar.SetInitialScore(playerScore);
+		playerScoreBar.SetInitialScore(playerScore, maxScore, scoreMultiplier);
 		playerNameText = playerScoreGroup.transform.FindChild("Player Name").gameObject.GetComponent<Text>();
 		//Populate Attrs Hashtable
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
@@ -164,7 +165,13 @@ public class PlayerController : MonoBehaviour {
 		}
 			
 		playerScore += scoreIncrement;
-		if(playerScore > startScore) playerScore = startScore;
+		//Limit score values
+		if(playerScore > maxScore){
+			playerScore = maxScore;
+		}else if(playerScore < 0){
+			playerScore = 0;
+		}
+
 		return scoreMultiplier;
 	}
 	
@@ -193,11 +200,6 @@ public class PlayerController : MonoBehaviour {
 
 	//Private Functions
 	void Score(){
-		if(playerScore > 0){
-			playerScore -= 3;
-		}else{
-			FallPlayer();
-		}
 		if(playerScoreBar != null) playerScoreBar.SetScore(playerScore, scoreMultiplier);
 	}
 

@@ -82,6 +82,7 @@
      <Compile Include="Assets\scripts\MusicControlller.cs" />
      <Compile Include="Assets\scripts\PixelPerfect.cs" />
      <Compile Include="Assets\scripts\ScaleParticles.cs" />
+     <Compile Include="Assets\scripts\Singleton.cs" />
      <Compile Include="Assets\scripts\SpriteSwitch.cs" />
      <Compile Include="Assets\scripts\StartGame.cs" />
  <Reference Include="UnityEngine.UI">

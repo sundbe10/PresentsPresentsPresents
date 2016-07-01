@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class CharacterSelectController : MonoBehaviour {
 
@@ -21,6 +22,10 @@ public class CharacterSelectController : MonoBehaviour {
 		
 	public void SetCharacter(CharacterCollection.Character character){
 		spriteSwitch.SetSpriteSheet(character.characterSpriteSheetName);
+		//Hide if locked
+		var color = character.locked ? new Color32(0,0,0,255) : new Color32(255,255,255,255);
+		gameObject.GetComponentInChildren<SpriteRenderer>().color = color;
+		GameObject.Find("Avatar").GetComponent<Image>().color = color;
 	}
 
 	public void RemoveCharacter(){

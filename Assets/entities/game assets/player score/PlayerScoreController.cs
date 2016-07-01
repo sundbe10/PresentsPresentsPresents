@@ -17,12 +17,13 @@ public class PlayerScoreController : MonoBehaviour {
 	RectTransform scoreBar;
 	float maxWidth;
 	int initialScore;
+	int maxScore;
 	Image scoreBarImage;
 	Image scoreStripesImage;
 	Animator animator;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		animator = transform.Find("Score Mask/Score Bar/Score Stripes").GetComponent<Animator>();
 		scoreBarImage = transform.Find("Score Mask/Score Bar").GetComponent<Image>();
 		scoreStripesImage = transform.Find("Score Mask/Score Bar/Score Stripes").GetComponent<Image>();
@@ -34,16 +35,22 @@ public class PlayerScoreController : MonoBehaviour {
 	void Update () {
 	
 	}
-	public void SetInitialScore(int score){
-		initialScore = score;
-	}
+
+	//Public
 	public void SetScore(int score, int multiplier){
-		if(score > initialScore) score = initialScore;
-		scoreBar.sizeDelta = new Vector2(Mathf.Round(maxWidth * score/initialScore), scoreBar.rect.height);
+		initialScore = score;
+		scoreBar.sizeDelta = new Vector2(Mathf.Round(maxWidth * score/maxScore), scoreBar.rect.height);
 		if(multiplier > 0){
 			animator.speed = multiplier * 2;
 			scoreBarImage.color = barColors[multiplier-1].barColor;
 			scoreStripesImage.color = barColors[multiplier-1].stripeColor;
 		}
 	}
+		
+	public void SetInitialScore(int _initialScore, int _maxScore, int _multiplier){
+		initialScore = _initialScore;
+		maxScore = _maxScore;
+		SetScore(initialScore, _multiplier);
+	}
+
 }
