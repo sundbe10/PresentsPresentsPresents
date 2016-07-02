@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 		MOVE_ONLY,
 		THROW_ONLY,
 		ACTIVE,
+		DASH,
 		FALLING,
 		DEAD,
 		CELEBRATE
@@ -21,26 +22,35 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip throwSound;
 	public AudioClip catchSound;
 	public AudioClip badCatchSound;
+	public AudioClip dashSound;
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
 	public float moveSpeed = 4f;
+	public float dashForce = 500000f;
+	public float dashDelay = 0.2f;
 	public float throwSpeed = 1f;
 	public GameObject present;
 	public int playerNum = 1;	
 	public CharacterCollection.Character currentCharacter = null;
 	public string name;
 	public Hashtable playerAttrs = new Hashtable();
+	public string playerLayer;
+	public string playerDashLayer;
 	public enum Attributes{
 		SPEED,
 		THROWSPEED,
-		FROZEN
+		FROZEN,
+		DASHDELAY
 	}
 
 	//Private vars
 	Animator animator;
 	Animator bodyAnimator;
-	AudioSource audioSource;	
+	Animator dashAnimator;
+	AudioSource audioSource;
+	Rigidbody2D rigidBody;
+	BoxCollider2D boxCollider;
 	bool canThrow = true;
 	int catches = 0;
 	int maxScore;
@@ -57,6 +67,9 @@ public class PlayerController : MonoBehaviour {
 		animator = gameObject.GetComponent<Animator>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
+		dashAnimator = transform.Find ("Body/Dash").gameObject.GetComponent<Animator>();
+		rigidBody = gameObject.GetComponent<Rigidbody2D>();
+		boxCollider = gameObject.GetComponent<BoxCollider2D>();
 		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
@@ -70,6 +83,7 @@ public class PlayerController : MonoBehaviour {
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
 		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
+		playerAttrs.Add (Attributes.DASHDELAY, dashDelay);
 	}
 	
 	// Update is called once per frame
@@ -79,12 +93,14 @@ public class PlayerController : MonoBehaviour {
 			break;
 		case State.MOVE_ONLY:
 			MovePlayer();
+			Dash();
 			break;
 		case State.THROW_ONLY:
 			ThrowPresent();
 			break;
 		case State.ACTIVE:
 			MovePlayer();
+			Dash();
 			ThrowPresent();
 			Score();
 			break;
@@ -205,17 +221,30 @@ public class PlayerController : MonoBehaviour {
 
 	void MovePlayer(){
 		if(Input.GetButton("Horizontal_P"+playerNum)){
-			float deltaX = 0;
-			if(Input.GetAxis("Horizontal_P"+playerNum) > 0 && Camera.main.WorldToScreenPoint(transform.position).x < Screen.width*0.975f){
-				deltaX = (float) playerAttrs[Attributes.SPEED];
-				transform.localScale = new Vector3(1,1,1);
-				playerTag.localScale = new Vector3(1,1,1);
-			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0 && Camera.main.WorldToScreenPoint(transform.position).x > Screen.width*0.025f){
-				deltaX = -(float) playerAttrs[Attributes.SPEED];
-				transform.localScale = new Vector3(-1,1,1);
-				playerTag.localScale = new Vector3(-1,1,1);
-			}	
-			transform.position += new Vector3(deltaX,0,0)*Time.deltaTime;
+			float maxSpeed = (float) playerAttrs[Attributes.SPEED];
+			int direction = 1;
+			if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+				direction = 1;
+			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+				direction = -1;
+			}
+			transform.localScale = new Vector3(direction,1,1);
+			playerTag.localScale = new Vector3(direction,1,1);
+			if(Mathf.Abs(rigidBody.velocity.x) < maxSpeed){ 
+				rigidBody.velocity = new Vector2(direction*maxSpeed*Time.deltaTime, 0);
+			}
+		}
+	}
+
+	void Dash(){
+		if(Input.GetButton("X_P"+playerNum)){
+			_state = State.DASH;
+			float dashDirection =  transform.localScale.x;
+			rigidBody.AddForce(Vector2.right * dashDirection * dashForce * Time.deltaTime);
+			gameObject.layer = LayerMask.NameToLayer(playerDashLayer);
+			dashAnimator.CrossFade("Dash", 0f);
+			PlaySound(dashSound);
+			StartCoroutine("DashCooldown");
 		}
 	}
 
@@ -249,6 +278,12 @@ public class PlayerController : MonoBehaviour {
 		StartCoroutine(ThrowCooldown());
 	}
 
+
+	IEnumerator DashCooldown(){
+		yield return new WaitForSeconds((float) playerAttrs[Attributes.DASHDELAY]);
+		gameObject.layer = LayerMask.NameToLayer(playerLayer);
+		_state = State.ACTIVE;
+	}
 
 	IEnumerator ThrowCooldown(){
 		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
