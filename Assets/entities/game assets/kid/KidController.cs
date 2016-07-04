@@ -191,6 +191,13 @@ public class KidController : MonoBehaviour {
 		animator.CrossFade("Fall", 0f);
 		PlaySound(screamSound);
 
+		//Give negative score to all players
+		GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+		foreach(GameObject player in players){
+			player.GetComponent<PlayerController>().IncrementScorePassive(-scoreValue);
+			CreateScoreText(-1);
+		}
+
 		//Remove powerup
 		if(powerup){
 			Destroy(powerup);

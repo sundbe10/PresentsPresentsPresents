@@ -1,0 +1,140 @@
+fileFormatVersion: 2
+guid: 728fb4fa8e88145a89c1cb0defe98dd9
+timeCreated: 1467655025
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: cow_0
+    21300002: cow_1
+    21300004: cow_2
+    21300006: cow_3
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: cow_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -22, y: 20}
+        - {x: -24, y: 10}
+        - {x: -24, y: -6}
+        - {x: -6, y: -20}
+        - {x: 14, y: -20}
+        - {x: 24, y: -13}
+        - {x: 24, y: 17}
+        - {x: 22, y: 20}
+    - name: cow_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 0
+        width: 50
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23, y: 20}
+        - {x: -24, y: 12}
+        - {x: -24, y: -10}
+        - {x: -10, y: -18}
+        - {x: 12, y: -18}
+        - {x: 24, y: -6}
+        - {x: 24, y: 4}
+        - {x: 15, y: 20}
+    - name: cow_2
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 50
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 13, y: 20}
+        - {x: -15, y: 20}
+        - {x: -20, y: 19}
+        - {x: -24, y: 3}
+        - {x: -24, y: -5}
+        - {x: -9, y: -15}
+        - {x: 3, y: -15}
+        - {x: 13, y: -14}
+        - {x: 24, y: -5}
+        - {x: 24, y: 1}
+        - {x: 17, y: 18}
+    - name: cow_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 0
+        width: 50
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -23, y: 20}
+        - {x: -24, y: 10}
+        - {x: -24, y: -5}
+        - {x: -6, y: -18}
+        - {x: 12, y: -18}
+        - {x: 24, y: -6}
+        - {x: 24, y: 7}
+        - {x: 22, y: 20}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

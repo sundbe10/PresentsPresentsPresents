@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour {
 		MOVE_ONLY,
 		THROW_ONLY,
 		ACTIVE,
-		DASH,
+		DASHING,
+		HIT,
 		FALLING,
 		DEAD,
 		CELEBRATE
@@ -23,12 +24,14 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip catchSound;
 	public AudioClip badCatchSound;
 	public AudioClip dashSound;
+	public AudioClip swapSound;
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
 	public float moveSpeed = 4f;
 	public float dashForce = 500000f;
 	public float dashDelay = 0.2f;
+	public float hitForce = 200000f;
 	public float throwSpeed = 1f;
 	public GameObject present;
 	public int playerNum = 1;	
@@ -104,21 +107,26 @@ public class PlayerController : MonoBehaviour {
 			ThrowPresent();
 			Score();
 			break;
+		case State.HIT:
+			ThrowPresent();
+			Score();
+			break;
 		case State.FALLING:
 			break;
 		case State.DEAD:
 			break;
 		}
-			
-		//Print buttons for debugging
-//		foreach(KeyCode kcode in Enum.GetValues(typeof(KeyCode))){
-//			if (Input.GetKeyDown(kcode)) Debug.Log("KeyCode down: " + kcode);
-//		}
 	}
 
 	void LateUpdate(){
 		if(bodyAnimator.GetBool("isThrowing") == true){
 			bodyAnimator.SetBool("isThrowing",false);
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D collider){
+		if(collider.CompareTag("Hit Box")){
+			Hit(collider);
 		}
 	}
 
@@ -190,6 +198,16 @@ public class PlayerController : MonoBehaviour {
 
 		return scoreMultiplier;
 	}
+
+	public void IncrementScorePassive(int score){
+		playerScore += score;
+		//Limit score values
+		if(playerScore > maxScore){
+			playerScore = maxScore;
+		}else if(playerScore < 0){
+			playerScore = 0;
+		}
+	}
 	
 	public void RemoveMultiplier(){
 		scoreMultiplier = 1;
@@ -208,6 +226,10 @@ public class PlayerController : MonoBehaviour {
 		return name;
 	}
 
+	public float GetDirection(){
+		return transform.localScale.x;
+	}
+
 	public void ApplyPowerup(Attributes attribute, float multiplier, float timeout){
 		Debug.Log ("Increase "+name+" "+attribute+" by "+multiplier.ToString());
 		//TODO: Add in switch statement for different object types (float and bool at least)
@@ -218,6 +240,9 @@ public class PlayerController : MonoBehaviour {
 	void Score(){
 		if(playerScoreBar != null) playerScoreBar.SetScore(playerScore, scoreMultiplier);
 	}
+
+
+	/***** Moving *****/
 
 	void MovePlayer(){
 		if(Input.GetButton("Horizontal_P"+playerNum)){
@@ -236,9 +261,12 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
+
+	/***** Dashing *****/
+
 	void Dash(){
 		if(Input.GetButton("X_P"+playerNum)){
-			_state = State.DASH;
+			_state = State.DASHING;
 			float dashDirection =  transform.localScale.x;
 			rigidBody.AddForce(Vector2.right * dashDirection * dashForce * Time.deltaTime);
 			gameObject.layer = LayerMask.NameToLayer(playerDashLayer);
@@ -247,6 +275,14 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine("DashCooldown");
 		}
 	}
+	IEnumerator DashCooldown(){
+		yield return new WaitForSeconds((float) playerAttrs[Attributes.DASHDELAY]);
+		gameObject.layer = LayerMask.NameToLayer(playerLayer);
+		_state = State.ACTIVE;
+	}
+
+
+	/***** Throwing *****/
 
 	void ThrowPresent(){
 		if(Input.GetButton("Throw_P"+playerNum) && canThrow){
@@ -254,6 +290,11 @@ public class PlayerController : MonoBehaviour {
 		}else if(Input.GetButton("Back_P"+playerNum) && canThrow){
 			CreateDropItem(false);
 		}
+	}
+
+	IEnumerator ThrowCooldown(){
+		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
+		canThrow = true;
 	}
 
 	void CreateDropItem(bool isPresent){
@@ -275,20 +316,51 @@ public class PlayerController : MonoBehaviour {
 		canThrow = false;
 
 		//Prevent player from being able to throw immidiately 
-		StartCoroutine(ThrowCooldown());
+		StartCoroutine("ThrowCooldown");
 	}
 
 
-	IEnumerator DashCooldown(){
-		yield return new WaitForSeconds((float) playerAttrs[Attributes.DASHDELAY]);
-		gameObject.layer = LayerMask.NameToLayer(playerLayer);
+	/***** Hit *****/
+	void Hit(Collider2D collider){
+		_state = State.HIT;
+		var direction = collider.GetComponentInParent<PlayerController>().GetDirection();
+		rigidBody.velocity = Vector2.zero;
+		rigidBody.AddForce(Vector2.right * Time.deltaTime * -direction * hitForce);
+		PlaySound(swapSound);
+		StartCoroutine("HitCooldown");
+	}
+	IEnumerator HitCooldown(){
+		yield return new WaitForSeconds(0.3f);
 		_state = State.ACTIVE;
 	}
 
-	IEnumerator ThrowCooldown(){
-		yield return new WaitForSeconds((float) playerAttrs[Attributes.THROWSPEED]);
-		canThrow = true;
-	}
+
+	/***** Punching *****/
+
+	/*void ThrowPunch(){ 
+		if(Input.GetButtonDown("Back_P"+playerNum) && canThrow){ 
+			canThrow = false; 
+			bodyAnimator.SetBool("isHitting",true); 
+			_state = State.PUNCHING; 
+			StartCoroutine(PunchCooldown()); 
+			StartCoroutine(ThrowCooldown()); 
+		} 
+	} 
+
+	void Punch(){ 
+		rigidBody.velocity = new Vector2((float) playerAttrs[Attributes.SPEED] * 3f * transform.localScale.x, 0); 
+		bodyAnimator.SetBool("isHitting",false); 
+	} 
+
+	IEnumerator PunchCooldown(){ 
+		yield return new WaitForSeconds(0.1f); 
+		_state = State.DEAD; 
+		yield return new WaitForSeconds(0.4f); 
+		_state = State.ACTIVE; 
+	} */
+
+
+	/***** Powerup *****/
 
 	IEnumerator PowerupTimeout(Attributes attribute, float multiplier, float timeout){
 		var attributeType = playerAttrs[attribute].GetType();
@@ -302,6 +374,9 @@ public class PlayerController : MonoBehaviour {
 			if(_state == (State)playerAttrs[attribute]) _state = State.ACTIVE;
 		}
 	}
+
+
+	/***** Sound *****/
 
 	void PlaySound(AudioClip sound){
 		audioSource.PlayOneShot(sound);

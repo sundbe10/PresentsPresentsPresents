@@ -25,7 +25,7 @@ public class CharacterSelectController : MonoBehaviour {
 		//Hide if locked
 		var color = character.locked ? new Color32(0,0,0,255) : new Color32(255,255,255,255);
 		gameObject.GetComponentInChildren<SpriteRenderer>().color = color;
-		GameObject.Find("Avatar").GetComponent<Image>().color = color;
+		transform.Find("Canvas/Avatar Mask/Avatar").GetComponent<Image>().color = color;
 	}
 
 	public void RemoveCharacter(){

@@ -12,7 +12,8 @@ public class GameController : Singleton<GameController> {
 		POSTEND
 	};
 
-	enum Mode{
+	public enum Mode{
+		CLASSIC,
 		BATTLE,
 		SURVIVAL
 	}
@@ -23,14 +24,13 @@ public class GameController : Singleton<GameController> {
 	public int playToScore = 5000;
 	public GameObject pauseMenu;
 	public GameObject endMenu;
-
+	public Mode _mode;
 
 	//Private vars
 	private GameObject countdownObject;
 	private GameObject timerObject;
 	private GameAudioController audioController;
 	private State _state = State.PLAYING;
-	private Mode _mode = Mode.BATTLE;
 	private GameObject menu;
 
 	// Use this for initialization
@@ -47,7 +47,6 @@ public class GameController : Singleton<GameController> {
 			SetTimerText(gameTime);
 			break;
 		}
-		SetTimerText(gameTime);
 		//Initiate countdown
 		StartCoroutine(StartCountdown());
 	}

@@ -21,6 +21,7 @@ public class PlayerScoreController : MonoBehaviour {
 	Image scoreBarImage;
 	Image scoreStripesImage;
 	Animator animator;
+	Text scoreText;
 
 	// Use this for initialization
 	void Awake () {
@@ -28,6 +29,7 @@ public class PlayerScoreController : MonoBehaviour {
 		scoreBarImage = transform.Find("Score Mask/Score Bar").GetComponent<Image>();
 		scoreStripesImage = transform.Find("Score Mask/Score Bar/Score Stripes").GetComponent<Image>();
 		scoreBar = transform.Find("Score Mask/Score Bar").GetComponent<RectTransform>();
+		scoreText = transform.Find("Score").GetComponent<Text>();
 		maxWidth = scoreBar.rect.width;
 	}
 	
@@ -39,12 +41,13 @@ public class PlayerScoreController : MonoBehaviour {
 	//Public
 	public void SetScore(int score, int multiplier){
 		initialScore = score;
-		scoreBar.sizeDelta = new Vector2(Mathf.Round(maxWidth * score/maxScore), scoreBar.rect.height);
+		//scoreBar.sizeDelta = new Vector2(Mathf.Round(maxWidth * score/maxScore), scoreBar.rect.height);
 		if(multiplier > 0){
 			animator.speed = multiplier * 2;
 			scoreBarImage.color = barColors[multiplier-1].barColor;
 			scoreStripesImage.color = barColors[multiplier-1].stripeColor;
 		}
+		scoreText.text = score.ToString();
 	}
 		
 	public void SetInitialScore(int _initialScore, int _maxScore, int _multiplier){

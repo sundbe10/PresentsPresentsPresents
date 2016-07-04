@@ -10,7 +10,6 @@ public class ScoringTextController : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		text = gameObject.GetComponent<Text>();
-		Debug.Log (text);
 		canvas = GameObject.Find("Game Canvas");
 		text.color = new Color(255f, 255f, 255f, 0f);
 		transform.parent = canvas.transform;
