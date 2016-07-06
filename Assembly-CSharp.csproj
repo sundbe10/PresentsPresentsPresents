@@ -68,7 +68,6 @@
      <Compile Include="Assets\entities\game assets\spawner\KidSpawnController.cs" />
      <Compile Include="Assets\entities\game assets\splash\SplashController.cs" />
      <Compile Include="Assets\entities\initializer\InitializerController.cs" />
-     <Compile Include="Assets\entities\ui\menus\GameMenuController.cs" />
      <Compile Include="Assets\scripts\Blink.cs" />
      <Compile Include="Assets\scripts\CameraController.cs" />
      <Compile Include="Assets\scripts\CharacterCollection.cs" />
@@ -77,6 +76,7 @@
      <Compile Include="Assets\scripts\GameController.cs" />
      <Compile Include="Assets\scripts\GamePlayersController.cs" />
      <Compile Include="Assets\scripts\IntervalObjectSpawner.cs" />
+     <Compile Include="Assets\scripts\LeaderboardController.cs" />
      <Compile Include="Assets\scripts\MenuController.cs" />
      <Compile Include="Assets\scripts\MenuSceneController.cs" />
      <Compile Include="Assets\scripts\MusicControlller.cs" />
@@ -84,7 +84,6 @@
      <Compile Include="Assets\scripts\ScaleParticles.cs" />
      <Compile Include="Assets\scripts\Singleton.cs" />
      <Compile Include="Assets\scripts\SpriteSwitch.cs" />
-     <Compile Include="Assets\scripts\StartGame.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

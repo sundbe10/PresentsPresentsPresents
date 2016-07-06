@@ -4,7 +4,6 @@ using System.Collections;
 public class ConfirmCharacterSelect : MonoBehaviour {
 
 	private GameObject[] players;
-	private SceneLoader _sceneLoader = new SceneLoader();
 
 	// Use this for initialization
 	void Start () {

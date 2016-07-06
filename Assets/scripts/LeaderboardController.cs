@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameMenuController : MonoBehaviour {
+public class LeaderboardController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

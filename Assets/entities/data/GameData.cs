@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class GameData : MonoBehaviour {
+public class GameData : Singleton<GameData> {
 
 	private CharacterCollection.Character[] playerCharacters;
 
@@ -21,19 +21,19 @@ public class GameData : MonoBehaviour {
 		
 	}
 
-	public void SetCharacter(int playerNumber, CharacterCollection.Character character){
-		playerCharacters[playerNumber-1] = character;
+	static public void SetCharacter(int playerNumber, CharacterCollection.Character character){
+		Instance.playerCharacters[playerNumber-1] = character;
 	}
 
-	public CharacterCollection.Character GetCharacter(int playerNumber){
-		return playerCharacters[playerNumber-1];
+	static public CharacterCollection.Character GetCharacter(int playerNumber){
+		return Instance.playerCharacters[playerNumber-1];
 	}
 
-	public void RemoveCharacter(int playerNumber){
-		playerCharacters[playerNumber-1] = null;
+	static public void RemoveCharacter(int playerNumber){
+		Instance.playerCharacters[playerNumber-1] = null;
 	}
 
-	public void SetLevel(){
+	static public void SetLevel(){
 		//Set Level
 	}
 

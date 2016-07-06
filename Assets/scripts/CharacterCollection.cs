@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharacterCollection : MonoBehaviour {
+public class CharacterCollection : Singleton<CharacterCollection> {
 
 	[System.Serializable]
 	public class CharacterModel{
@@ -41,29 +41,52 @@ public class CharacterCollection : MonoBehaviour {
 	void Start () {
 		playerChoices = new Costume[4];
 	}
+
+
+	//Static
 		
-	public Character GetFirstOpenCharacter(int playerNumber){
-		foreach(CharacterModel characterModel in characterModels){
+	static public Character GetFirstOpenCharacter(int playerNumber){
+		foreach(CharacterModel characterModel in Instance.characterModels){
 			//If no costumes in a character are taken, assign the player the first costume for the given character
-			if(!AnyCostumesTaken(characterModel)){
-				SelectCharacter(playerNumber, characterModel.costumes[0]);
+			if(!Instance.AnyCostumesTaken(characterModel)){
+				CharacterCollection.SelectCharacter(playerNumber, characterModel.costumes[0]);
 				return new Character(characterModel, characterModel.costumes[0]);
 			}
 		}
 		return null;
 	} 
 
-	public void SelectCharacter(int playerNumber, Costume costume){
+	static public void SelectCharacter(int playerNumber, Costume costume){
 		costume.taken = true;
-		playerChoices[playerNumber-1] = costume;
+		Instance.playerChoices[playerNumber-1] = costume;
 	}
 
-	public void DeselectCharacter(int playerNumber){
-		playerChoices[playerNumber-1].taken = false;
-		playerChoices[playerNumber-1] = null;
+	static public void DeselectCharacter(int playerNumber){
+		Instance.playerChoices[playerNumber-1].taken = false;
+		Instance.playerChoices[playerNumber-1] = null;
 	}
 
-	public Character GetNextOpenCharacter(int playerNumber){
+	static public Character GetNextOpenCharacter(int playerNumber){
+		return Instance.SelectNextOpenCharacter(playerNumber);
+	}
+		
+
+	static public Character GetPreviousOpenCharacter(int playerNumber){
+		return Instance.SelectPreviousOpenCharacter(playerNumber);
+	}
+
+	static public Character GetNextOpenCostume(int playerNumber){
+		return Instance.SelectNextOpenCostume(playerNumber);
+	}
+
+	static public Character GetPreviousOpenCostume(int playerNumber){
+		return Instance.SelectPreviousOpenCostume(playerNumber);
+	}
+
+
+	//private
+
+	Character SelectNextOpenCharacter(int playerNumber){
 		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
 		playerChoices[playerNumber-1].taken = false;
 
@@ -74,12 +97,12 @@ public class CharacterCollection : MonoBehaviour {
 		}
 
 		Costume nextCharacterCostume = GetFirstOpenCostume(characterModels[characterPosition].costumes);
-		SelectCharacter(playerNumber, nextCharacterCostume);
+		CharacterCollection.SelectCharacter(playerNumber, nextCharacterCostume);
 
 		return new Character(characterModels[characterPosition], nextCharacterCostume);
 	}
 
-	public Character GetPreviousOpenCharacter(int playerNumber){
+	Character SelectPreviousOpenCharacter(int playerNumber){
 		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
 		playerChoices[playerNumber-1].taken = false;
 
@@ -90,12 +113,12 @@ public class CharacterCollection : MonoBehaviour {
 		}
 
 		Costume prevCharacterCostume = GetFirstOpenCostume(characterModels[characterPosition].costumes);
-		SelectCharacter(playerNumber, prevCharacterCostume);
+		CharacterCollection.SelectCharacter(playerNumber, prevCharacterCostume);
 
 		return new Character(characterModels[characterPosition], prevCharacterCostume);
 	}
 
-	public Character GetNextOpenCostume(int playerNumber){
+	Character SelectNextOpenCostume(int playerNumber){
 		Costume nextCharacterCostume = null;
 		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
 		int costumePosition = GetCostumeIndex(playerChoices[playerNumber-1]);
@@ -117,7 +140,7 @@ public class CharacterCollection : MonoBehaviour {
 		return new Character(characterModels[characterPosition], nextCharacterCostume);
 	}
 
-	public Character GetPreviousOpenCostume(int playerNumber){
+	Character SelectPreviousOpenCostume(int playerNumber){
 		Costume previousCharacterCostume = null;
 		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);
 		int costumePosition = GetCostumeIndex(playerChoices[playerNumber-1]);
@@ -139,14 +162,14 @@ public class CharacterCollection : MonoBehaviour {
 		return new Character(characterModels[characterPosition], previousCharacterCostume);
 	}
 
-	private Costume GetFirstOpenCostume(Costume[] costumes){
+	Costume GetFirstOpenCostume(Costume[] costumes){
 		foreach(Costume _costume in costumes){
 			if(_costume.taken == false) return _costume;
 		}
 		return null;
 	}
 
-	private int GetCharacterModelIndex(Costume costume){
+	int GetCharacterModelIndex(Costume costume){
 		int i = 0;
 		foreach(CharacterModel _characterModel in characterModels){
 			foreach(Costume _costume in _characterModel.costumes){
@@ -157,7 +180,7 @@ public class CharacterCollection : MonoBehaviour {
 		return 0;
 	}
 
-	private int GetCostumeIndex(Costume costume){
+	int GetCostumeIndex(Costume costume){
 		foreach(CharacterModel _characterModel in characterModels){
 			int i = 0;
 			foreach(Costume _costume in _characterModel.costumes){
@@ -168,7 +191,7 @@ public class CharacterCollection : MonoBehaviour {
 		return 0;
 	}
 
-	private bool AnyCostumesTaken(CharacterModel characterModel){
+	bool AnyCostumesTaken(CharacterModel characterModel){
 		foreach(Costume _costume in characterModel.costumes){
 			if(_costume.taken) return true;
 		}

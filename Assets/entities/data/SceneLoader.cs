@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SceneLoader : MonoBehaviour {
+public class SceneLoader : Singleton<SceneLoader> {
 
 	public AudioClip backSound;
 	public AudioClip forwardSound;
 	public AudioClip windSound;
 
-	AudioSource audioSource;
-	Animator animator;
-	bool allowButtonPresses = true;
+	private AudioSource audioSource;
+	private Animator animator;
+	private bool allowButtonPresses = true;
 
 	void Start () {
 		DontDestroyOnLoad(gameObject);
@@ -17,11 +17,16 @@ public class SceneLoader : MonoBehaviour {
 		audioSource = gameObject.GetComponent<AudioSource>();
 	}
 
+	void Awake() {
+		if (Instance != this) {
+			Destroy(this.gameObject);
+		}
+	}
+
 	void Update (){
 		if(allowButtonPresses){
 			switch(Application.loadedLevelName){
 			case "Start":
-				HandleStart();
 				break;
 			case "CharacterSelect":
 				HandleCharacterSelection();
@@ -32,49 +37,41 @@ public class SceneLoader : MonoBehaviour {
 			}
 		}
 	}
-	public void FadeIn(){
-		transform.Find("Fade").GetComponent<FadeOut>().StartFadeIn();
+
+	static public void FadeIn(){
+		Instance.transform.Find("Fade").GetComponent<FadeOut>().StartFadeIn();
 	}
 
-	public void FadeOut(){
-		transform.Find("Fade").GetComponent<FadeOut>().StartFadeOut();
+	static public void FadeOut(){
+		Instance.transform.Find("Fade").GetComponent<FadeOut>().StartFadeOut();
 	}
 
-	public void AllowButtonPresses(){
-		allowButtonPresses = true;
-	}
-
-	public void QuitRequest(){
-		Debug.Log ("Quit requested");
-		Application.Quit ();
-	}
-
-	public void GoToScene(string scene, bool forward){
-		StartCoroutine(LoadScene(scene));
+	static public void GoToScene(string scene, bool forward){
+		Instance.StartCoroutine(Instance.LoadScene(scene));
 		if(forward){
-			SceneForward();
+			Instance.SceneForward();
 		}else{
-			SceneBackward();
+			Instance.SceneBackward();
 		}
 	}
 
-	void HandleStart(){
-		if(Input.GetButtonDown("Start")){
-			StartCoroutine(LoadScene("CharacterSelect"));
-			SceneForward();
-		}
+
+	//Private 
+
+	void AllowButtonPresses(){
+		allowButtonPresses = true;
 	}
 
 	void HandleCharacterSelection(){
 		if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
 			if(GameObject.Find("CharacterCollection").GetComponent<ConfirmCharacterSelect>().AllPlayersReady()){
-				StartCoroutine(LoadScene("Game"));
+				StartCoroutine(Instance.LoadScene("Game"));
 				SceneForward();
 			}
 		}
 		if(Input.GetButtonDown("Cancel")){
 			if(GameObject.Find("CharacterCollection").GetComponent<ConfirmCharacterSelect>().NoActivePlayers()){
-				StartCoroutine(LoadScene("Start"));
+				StartCoroutine(Instance.LoadScene("Start"));
 				SceneBackward();
 			}
 		}
@@ -82,15 +79,15 @@ public class SceneLoader : MonoBehaviour {
 
 	void SceneForward(){
 		allowButtonPresses = false;
-		PlaySound(windSound);
-		PlaySound(forwardSound);
+		PlaySound(Instance.windSound);
+		PlaySound(Instance.forwardSound);
 		animator.CrossFade("SceneForward", 0f);
 	}
 
 	void SceneBackward(){
 		allowButtonPresses = false;
-		PlaySound(windSound);
-		PlaySound(backSound);
+		PlaySound(Instance.windSound);
+		PlaySound(Instance.backSound);
 		animator.CrossFade("SceneBackward", 0f);
 	}
 

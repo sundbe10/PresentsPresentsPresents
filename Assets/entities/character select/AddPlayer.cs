@@ -20,7 +20,6 @@ public class AddPlayer : MonoBehaviour {
 	CharacterSelectController newPlayerController;
 	CharacterCollection characterCollection;
 	CharacterCollection.Character currentCharacter;
-	GameData gameData;
 	AudioSource audioSource;
 	State _state;
 	Text text;
@@ -30,7 +29,6 @@ public class AddPlayer : MonoBehaviour {
 		_state = State.ADD;
 		text = gameObject.GetComponent<Text>();
 		characterCollection = GameObject.Find("CharacterCollection").GetComponent<CharacterCollection>();
-		gameData = GameObject.FindGameObjectWithTag("Game Data").GetComponent<GameData>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 	}
 	
@@ -53,14 +51,14 @@ public class AddPlayer : MonoBehaviour {
 	//Reset all players when navigating to charcter select screen
 	void OnLevelWasLoaded(int level) {
 		if (level == 1){
-			gameData.RemoveCharacter(playerNumber);
+			GameData.RemoveCharacter(playerNumber);
 		}
 	}
 
 	void HandleAddPlayer(){
 		text.text = startText;
 		if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
-			currentCharacter = characterCollection.GetFirstOpenCharacter(playerNumber);
+			currentCharacter = CharacterCollection.GetFirstOpenCharacter(playerNumber);
 			GameObject newPlayer = Instantiate(playerObject, new Vector3(transform.position.x, transform.position.y-40,0), Quaternion.identity) as GameObject;
 			newPlayerController = newPlayer.GetComponent<CharacterSelectController>();
 			newPlayerController.SetCharacter(currentCharacter);
@@ -75,10 +73,10 @@ public class AddPlayer : MonoBehaviour {
 		if(Input.GetButtonDown("Horizontal_P"+playerNumber)){
 			var axis = Input.GetAxis("Horizontal_P"+playerNumber);
 			if(axis > 0){
-				currentCharacter = characterCollection.GetNextOpenCharacter(playerNumber);
+				currentCharacter = CharacterCollection.GetNextOpenCharacter(playerNumber);
 			}
 			else if(axis < 0){
-				currentCharacter = characterCollection.GetPreviousOpenCharacter(playerNumber);
+				currentCharacter = CharacterCollection.GetPreviousOpenCharacter(playerNumber);
 			}
 			newPlayerController.SetCharacter(currentCharacter);
 			PlaySound(selectionSound);
@@ -87,10 +85,10 @@ public class AddPlayer : MonoBehaviour {
 		if(Input.GetButtonDown("Vertical_P"+playerNumber)){
 			var axis = Input.GetAxis("Vertical_P"+playerNumber);
 			if(axis > 0){
-				currentCharacter = characterCollection.GetNextOpenCostume(playerNumber);
+				currentCharacter = CharacterCollection.GetNextOpenCostume(playerNumber);
 			}
 			else if(axis < 0){
-				currentCharacter = characterCollection.GetPreviousOpenCostume(playerNumber);
+				currentCharacter = CharacterCollection.GetPreviousOpenCostume(playerNumber);
 			}
 
 			newPlayerController.SetCharacter(currentCharacter);
@@ -101,7 +99,7 @@ public class AddPlayer : MonoBehaviour {
 		if(Input.GetButtonDown("Throw_P"+playerNumber) && !currentCharacter.locked){
 			PlaySound(currentCharacter.taunt);
 			newPlayerController.FinalizeSelection();
-			gameData.SetCharacter(playerNumber, currentCharacter);
+			GameData.SetCharacter(playerNumber, currentCharacter);
 			gameObject.GetComponent<Blink>().StartBlink();
 			_state = State.READY;
 		}
@@ -121,7 +119,7 @@ public class AddPlayer : MonoBehaviour {
 				break;
 			case State.SELECTING:
 				_state = State.ADD;
-				characterCollection.DeselectCharacter(playerNumber);
+				CharacterCollection.DeselectCharacter(playerNumber);
 				newPlayerController.RemoveCharacter();
 				gameObject.GetComponent<Blink>().StartBlink();
 				break;

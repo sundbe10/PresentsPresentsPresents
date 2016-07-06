@@ -10,8 +10,7 @@ public class BullyController : MonoBehaviour {
 		WALKING,
 		RUNNING,
 		FIGHTING,
-		STUNNED,
-		DISABLED
+		STUNNED
 	}
 
 	//Public Vars
@@ -30,6 +29,7 @@ public class BullyController : MonoBehaviour {
 	State _state = State.ENTERING;
 	Animator animator;
 	float aiTimer = 0;
+	bool disabled = false;
 
 	// Use this for initialization
 	void Start () {
@@ -44,6 +44,12 @@ public class BullyController : MonoBehaviour {
 		SpriteSwitch switcher = gameObject.GetComponent<SpriteSwitch>();
 		switcher.SetSpriteSheet(randomSprite);
 
+	}
+
+	void Awake(){
+		if(!GameController.GameIsActive()){
+			DisableBully();
+		}
 	}
 
 	// Update is called once per frame
@@ -68,14 +74,14 @@ public class BullyController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider){
 		if(collider.CompareTag("Destroyer")){
 			RemoveBully ();
-		}else if(collider.CompareTag("Kid")){
+		}else if(collider.CompareTag("Kid") && !disabled){
 			switch(_state){
 			case State.WALKING:
 			case State.IDLE:
 				TryToHit();
 				break;
 			}
-		}else if(collider.CompareTag("Present")){
+		}else if(collider.CompareTag("Present") && !disabled){
 			switch(_state){
 			case State.WALKING:
 			case State.IDLE:
@@ -97,6 +103,9 @@ public class BullyController : MonoBehaviour {
 	}
 	public void PuchCooldown(){
 		_state = State.IDLE;
+	}
+	public void DisableBully(){
+		disabled = true;
 	}
 
 

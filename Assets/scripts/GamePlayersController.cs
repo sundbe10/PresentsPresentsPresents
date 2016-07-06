@@ -7,11 +7,9 @@ public class GamePlayersController : MonoBehaviour {
 
 	float worldWidth = 500;
 	int maxPlayers = 4;
-	GameData gameData;
 
 	// Use this for initialization
 	void Start () {
-		gameData = GameObject.FindGameObjectWithTag("Game Data").GetComponent<GameData>();
 		SetPlayers();
 	}
 	
@@ -26,7 +24,7 @@ public class GamePlayersController : MonoBehaviour {
 			//Position/Remove players based on the current number of players
 			GameObject player = GameObject.Find("Player "+i+" Group");
 			GameObject playerScore = GameObject.Find ("Player "+i+" Score");
-			CharacterCollection.Character character = gameData.GetCharacter(i);
+			CharacterCollection.Character character = GameData.GetCharacter(i);
 			if(character != null){
 				//float startX = worldWidth*i/(numberOfPlayers+1)-worldWidth/2;
 				//player.transform.position = new Vector3(startX, player.transform.position.y, player.transform.position.z);

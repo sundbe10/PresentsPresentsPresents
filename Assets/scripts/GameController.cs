@@ -61,19 +61,6 @@ public class GameController : Singleton<GameController> {
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
 				PauseGame();
 			}
-		}else if(_state == State.PAUSED){
-			if(Input.GetButtonDown("Cancel")){
-				GameObject.FindGameObjectWithTag("Scene Manager").GetComponent<SceneLoader>().GoToScene("CharacterSelect", false);
-				audioController.FadeOutMusic();
-				audioController.PlayBackSound();
-				Destroy(menu);
-				ResumeGame();
-			}else if(Input.GetButtonDown("Confirm") || Input.GetButtonDown("Start")){
-				_state = State.PLAYING;
-				audioController.PlayConfirmSound();
-				Destroy(menu);
-				ResumeGame();
-			}
 		}else if(_state == State.ENDED){
 			if(Input.GetButtonDown("Confirm")){
 				if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
@@ -82,14 +69,6 @@ public class GameController : Singleton<GameController> {
 					audioController.PlayPauseSound();
 					_state = State.POSTEND;
 				}
-			}
-		}else if(_state == State.POSTEND){
-			if(Input.GetButtonDown("Cancel")){
-				GameObject.FindGameObjectWithTag("Scene Manager").GetComponent<SceneLoader>().GoToScene("CharacterSelect", false);
-				audioController.PlayBackSound();
-			}else if(Input.GetButtonDown("Confirm") || Input.GetButtonDown("Start")){
-				GameObject.FindGameObjectWithTag("Scene Manager").GetComponent<SceneLoader>().GoToScene("Game", true);
-				audioController.PlayConfirmSound();
 			}
 		}
 	}
@@ -111,6 +90,12 @@ public class GameController : Singleton<GameController> {
 	static public void RecordPlayerScore(int playerNum, int score){
 	
 	}
+	static public bool GameIsActive(){
+		return Instance._state == State.PLAYING;
+	}
+	static public void UnpauseGame(){
+		Instance.ResumeGame();
+	}
 
 
 	//Public Functions
@@ -118,8 +103,9 @@ public class GameController : Singleton<GameController> {
 		audioController.PauseMusic();
 		Time.timeScale = 0;
 	}
-
+		
 	public void ResumeGame(){
+		_state = State.PLAYING;
 		audioController.ResumeMusic();
 		Time.timeScale = 1.0f;
 	}
@@ -172,11 +158,21 @@ public class GameController : Singleton<GameController> {
 		//Stop music and play fall sound effect
 		audioController.PlayFallSound();
 
+		//TODO Change diabling to an event
+
 		//Disable Kids
 		GameObject[] kids = GameObject.FindGameObjectsWithTag("Kid");
 		foreach(GameObject kid in kids){
 			kid.GetComponent<KidController>().DisableKid();
 		}
+
+		//Disable Bullies
+		GameObject[] bullies = GameObject.FindGameObjectsWithTag("Bully");
+		foreach(GameObject bully in bullies){
+			bully.GetComponent<BullyController>().DisableBully();
+		}
+
+		//End TODO
 
 		//Calculate Winner and kill losers
 		GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
