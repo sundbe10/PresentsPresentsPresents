@@ -12,6 +12,7 @@ public class PresentController : MonoBehaviour {
 	//Public Vars
 	public Sprite presentSprite;
 	public Sprite coalSprite;
+	public GameObject splash;
 
 	//Private Vars
 	bool isPresent;
@@ -39,13 +40,14 @@ public class PresentController : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider){
 		switch(_state){
 		case State.FALLING:
-			if(collider.gameObject.tag == "Destroyer"){
+			if(collider.CompareTag("Destroyer")){
 				thrower.GetComponent<PlayerController>().RemoveMultiplier();
 				RemovePresent();
+				MakeSplash();
 			}
 			break;
 		case State.CAUGHT:
-			if(collider.gameObject.tag == "Destroyer"){
+			if(collider.CompareTag("Destroyer")){
 				RemovePresent();
 			}
 			break;
@@ -93,6 +95,10 @@ public class PresentController : MonoBehaviour {
 	//Private Functions
 	void RemovePresent(){
 		Destroy(gameObject);
+	}
+
+	void MakeSplash(){
+		Instantiate(splash, transform.position, Quaternion.identity);
 	}
 
 }

@@ -23,7 +23,7 @@ public class SpriteSwitch : MonoBehaviour {
 		if(character != ""){
 			//For sprites
 			foreach(SpriteRenderer renderer in spriteRenderer){
-				if(renderer){
+				if(renderer && renderer.sprite){
 					string spriteName = renderer.sprite.name;
 					Sprite newSprite = Array.Find(newSprites, item => item.name == spriteName);
 					if(newSprite) renderer.sprite = newSprite;
@@ -31,7 +31,7 @@ public class SpriteSwitch : MonoBehaviour {
 			}
 			//For UI Images
 			foreach(Image uiImage in uiImages){
-				if(uiImage){
+				if(uiImage && uiImage.sprite){
 					string spriteName = uiImage.sprite.name;
 					Sprite newSprite = Array.Find(newSprites, item => item.name == spriteName);
 					if(newSprite) uiImage.sprite = newSprite;

@@ -21,8 +21,10 @@ public class BullyController : MonoBehaviour {
 	public AudioClip runSound;
 	public AudioClip gruntSound;
 	public AudioClip coalCatchSound;
+	public AudioClip presentCatchSound;
 	public GameObject scoreText;
 	public int scoreValue = 100;
+	public GameObject throwingObject;
 
 	//Private Vars
 	AudioSource audioSource;
@@ -91,11 +93,16 @@ public class BullyController : MonoBehaviour {
 			}
 		}else if(collider.CompareTag("Ground") && _state == State.ENTERING){
 			SetAsActive();
+		}else if(collider.CompareTag("Hit Box")){
+			if(!collider.transform.IsChildOf(transform)){
+				StartCoroutine("RunBully");
+			}
 		}
 	}
 
 	//Public functions
 	public void HitKid(){
+		//turn off collider if a kid is hit. This will hopefully keep the number of kids able to be hit by a single punch to 1-2.
 		transform.FindChild("Hit Box").GetComponent<BoxCollider2D>().enabled = false;
 	}
 	public void Grunt(){
@@ -144,12 +151,24 @@ public class BullyController : MonoBehaviour {
 	void TryToHit(){
 		if(Random.value <= aggression){
 			_state = State.FIGHTING;
+			transform.Find("Hit Box").transform.localScale = new Vector2(transform.localScale.x, 1);
 			animator.CrossFade("Push", 0f);
 		}
 	}
 
+	void ThrowObject(){
+		GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+		GameObject targetPlayer = players[Mathf.FloorToInt(Random.Range(0,players.Length))];
+		//Turn bully toward player
+		transform.localScale = new Vector2(targetPlayer.transform.position.x < transform.position.x ? -1 : 1, 1);
+		//Create and throw projectile
+		GameObject thrownObject = Instantiate(throwingObject, transform.position + new Vector3(transform.localScale.x,1,0)*10, Quaternion.identity) as GameObject;
+		Vector2 throwVector = targetPlayer.transform.position - thrownObject.transform.position;
+		thrownObject.GetComponent<SnowballController>().SetVelocity(new Vector2(throwVector.x*0.7f, throwVector.y).normalized);
+	}
+
 	IEnumerator StunBully(){
-		PlaySound(gruntSound);
+		PlaySound(coalCatchSound);
 		animator.CrossFade("Stunned", 0f);
 		_state = State.STUNNED;	
 
@@ -159,7 +178,7 @@ public class BullyController : MonoBehaviour {
 	}
 
 	IEnumerator RunBully(){
-		PlaySound(coalCatchSound);
+		PlaySound(presentCatchSound);
 		animator.CrossFade("Stunned", 0f);
 		_state = State.STUNNED;
 
@@ -210,10 +229,14 @@ public class BullyController : MonoBehaviour {
 
 		//Set Random State
 		SetRandomDirection();
-		if(stateNum < 0.7f){
+		if(stateNum < 0.5f){
+			ThrowObject();
+		}
+		else if(stateNum < 0.7f){
 			_state = State.WALKING;
 			animator.CrossFade("Walk", 0f);
-		}else{
+		}
+		else{
 			_state = State.IDLE;
 			animator.CrossFade("Idle", 0f);
 		}

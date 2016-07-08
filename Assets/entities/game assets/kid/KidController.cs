@@ -77,12 +77,11 @@ public class KidController : MonoBehaviour {
 		}else if(collider.CompareTag("Destroyer")){
 			RemoveKid ();
 		}else if(collider.CompareTag("Hit Box") && _state == State.WALKING){
-			HitKid(collider);
+			HitKid(collider.gameObject);
 		}else if(collider.CompareTag("Ground") && _state == State.ENTERING){
 			SetAsActive();
 		}
 	}
-
 
 	//Public Functions
 	public bool KidHasPresent(){
@@ -181,9 +180,9 @@ public class KidController : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	void HitKid(Collider2D collider){
+	void HitKid(GameObject hitObject){
 		_state = State.HIT;
-		float hitDirection = collider.transform.parent.localScale.x;
+		float hitDirection = hitObject.transform.localScale.x;
 		if(hitDirection != transform.localScale.x){
 			transform.localScale = new Vector2(hitDirection, 1);
 			walkSpeed = -walkSpeed;

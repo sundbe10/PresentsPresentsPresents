@@ -88,7 +88,7 @@ public class GameController : Singleton<GameController> {
 		}
 	}
 	static public void RecordPlayerScore(int playerNum, int score){
-	
+		//TODO Get player score, save to an array, update score UI appropriately
 	}
 	static public bool GameIsActive(){
 		return Instance._state == State.PLAYING;

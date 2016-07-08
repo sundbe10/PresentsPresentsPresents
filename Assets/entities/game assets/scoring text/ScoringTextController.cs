@@ -12,7 +12,7 @@ public class ScoringTextController : MonoBehaviour {
 		text = gameObject.GetComponent<Text>();
 		canvas = GameObject.Find("Game Canvas");
 		text.color = new Color(255f, 255f, 255f, 0f);
-		transform.parent = canvas.transform;
+		transform.SetParent(canvas.transform);
 		StartCoroutine(DestroyScoreText());
 	}
 	

@@ -266,7 +266,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Dash(){
 		if(Input.GetButton("X_P"+playerNum)){
-			_state = State.DASHING;
 			float dashDirection =  transform.localScale.x;
 			rigidBody.AddForce(Vector2.right * dashDirection * dashForce * Time.deltaTime);
 			gameObject.layer = LayerMask.NameToLayer(playerDashLayer);
@@ -276,9 +275,13 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	IEnumerator DashCooldown(){
+		State _prevState = _state;
+		_state = State.DASHING;
 		yield return new WaitForSeconds((float) playerAttrs[Attributes.DASHDELAY]);
 		gameObject.layer = LayerMask.NameToLayer(playerLayer);
-		_state = State.ACTIVE;
+		if(_state == State.DASHING){
+			_state = _prevState == State.MOVE_ONLY ? State.MOVE_ONLY : State.ACTIVE;
+		}
 	}
 
 
@@ -322,6 +325,7 @@ public class PlayerController : MonoBehaviour {
 
 	/***** Hit *****/
 	void Hit(Collider2D collider){
+		Debug.Log(collider.gameObject);
 		_state = State.HIT;
 		var direction = collider.GetComponentInParent<PlayerController>().GetDirection();
 		rigidBody.velocity = Vector2.zero;
