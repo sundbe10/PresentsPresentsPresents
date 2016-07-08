@@ -19,14 +19,40 @@ public class SnowballController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider ){
-		if(collider.CompareTag("Destroyer")){
+		switch(collider.tag){
+		case "Destroyer":
 			Instantiate(splash, transform.position, Quaternion.identity);
 			Destroy(gameObject);
+			break;
+		case "Kid":
+		case "Bully":
+			ExplodeObject();
+			break;
 		}
+	}
+
+	void OnCollisionEnter2D(Collision2D collider ){
+		Debug.Log(collider.transform.tag);
+		if(collider.transform.CompareTag("Player")){
+			ExplodeObject();
+		}
+	}
+
+	//Public
+
+	public void DestroyObject(){
+		Destroy(gameObject);
 	}
 
 	public void SetVelocity(Vector2 direction){
 		Debug.Log(direction);
 		rigidBody.velocity = throwSpeed * direction * Time.deltaTime;	
+	}
+
+	//Private
+
+	void ExplodeObject(){
+		gameObject.GetComponent<Animator>().SetBool("explode",true);
+		rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity,5f);
 	}
 }

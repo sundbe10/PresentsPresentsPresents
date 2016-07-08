@@ -325,7 +325,6 @@ public class PlayerController : MonoBehaviour {
 
 	/***** Hit *****/
 	void Hit(Collider2D collider){
-		Debug.Log(collider.gameObject);
 		_state = State.HIT;
 		var direction = collider.GetComponentInParent<PlayerController>().GetDirection();
 		rigidBody.velocity = Vector2.zero;
