@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5d0efa6bfc92b44e880c92b848e4a173
-timeCreated: 1464543662
+timeCreated: 1468084267
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -16,6 +16,8 @@ TextureImporter:
     21300018: walk5
     21300020: walk6
     21300022: hit
+    21300024: throw1
+    21300026: throw2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -176,6 +178,28 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
+        y: 24
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: throw1
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 24
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: throw2
+      rect:
+        serializedVersion: 2
+        x: 144
         y: 24
         width: 24
         height: 24

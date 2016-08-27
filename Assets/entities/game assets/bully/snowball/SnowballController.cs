@@ -32,8 +32,8 @@ public class SnowballController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D collider ){
-		Debug.Log(collider.transform.tag);
 		if(collider.transform.CompareTag("Player")){
+			if(collider.gameObject.GetComponent<PlayerController>().IsDashing() == true) return;
 			ExplodeObject();
 		}
 	}

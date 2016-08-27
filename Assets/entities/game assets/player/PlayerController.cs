@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 		ACTIVE,
 		DASHING,
 		HIT,
+		STUNNED,
 		FALLING,
 		DEAD,
 		CELEBRATE
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 	public AudioClip badCatchSound;
 	public AudioClip dashSound;
 	public AudioClip swapSound;
+	public AudioClip stunnedSound;
 	public AudioClip multiplier2x;
 	public AudioClip multiplier3x;
 	public AudioClip multiplier4x;
@@ -53,7 +55,6 @@ public class PlayerController : MonoBehaviour {
 	Animator dashAnimator;
 	AudioSource audioSource;
 	Rigidbody2D rigidBody;
-	BoxCollider2D boxCollider;
 	bool canThrow = true;
 	int catches = 0;
 	int maxScore;
@@ -72,7 +73,6 @@ public class PlayerController : MonoBehaviour {
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
 		dashAnimator = transform.Find ("Body/Dash").gameObject.GetComponent<Animator>();
 		rigidBody = gameObject.GetComponent<Rigidbody2D>();
-		boxCollider = gameObject.GetComponent<BoxCollider2D>();
 		playerTag = transform.Find("Body/tag").transform;
 		bodyAnimator.logWarnings = false;
 		//Get correct score component
@@ -111,6 +111,9 @@ public class PlayerController : MonoBehaviour {
 			ThrowPresent();
 			Score();
 			break;
+		case State.STUNNED:
+			Score();
+			break;
 		case State.FALLING:
 			break;
 		case State.DEAD:
@@ -125,8 +128,15 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider){
-		if(collider.CompareTag("Hit Box")){
+		if(collider.CompareTag("Player Hit Box")){
 			Hit(collider);
+		}
+	}
+
+	void OnCollisionEnter2D(Collision2D collision){
+		Debug.Log(collision.collider);
+		if(collision.collider.CompareTag("Hit Box") && !IsDashing() && _state != State.STUNNED){
+			StunPlayer();
 		}
 	}
 
@@ -236,6 +246,10 @@ public class PlayerController : MonoBehaviour {
 		StartCoroutine(PowerupTimeout(attribute, multiplier, timeout));
 	}
 
+	public bool IsDashing(){
+		return _state == State.DASHING;
+	}
+
 	//Private Functions
 	void Score(){
 		if(playerScoreBar != null) playerScoreBar.SetScore(playerScore, scoreMultiplier);
@@ -323,9 +337,24 @@ public class PlayerController : MonoBehaviour {
 	}
 
 
-	/***** Hit *****/
+	/***** Stun *****/
+	void StunPlayer(){
+		_state = State.STUNNED;
+		PlaySound(stunnedSound);
+		StartCoroutine("StunCooldown");
+		bodyAnimator.SetBool("isStunned",true);
+	}
+	IEnumerator StunCooldown(){
+		State _prevState = _state;
+		yield return new WaitForSeconds(2f);
+		bodyAnimator.SetBool("isStunned",false);
+		ReturnToActive();
+	}
+
+
+	/***** Dash Hit *****/
 	void Hit(Collider2D collider){
-		_state = State.HIT;
+		if(_state != State.STUNNED) _state = State.HIT;
 		var direction = collider.GetComponentInParent<PlayerController>().GetDirection();
 		rigidBody.velocity = Vector2.zero;
 		rigidBody.AddForce(Vector2.right * Time.deltaTime * -direction * hitForce);
@@ -334,7 +363,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	IEnumerator HitCooldown(){
 		yield return new WaitForSeconds(0.3f);
-		_state = State.ACTIVE;
+		ReturnToActive();
 	}
 
 
@@ -376,6 +405,10 @@ public class PlayerController : MonoBehaviour {
 			yield return new WaitForSeconds(timeout);
 			if(_state == (State)playerAttrs[attribute]) _state = State.ACTIVE;
 		}
+	}
+
+	void ReturnToActive(){
+		_state = GameController.GameIsActive() ? State.ACTIVE : State.DEAD;
 	}
 
 

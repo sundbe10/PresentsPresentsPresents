@@ -34,6 +34,10 @@ public class SceneLoader : Singleton<SceneLoader> {
 			case "Game":
 				HandleGame();
 				break;
+			case "Controls":
+			case "Leaderboard":
+				HandleBack();
+				break;
 			}
 		}
 	}
@@ -74,6 +78,13 @@ public class SceneLoader : Singleton<SceneLoader> {
 				StartCoroutine(Instance.LoadScene("Start"));
 				SceneBackward();
 			}
+		}
+	}
+
+	void HandleBack(){
+		if(Input.GetButtonDown("Cancel")){
+			StartCoroutine(Instance.LoadScene("Start"));
+			SceneBackward();
 		}
 	}
 

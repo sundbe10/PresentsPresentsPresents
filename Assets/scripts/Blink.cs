@@ -5,15 +5,16 @@ using UnityEngine.UI;
 public class Blink : MonoBehaviour {
 
 	public float blinkSpeed = 30f;
+	public bool blinkAtStart = true;
 
 	CanvasRenderer canvasRenderer;
-	int direction = 1;
-	bool canFade = true;
+	bool canFade;
 	float opacity = 1f;
 
 	// Use this for initialization
 	void Start () {
 		canvasRenderer = gameObject.GetComponent<CanvasRenderer>();
+		canFade = blinkAtStart;
 		Fade();
 	}
 

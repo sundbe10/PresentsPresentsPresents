@@ -1,17 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/entities/character select/CharacterSelectController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/entities/game assets/bully/BullyController.cs">
     <Files>
-      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="138" Column="89" />
       <File FileName="Assets/scripts/GameAudioController.cs" Line="1" Column="1" />
       <File FileName="Assets/entities/data/GameData.cs" Line="1" Column="1" />
       <File FileName="Assets/entities/character select/AvatarController.cs" Line="1" Column="1" />
-      <File FileName="Assets/entities/game assets/kid/KidController.cs" Line="127" Column="53" />
-      <File FileName="Assets/entities/character select/ConfirmCharacterSelect.cs" Line="34" Column="17" />
-      <File FileName="Assets/entities/data/SceneLoader.cs" Line="1" Column="19" />
-      <File FileName="Assets/scripts/CharacterCollection.cs" Line="77" Column="55" />
-      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="99" Column="39" />
+      <File FileName="Assets/entities/game assets/kid/KidController.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/character select/ConfirmCharacterSelect.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/data/SceneLoader.cs" Line="1" Column="1" />
+      <File FileName="Assets/scripts/CharacterCollection.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="1" Column="1" />
       <File FileName="Assets/entities/character select/CharacterSelectController.cs" Line="28" Column="64" />
+      <File FileName="Assets/entities/game assets/bully/BullyController.cs" Line="100" Column="19" />
+      <File FileName="Assets/entities/game assets/bully/ThrowTrigger.cs" Line="17" Column="54" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

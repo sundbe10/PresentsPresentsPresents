@@ -14,7 +14,7 @@ public class BullyController : MonoBehaviour {
 	}
 
 	//Public Vars
-	public float aggression = 0.2f;
+	[Range(0.1f,1f)]public float aggression = 0.2f;
 	public float walkSpeed = 15f;
 	public float runSpeed = 25f;
 	public string[] possibleSprites;
@@ -32,6 +32,7 @@ public class BullyController : MonoBehaviour {
 	Animator animator;
 	float aiTimer = 0;
 	bool disabled = false;
+	GameObject throwTarget;
 
 	// Use this for initialization
 	void Start () {
@@ -40,6 +41,8 @@ public class BullyController : MonoBehaviour {
 
 		//Set random walk left or right
 		SetRandomDirection();
+		walkSpeed = walkSpeed * (1 + aggression);
+		animator.speed = 0.9f+aggression/2;
 
 		//Set Random sprite
 		string randomSprite = possibleSprites[Random.Range(0, possibleSprites.Length)];
@@ -100,6 +103,18 @@ public class BullyController : MonoBehaviour {
 		}
 	}
 
+	public void OnTriggerStayChild2D(Collider2D collider){
+		Debug.Log(_state);
+		if(collider.CompareTag("Player") && !disabled){
+			switch(_state){
+			case State.WALKING:
+			case State.IDLE:
+				TryToThrow(collider.gameObject);
+				break;
+			}
+		}
+	}
+
 	//Public functions
 	public void HitKid(){
 		//turn off collider if a kid is hit. This will hopefully keep the number of kids able to be hit by a single punch to 1-2.
@@ -108,7 +123,7 @@ public class BullyController : MonoBehaviour {
 	public void Grunt(){
 		PlaySound(gruntSound);
 	}
-	public void PuchCooldown(){
+	public void PunchCooldown(){
 		_state = State.IDLE;
 	}
 	public void DisableBully(){
@@ -149,21 +164,34 @@ public class BullyController : MonoBehaviour {
 	}
 
 	void TryToHit(){
-		if(Random.value <= aggression){
+		if(Random.value*1.5f <= aggression){
 			_state = State.FIGHTING;
 			transform.Find("Hit Box").transform.localScale = new Vector2(transform.localScale.x, 1);
 			animator.CrossFade("Push", 0f);
 		}
 	}
+	void TryToThrow(GameObject target){
+		if(Random.value <= aggression * 0.02f){
+			ChooseTarget(target);
+			_state = State.FIGHTING;
+			animator.CrossFade("Throw", 0f);
+		}
+	}
+	void ChooseTarget(GameObject target){
+		throwTarget = target;
+		//Turn bully toward player
+		transform.localScale = new Vector2(throwTarget.transform.position.x < transform.position.x ? -1 : 1, 1);
+		walkSpeed = transform.localScale.x * Mathf.Abs(walkSpeed);
+	}
 
 	void ThrowObject(){
-		GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-		GameObject targetPlayer = players[Mathf.FloorToInt(Random.Range(0,players.Length))];
-		//Turn bully toward player
-		transform.localScale = new Vector2(targetPlayer.transform.position.x < transform.position.x ? -1 : 1, 1);
-		//Create and throw projectile
-		GameObject thrownObject = Instantiate(throwingObject, transform.position + new Vector3(transform.localScale.x,1,0)*10, Quaternion.identity) as GameObject;
-		Vector2 throwVector = targetPlayer.transform.position - thrownObject.transform.position;
+		Grunt();
+		Vector2 throwVector = Vector2.one;
+		GameObject thrownObject = Instantiate(throwingObject, transform.position + new Vector3(transform.localScale.x,1,0)*15, Quaternion.identity) as GameObject;
+		if(throwTarget != null){
+			//Create and throw projectile
+			throwVector = throwTarget.transform.position - thrownObject.transform.position;
+		}
 		thrownObject.GetComponent<SnowballController>().SetVelocity(new Vector2(throwVector.x*0.7f, throwVector.y).normalized);
 	}
 
@@ -226,13 +254,10 @@ public class BullyController : MonoBehaviour {
 		}
 
 		float stateNum = Random.value;
-
+	
 		//Set Random State
 		SetRandomDirection();
-		if(stateNum < 0.5f){
-			ThrowObject();
-		}
-		else if(stateNum < 0.7f){
+		if(stateNum < 0.5f+aggression/3){
 			_state = State.WALKING;
 			animator.CrossFade("Walk", 0f);
 		}
