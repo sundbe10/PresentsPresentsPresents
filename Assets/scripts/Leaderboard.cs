@@ -19,16 +19,13 @@ public class Leaderboard: Singleton<Leaderboard> {
 	}
 		
 	public Leader[] leaderboard;
+	int leadersOnBoard = 6;
 
 	// Use this for initialization
 	void Awake () {
 		Load();
 		if(Instance.leaderboard == null){
-			leaderboard = new Leader[8];
-			for(int i=0; i < leaderboard.Length; i++){
-				leaderboard[i] = new Leader("---",0,"santa");
-			}
-			Save();
+			InitializeLeaderboard();
 		}
 	}
 	
@@ -65,6 +62,14 @@ public class Leaderboard: Singleton<Leaderboard> {
 
 	static public Leader[] GetLeaderboard(){
 		return Instance.leaderboard;
+	}
+
+	void InitializeLeaderboard(){
+		leaderboard = new Leader[leadersOnBoard];
+		for(int i=0; i < leaderboard.Length; i++){
+			leaderboard[i] = new Leader("---",0,null);
+		}
+		Save();
 	}
 
 	void Save() {

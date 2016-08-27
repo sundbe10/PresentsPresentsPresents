@@ -302,9 +302,9 @@ public class PlayerController : MonoBehaviour {
 	/***** Throwing *****/
 
 	void ThrowPresent(){
-		if(Input.GetButtonDown("Throw_P"+playerNum) && canThrow){
+		if(Input.GetButton("Throw_P"+playerNum) && canThrow){
 			CreateDropItem(true);
-		}else if(Input.GetButtonDown("Back_P"+playerNum) && canThrow){
+		}else if(Input.GetButton("Back_P"+playerNum) && canThrow){
 			CreateDropItem(false);
 		}
 	}

@@ -37,21 +37,21 @@ public class HighScoreController : MonoBehaviour {
 	public void SetPlayerInfo(int highScore, string spriteSheet){
 		score = highScore;
 		characterSpriteSheet = spriteSheet;
-		gameObject.GetComponentInChildren<SpriteSwitch>().SetSpriteSheet(spriteSheet);
+		transform.Find("Score").GetComponent<Text>().text = score.ToString();
 	}
 
 	void ChooseName(){
 		if(Input.GetButtonDown("Vertical_P"+playerNumber)){
 			var axis = Input.GetAxis("Vertical_P"+playerNumber);
 			char c = currentLetter[0];
-			if(axis > 0 && currentLetter != "Z"){
+			if(axis > 0){
 				c++;
 			}
-			else if(axis < 0 && currentLetter != "A"){
+			else if(axis < 0){
 				c--;
 			}
-			//if(c < 65) c = 90;
-			//if(c > 90) c = 65;
+			if((int)c < 65) c = "Z"[0];
+			if((int)c > 90) c = "A"[0];
 			currentLetterText.text = currentLetter = c.ToString();
 			PlaySound(blip);
 		}

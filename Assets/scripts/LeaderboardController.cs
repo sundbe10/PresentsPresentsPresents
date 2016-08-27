@@ -20,7 +20,14 @@ public class LeaderboardController : MonoBehaviour {
 				GameObject name = _leaderObject.transform.Find("Name").gameObject;
 				score.GetComponent<Text>().text = leader.score.ToString();
 				name.GetComponent<Text>().text = counter+". "+leader.name;
-				if(leader.characterSpriteSheet != null) _leaderObject.GetComponentInChildren<SpriteSwitch>().SetSpriteSheet(leader.characterSpriteSheet);
+				if(leader.characterSpriteSheet != null){
+					_leaderObject.GetComponentInChildren<SpriteSwitch>().SetSpriteSheet(leader.characterSpriteSheet);
+				}else{
+					SpriteRenderer[] spriteRenderers = _leaderObject.GetComponentsInChildren<SpriteRenderer>();
+					foreach(SpriteRenderer spriteRenderer in spriteRenderers){
+						spriteRenderer.enabled = false;
+					}
+				}
 				//Increase counter for leaderboard
 				counter++;
 			}
