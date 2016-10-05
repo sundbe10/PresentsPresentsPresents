@@ -27,12 +27,13 @@ public class SuperSpeedPowerup : PowerController {
 
 	IEnumerator FadeTrailPart(SpriteRenderer trailPartRenderer)
 	{
-		Color color = trailPartRenderer.color;
-		color.a -= 0.3f; // replace 0.5f with needed alpha decrement
-		trailPartRenderer.color = color;
+		if(trailPartRenderer != null){
+			Color color = trailPartRenderer.color;
+			color.a -= 0.3f; // replace 0.5f with needed alpha decrement
+			trailPartRenderer.color = color;
 
-		yield return new WaitForSeconds(0.05f);
-		if(color.a > 0) StartCoroutine("FadeTrailPart", trailPartRenderer);
-
+			yield return new WaitForSeconds(0.05f);
+			if(color.a > 0) StartCoroutine("FadeTrailPart", trailPartRenderer);
+		}
 	}
 }
