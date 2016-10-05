@@ -36,6 +36,13 @@ public class GameController : Singleton<GameController> {
 	State _state = State.PLAYING;
 	GameObject menu;
 
+	//Events
+	public delegate void OnGameStateChangeDelegate ();
+	public static event OnGameStateChangeDelegate onGameStartEvent;
+	public static event OnGameStateChangeDelegate onGameEndEvent;
+	public static event OnGameStateChangeDelegate onGamePauseEvent;
+	public static event OnGameStateChangeDelegate onGameResumeEvent;
+
 	// Use this for initialization
 	void Start () {
 		audioController = gameObject.GetComponent<GameAudioController>();
@@ -50,6 +57,7 @@ public class GameController : Singleton<GameController> {
 			SetTimerText(gameTime);
 			break;
 		}
+
 		//Initiate countdown
 		StartCoroutine(StartCountdown());
 	}
@@ -59,6 +67,7 @@ public class GameController : Singleton<GameController> {
 		if(_state == State.PLAYING){
 			if(Input.GetButtonDown("Start")){
 				_state = State.PAUSED;
+				onGamePauseEvent();
 				audioController.PlayPauseSound();
 				menu = Instantiate(pauseMenu, Vector3.zero, Quaternion.identity) as GameObject;
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
@@ -123,27 +132,24 @@ public class GameController : Singleton<GameController> {
 		
 	public void ResumeGame(){
 		_state = State.PLAYING;
+		onGameResumeEvent();
 		audioController.ResumeMusic();
 		Time.timeScale = 1.0f;
 	}
+
+	public GameObject GetWinner(){
+		return winner;
+	}
+
 
 	//Private Functions
 	IEnumerator StartCountdown(){
 		yield return new WaitForSeconds(introTime);
 		int countdownTime = countdownObject.GetComponent<CountdownController>().StartTimer();
 		yield return new WaitForSeconds(countdownTime);
-		EnablePlayers();
+		onGameStartEvent();
 		if(gameTime > 0){
 			StartCoroutine(IncrementTimer());
-		}
-	}
-
-	void EnablePlayers(){
-		GameObject[] players = FindObjectsOfType<GameObject>();
-		foreach(GameObject player in players){
-			if(player.tag == "Player"){
-				player.GetComponent<PlayerController>().EnablePlayer();
-			}
 		}
 	}
 
@@ -172,24 +178,9 @@ public class GameController : Singleton<GameController> {
 
 	void DeclareWinner(){
 		winner = null;
-		//Stop music and play fall sound effect
+		//Stop music and play fall sound effect. Send end game event.
 		audioController.PlayFallSound();
-
-		//TODO Change diabling to an event
-
-		//Disable Kids
-		GameObject[] kids = GameObject.FindGameObjectsWithTag("Kid");
-		foreach(GameObject kid in kids){
-			kid.GetComponent<KidController>().DisableKid();
-		}
-
-		//Disable Bullies
-		GameObject[] bullies = GameObject.FindGameObjectsWithTag("Bully");
-		foreach(GameObject bully in bullies){
-			bully.GetComponent<BullyController>().DisableBully();
-		}
-
-		//End TODO
+		onGameEndEvent();
 
 		//Calculate Winner and kill losers
 		GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -197,28 +188,30 @@ public class GameController : Singleton<GameController> {
 		int highScore = 0;
 
 		foreach(GameObject player in players){
-			int playerScore = player.GetComponent<PlayerController>().GetScore();
+			PlayerController playerController = player.GetComponent<PlayerController>();
+			int playerScore = playerController.GetScore();
 			//Player has a higher Score
 			if(playerScore > highScore){
 				if(highScorer) highScorer.GetComponent<PlayerController>().FallPlayer();
 				highScorer = player;
-				highScore = highScorer.GetComponent<PlayerController>().GetScore();
+				highScore = playerScore;
 			}
 			//Player is tied for highest Score
 			else if(playerScore == highScore){
-				player.GetComponent<PlayerController>().FallPlayer();
 				if(highScorer) highScorer.GetComponent<PlayerController>().FallPlayer();
+				playerController.FallPlayer();
 				highScorer = null;
 			}
-			//Player has a lower score
+			//Player loses
 			else{
-				player.GetComponent<PlayerController>().FallPlayer();
+				playerController.FallPlayer();
 			}
 		}
 
 		//Set Winner
 		winner = highScorer;
-		StartCoroutine(AnnounceWinner(highScorer));
+		_state = State.ENDED;
+		StartCoroutine(AnnounceWinner(winner));
 	}
 
 	IEnumerator AnnounceWinner(GameObject player){
@@ -234,14 +227,11 @@ public class GameController : Singleton<GameController> {
 			audioController.WinText();
 			if(Leaderboard.IsNewHighScore(player.GetComponent<PlayerController>().GetScore())){
 				_state = State.HIGHSCORE;
-			}else{
-				_state = State.ENDED;
 			}
 		}else{
 			yield return new WaitForSeconds(3);
 			winnerText.text = "DRAW";
 			audioController.WinText();
-			_state = State.ENDED;
 		}
 	}
 

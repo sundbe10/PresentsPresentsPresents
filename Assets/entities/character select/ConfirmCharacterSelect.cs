@@ -17,7 +17,6 @@ public class ConfirmCharacterSelect : MonoBehaviour {
 
 	public bool AllPlayersReady(){
 		players = GameObject.FindGameObjectsWithTag("Player");
-		Debug.Log(players.Length);
 		//If no active player, return false
 		if(players.Length == 0) return false;
 		//Determine if active players are ready

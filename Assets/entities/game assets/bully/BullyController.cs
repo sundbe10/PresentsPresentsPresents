@@ -49,6 +49,9 @@ public class BullyController : MonoBehaviour {
 		SpriteSwitch switcher = gameObject.GetComponent<SpriteSwitch>();
 		switcher.SetSpriteSheet(randomSprite);
 
+		//Events
+		GameController.onGameEndEvent += DisableBully;
+
 	}
 
 	void Awake(){
