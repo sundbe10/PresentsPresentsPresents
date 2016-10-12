@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour {
 		SPEED,
 		THROWSPEED,
 		FROZEN,
-		DASHDELAY
+		DASHDELAY,
+		CONTROLDIRECTION
 	}
 
 	//Private vars
@@ -88,6 +89,7 @@ public class PlayerController : MonoBehaviour {
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
 		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
 		playerAttrs.Add (Attributes.DASHDELAY, dashDelay);
+		playerAttrs.Add (Attributes.CONTROLDIRECTION, 1f); 
 	}
 
 	void Start(){
@@ -291,9 +293,10 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetButton("Horizontal_P"+playerNum)){
 			float maxSpeed = (float) playerAttrs[Attributes.SPEED];
 			int direction = 1;
-			if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+			float axis = Input.GetAxis("Horizontal_P"+playerNum) * (float)playerAttrs[Attributes.CONTROLDIRECTION];
+			if(axis > 0){
 				direction = 1;
-			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+			}else if(axis < 0){
 				direction = -1;
 			}
 			transform.localScale = new Vector3(direction,1,1);

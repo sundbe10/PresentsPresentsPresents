@@ -62,8 +62,7 @@
      <Compile Include="Assets\entities\game assets\player\PlayerController.cs" />
      <Compile Include="Assets\entities\game assets\powerup\ApplyPowerupController.cs" />
      <Compile Include="Assets\entities\game assets\powerup\PowerController.cs" />
-     <Compile Include="Assets\entities\game assets\powerup\fast_throw\FastThrowPowerup.cs" />
-     <Compile Include="Assets\entities\game assets\powerup\fast_throw\FireSmokeController.cs" />
+     <Compile Include="Assets\entities\game assets\powerup\PowerSpriteController.cs" />
      <Compile Include="Assets\entities\game assets\powerup\freeze\FreezePower.cs" />
      <Compile Include="Assets\entities\game assets\powerup\speed\SuperSpeedPowerup.cs" />
      <Compile Include="Assets\entities\game assets\present\PresentController.cs" />
