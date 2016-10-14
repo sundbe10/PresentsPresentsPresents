@@ -16,6 +16,7 @@ public class PresentController : MonoBehaviour {
 
 	//Private Vars
 	bool isPresent;
+	public float presentSpeed;
 	GameObject thrower;
 	State _state = State.FALLING;
 	SpriteRenderer spriteRenderer;
@@ -29,7 +30,7 @@ public class PresentController : MonoBehaviour {
 	void Update () {
 		switch(_state){
 		case State.FALLING:
-			transform.position += new Vector3(0,-150f*Time.deltaTime,0);
+			transform.position += new Vector3(0,-presentSpeed*Time.deltaTime,0);
 			break;
 		case State.CAUGHT:
 			break;
@@ -58,6 +59,10 @@ public class PresentController : MonoBehaviour {
 	//Public Functions
 	public void SetThrower(GameObject throwerObject){
 		thrower = throwerObject;
+	}
+
+	public void SetSpeed(float speed){
+		presentSpeed = speed;
 	}
 
 	public GameObject GetThrower(){

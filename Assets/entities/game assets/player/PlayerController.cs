@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 	public float dashDelay = 0.2f;
 	public float hitForce = 200000f;
 	public float throwSpeed = 1f;
+	public float presentSpeed = 150f;
 	public GameObject present;
 	public int playerNum = 1;	
 	public CharacterCollection.Character currentCharacter = null;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour {
 	public enum Attributes{
 		SPEED,
 		THROWSPEED,
+		PRESENTSPEED,
 		FROZEN,
 		DASHDELAY,
 		CONTROLDIRECTION
@@ -87,6 +89,7 @@ public class PlayerController : MonoBehaviour {
 		//Populate Attrs Hashtable
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
+		playerAttrs.Add (Attributes.PRESENTSPEED, presentSpeed);
 		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
 		playerAttrs.Add (Attributes.DASHDELAY, dashDelay);
 		playerAttrs.Add (Attributes.CONTROLDIRECTION, 1f); 
@@ -359,6 +362,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		presentController.SetThrower(gameObject);
 		if(currentCharacter != null) presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
+		presentController.SetSpeed((float)playerAttrs[Attributes.PRESENTSPEED]);
 		canThrow = false;
 
 		//Prevent player from being able to throw immidiately 
