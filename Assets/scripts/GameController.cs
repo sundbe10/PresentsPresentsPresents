@@ -10,6 +10,7 @@ public class GameController : Singleton<GameController> {
 		PAUSED,
 		ENDED,
 		POSTEND,
+		DONE,
 		HIGHSCORE
 	};
 
@@ -73,12 +74,12 @@ public class GameController : Singleton<GameController> {
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
 				PauseGame();
 			}
-		}else if(_state == State.ENDED){
+		}else if(_state == State.POSTEND){
 			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
 				menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
 				audioController.PlayPauseSound();
-				_state = State.POSTEND;
+				_state = State.DONE;
 			}
 		}else if(_state == State.HIGHSCORE){
 			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
@@ -90,7 +91,7 @@ public class GameController : Singleton<GameController> {
 				string winnerCharacter = winnerController.currentCharacter.characterSpriteSheetName;
 				menu.GetComponent<HighScoreController>().SetPlayerInfo(winnerScore, winnerCharacter);
 				audioController.PlayPauseSound();
-				_state = State.POSTEND;
+				_state = State.DONE;
 			}
 		}
 	}
@@ -119,7 +120,7 @@ public class GameController : Singleton<GameController> {
 		Instance.ResumeGame();
 	}
 	static public void CompleteHighScoreEntry(){
-		Instance._state = State.POSTEND;
+		Instance._state = State.DONE;
 		SceneLoader.GoToScene("Leaderboard_game",true);
 	}
 
@@ -227,6 +228,8 @@ public class GameController : Singleton<GameController> {
 			audioController.WinText();
 			if(Leaderboard.IsNewHighScore(player.GetComponent<PlayerController>().GetScore())){
 				_state = State.HIGHSCORE;
+			}else{
+				_state = State.POSTEND;
 			}
 		}else{
 			yield return new WaitForSeconds(3);
