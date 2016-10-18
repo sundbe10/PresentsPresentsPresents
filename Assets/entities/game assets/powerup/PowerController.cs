@@ -6,10 +6,24 @@ public class PowerController : MonoBehaviour {
 	public PlayerController.Attributes attribute;
 	public float multiplier;
 	public float timeout;
+	public GameObject powerSpriteObject;
+	public float powerSpriteSpawnInterval = 0.5f;
+	public bool powerHasPulseColor;
+	public Color32 pulseColor;
+
+	SpriteRenderer playerRenderer;
+	int sinCounter = 0;
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
+		playerRenderer = gameObject.GetComponentInParent<SpriteRenderer>();
 		ApplyPower();
+		if(powerSpriteObject != null){
+			InvokeRepeating("MakeSprites", 0, powerSpriteSpawnInterval);
+		}
+		if(powerHasPulseColor && playerRenderer.color == Color.white){
+			InvokeRepeating("PulseColor", 0 , 0.1f);
+		}
 	}
 	
 	// Update is called once per frame
@@ -24,8 +38,16 @@ public class PowerController : MonoBehaviour {
 
 	public virtual IEnumerator DestroyPower(){
 		yield return new WaitForSeconds(timeout);
-		Debug.Log("Destroy");
+		playerRenderer.color = new Color32(255,255,255,255);
 		Destroy(gameObject);
 	}
-		
+
+	public void MakeSprites(){
+		GameObject newSmoke = Instantiate(powerSpriteObject,transform.parent.position + new Vector3(Random.Range(-10f,10f),8+Random.Range(-7f,7f),0), Quaternion.identity) as GameObject;
+		newSmoke.transform.SetParent(transform.parent);
+	}
+
+	public void PulseColor(){
+		playerRenderer.color = Color.Lerp(Color.white, pulseColor, Mathf.PingPong(Time.time, 1));
+	}
 }

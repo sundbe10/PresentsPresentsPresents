@@ -7,6 +7,7 @@ public class MenuController : MonoBehaviour {
 	void Start(){
 		GameObject firstMenuItem = transform.Find("MenuItem").gameObject;
 		if(firstMenuItem != null && gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>() != null){
+			Debug.Log(gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>());
 			gameObject.GetComponent<UnityEngine.EventSystems.EventSystem>().firstSelectedGameObject = firstMenuItem;
 		}
 	}

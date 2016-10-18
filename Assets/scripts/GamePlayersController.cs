@@ -3,9 +3,15 @@ using System.Collections;
 
 public class GamePlayersController : MonoBehaviour {
 
-	public int numberOfPlayers = 2;
+	[System.Serializable]
+	public class PlayerPosition{
+		public float position;
+	}
 
-	float worldWidth = 500;
+	public GameObject playerObject;
+	public int numberOfPlayers = 4;
+	public PlayerPosition[] playerPositions;
+
 	int maxPlayers = 4;
 
 	// Use this for initialization
@@ -20,28 +26,12 @@ public class GamePlayersController : MonoBehaviour {
 
 	void SetPlayers(){
 		for(int i = 1; i <= maxPlayers; i++){
-
-			//Position/Remove players based on the current number of players
-			GameObject player = GameObject.Find("Player "+i+" Group");
-			GameObject playerScore = GameObject.Find ("Player "+i+" Score");
+			//Add players based on the current number of players
 			CharacterCollection.Character character = GameData.GetCharacter(i);
 			if(character != null){
-				//float startX = worldWidth*i/(numberOfPlayers+1)-worldWidth/2;
-				//player.transform.position = new Vector3(startX, player.transform.position.y, player.transform.position.z);
-				player.GetComponentInChildren<PlayerController>().SetCharacter(character);
-			}else{
-				Destroy(player);
-				Destroy (playerScore);
+				GameObject newPlayer = Instantiate(playerObject, new Vector3(playerPositions[i-1].position,0,0), Quaternion.identity) as GameObject;
+				newPlayer.GetComponentInChildren<PlayerController>().InitializePlayer(i, character);
 			}
-
-			//Set specific player score positions for 1 or 2 players
-			if(numberOfPlayers == 2){
-				//TODO center P1/P2 scores around time
-			}else if(numberOfPlayers == 1){
-				//TODO: Figure out score position for 1 player
-			}
-
-			//TODO Set characters based on character selection
 		}
 	}
 }

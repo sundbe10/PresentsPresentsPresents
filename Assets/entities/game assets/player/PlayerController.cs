@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour {
 	public float dashDelay = 0.2f;
 	public float hitForce = 200000f;
 	public float throwSpeed = 1f;
+	public float presentSpeed = 150f;
 	public GameObject present;
 	public int playerNum = 1;	
 	public CharacterCollection.Character currentCharacter = null;
@@ -45,14 +46,17 @@ public class PlayerController : MonoBehaviour {
 	public enum Attributes{
 		SPEED,
 		THROWSPEED,
+		PRESENTSPEED,
 		FROZEN,
-		DASHDELAY
+		DASHDELAY,
+		CONTROLDIRECTION
 	}
 
 	//Private vars
 	Animator animator;
 	Animator bodyAnimator;
 	Animator dashAnimator;
+	bool disabled = false;
 	AudioSource audioSource;
 	Rigidbody2D rigidBody;
 	bool canThrow = true;
@@ -61,13 +65,14 @@ public class PlayerController : MonoBehaviour {
 	int playerScore;
 	int scoreMultiplier = 1;
 	State _state = State.ENTRY;
+	State _prevState;
 	GameObject playerScoreGroup;
 	PlayerScoreController playerScoreBar = null;
 	Text playerNameText;
 	Transform playerTag;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		animator = gameObject.GetComponent<Animator>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 		bodyAnimator = transform.Find ("Body").gameObject.GetComponent<Animator>();
@@ -78,46 +83,57 @@ public class PlayerController : MonoBehaviour {
 		//Get correct score component
 		maxScore = GameController.GetMaxGameScore();
 		playerScore = GameController.GetInitialGameScore();
-		playerScoreGroup = GameObject.FindGameObjectsWithTag("Player Score").OrderBy(g=>g.transform.GetSiblingIndex()).ToArray()[playerNum-1];
+		playerScoreGroup = transform.parent.FindChild("Canvas/Player Score").gameObject;
 		playerScoreBar = playerScoreGroup.GetComponent<PlayerScoreController>();
-		playerScoreBar.SetInitialScore(playerScore, maxScore, scoreMultiplier);
 		playerNameText = playerScoreGroup.transform.FindChild("Player Name").gameObject.GetComponent<Text>();
 		//Populate Attrs Hashtable
 		playerAttrs.Add (Attributes.SPEED, moveSpeed);
 		playerAttrs.Add (Attributes.THROWSPEED, throwSpeed);
+		playerAttrs.Add (Attributes.PRESENTSPEED, presentSpeed);
 		playerAttrs.Add (Attributes.FROZEN, State.DEAD);
 		playerAttrs.Add (Attributes.DASHDELAY, dashDelay);
+		playerAttrs.Add (Attributes.CONTROLDIRECTION, 1f); 
+	}
+
+	void Start(){
+		playerScoreBar.SetInitialScore(playerScore, maxScore, scoreMultiplier);
+		GameController.onGameStartEvent += EnablePlayer;
+		GameController.onGameEndEvent += DisablePlayer;
+		GameController.onGamePauseEvent += PausePlayer;
+		GameController.onGameResumeEvent += ResumePlayer;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		switch(_state){
-		case State.ENTRY:
-			break;
-		case State.MOVE_ONLY:
-			MovePlayer();
-			Dash();
-			break;
-		case State.THROW_ONLY:
-			ThrowPresent();
-			break;
-		case State.ACTIVE:
-			MovePlayer();
-			Dash();
-			ThrowPresent();
-			Score();
-			break;
-		case State.HIT:
-			ThrowPresent();
-			Score();
-			break;
-		case State.STUNNED:
-			Score();
-			break;
-		case State.FALLING:
-			break;
-		case State.DEAD:
-			break;
+		if(!disabled){
+			switch(_state){
+			case State.ENTRY:
+				break;
+			case State.MOVE_ONLY:
+				MovePlayer();
+				Dash();
+				break;
+			case State.THROW_ONLY:
+				ThrowPresent();
+				break;
+			case State.ACTIVE:
+				MovePlayer();
+				Dash();
+				ThrowPresent();
+				Score();
+				break;
+			case State.HIT:
+				ThrowPresent();
+				Score();
+				break;
+			case State.STUNNED:
+				Score();
+				break;
+			case State.FALLING:
+				break;
+			case State.DEAD:
+				break;
+			}
 		}
 	}
 
@@ -141,35 +157,48 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	//Public Functions
-	public void SetCharacter(CharacterCollection.Character character){
-		name = playerNameText.text = character.displayName;
-		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
-		Debug.Log(playerScoreGroup);
-		playerScoreGroup.GetComponent<SpriteSwitch>().SetSpriteSheet(character.characterSpriteSheetName);
-		currentCharacter = character;
+	public void InitializePlayer(int _playerNum, CharacterCollection.Character _character){
+		playerNum = _playerNum;
+		name = playerNameText.text = _character.displayName;
+		transform.parent.gameObject.GetComponent<SpriteSwitch>().SetSpriteSheet(_character.characterSpriteSheetName);
+		currentCharacter = _character;
 	}
 
 	public void EnableMovement(){
-		_state = State.MOVE_ONLY;
+		ChangeState(State.MOVE_ONLY);
 	}
 	
 	public void EnablePlayer(){
-		_state = State.ACTIVE;
+		_prevState = State.ACTIVE;
+		ChangeState(State.ACTIVE);
+	}
+
+	public void DisablePlayer(){
+		_prevState = State.DEAD;
+		ChangeState(State.DEAD);
+	}
+
+	public void PausePlayer(){
+		disabled = true;
+	}
+
+	public void ResumePlayer(){
+		disabled = false;
 	}
 
 	public void FallPlayer(){
-		_state = State.FALLING;
+		ChangeState(State.FALLING);
 		animator.SetBool("FALLING",true);
 		transform.Find("Body/Flames").gameObject.GetComponent<SpriteRenderer>().enabled = false;
 	}
 
 	public void KillPlayer(){
-		_state = State.DEAD;
+		ChangeState(State.DEAD);
 		bodyAnimator.SetBool("DEAD",true);
 	}
 
 	public void DeclareWinner(){
-		_state = State.CELEBRATE;
+		ChangeState(State.CELEBRATE);
 	}
 	
 	public int IncrementScore(int score){
@@ -255,6 +284,11 @@ public class PlayerController : MonoBehaviour {
 		if(playerScoreBar != null) playerScoreBar.SetScore(playerScore, scoreMultiplier);
 	}
 
+	void ChangeState(State state){
+		if(_state == State.MOVE_ONLY || _state == State.ACTIVE || _state == State.DEAD) _prevState = _state;
+		_state = state;
+	}
+
 
 	/***** Moving *****/
 
@@ -262,9 +296,10 @@ public class PlayerController : MonoBehaviour {
 		if(Input.GetButton("Horizontal_P"+playerNum)){
 			float maxSpeed = (float) playerAttrs[Attributes.SPEED];
 			int direction = 1;
-			if(Input.GetAxis("Horizontal_P"+playerNum) > 0){
+			float axis = Input.GetAxis("Horizontal_P"+playerNum) * (float)playerAttrs[Attributes.CONTROLDIRECTION];
+			if(axis > 0){
 				direction = 1;
-			}else if(Input.GetAxis("Horizontal_P"+playerNum) < 0){
+			}else if(axis < 0){
 				direction = -1;
 			}
 			transform.localScale = new Vector3(direction,1,1);
@@ -289,13 +324,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	IEnumerator DashCooldown(){
-		State _prevState = _state;
-		_state = State.DASHING;
+		ChangeState(State.DASHING);
 		yield return new WaitForSeconds((float) playerAttrs[Attributes.DASHDELAY]);
 		gameObject.layer = LayerMask.NameToLayer(playerLayer);
-		if(_state == State.DASHING){
-			_state = _prevState == State.MOVE_ONLY ? State.MOVE_ONLY : State.ACTIVE;
-		}
+		ChangeState(_prevState);
 	}
 
 
@@ -330,6 +362,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		presentController.SetThrower(gameObject);
 		if(currentCharacter != null) presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
+		presentController.SetSpeed((float)playerAttrs[Attributes.PRESENTSPEED]);
 		canThrow = false;
 
 		//Prevent player from being able to throw immidiately 
@@ -339,22 +372,21 @@ public class PlayerController : MonoBehaviour {
 
 	/***** Stun *****/
 	void StunPlayer(){
-		_state = State.STUNNED;
+		ChangeState(State.STUNNED);
 		PlaySound(stunnedSound);
 		StartCoroutine("StunCooldown");
 		bodyAnimator.SetBool("isStunned",true);
 	}
 	IEnumerator StunCooldown(){
-		State _prevState = _state;
 		yield return new WaitForSeconds(2f);
 		bodyAnimator.SetBool("isStunned",false);
-		ReturnToActive();
+		ChangeState(_prevState);
 	}
 
 
 	/***** Dash Hit *****/
 	void Hit(Collider2D collider){
-		if(_state != State.STUNNED) _state = State.HIT;
+		if(_state != State.STUNNED) ChangeState(State.HIT);
 		var direction = collider.GetComponentInParent<PlayerController>().GetDirection();
 		rigidBody.velocity = Vector2.zero;
 		rigidBody.AddForce(Vector2.right * Time.deltaTime * -direction * hitForce);
@@ -363,7 +395,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	IEnumerator HitCooldown(){
 		yield return new WaitForSeconds(0.3f);
-		ReturnToActive();
+		ChangeState(_prevState);
 	}
 
 
@@ -401,16 +433,12 @@ public class PlayerController : MonoBehaviour {
 			yield return new WaitForSeconds(timeout);
 			playerAttrs[attribute] = (float) playerAttrs[attribute] /  multiplier;
 		}else if(attributeType == typeof(State)){
-			_state = (State)playerAttrs[attribute];
+			ChangeState((State)playerAttrs[attribute]);
 			yield return new WaitForSeconds(timeout);
-			if(_state == (State)playerAttrs[attribute]) _state = State.ACTIVE;
+		//If state was changed by a powerup, return the state to normal
+		if(_state == (State)playerAttrs[attribute]) ChangeState(_prevState);
 		}
 	}
-
-	void ReturnToActive(){
-		_state = GameController.GameIsActive() ? State.ACTIVE : State.DEAD;
-	}
-
 
 	/***** Sound *****/
 

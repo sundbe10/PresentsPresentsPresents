@@ -6,7 +6,7 @@ public class SuperSpeedPowerup : PowerController {
 	// Use this for initialization
 	void Start()
 	{
-		ApplyPower();
+		base.Start();
 		InvokeRepeating("SpawnTrail", 0, 0.05f); // replace 0.2f with needed repeatRate
 	}
 

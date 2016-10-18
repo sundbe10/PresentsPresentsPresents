@@ -56,6 +56,9 @@ public class KidController : MonoBehaviour {
 			GivePowerup();
 		}
 
+		//Events
+		GameController.onGameEndEvent += DisableKid;
+
 	}
 	
 	// Update is called once per frame

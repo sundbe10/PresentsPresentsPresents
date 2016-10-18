@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireSmokeController : MonoBehaviour {
+public class PowerSpriteController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -13,7 +13,7 @@ public class FireSmokeController : MonoBehaviour {
 	
 	}
 
-	public void RemoveSmoke(){
+	public void DestroyObject(){
 		Destroy(gameObject);
 	}
 }
