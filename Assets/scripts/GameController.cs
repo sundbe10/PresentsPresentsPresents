@@ -123,7 +123,13 @@ public class GameController : Singleton<GameController> {
 		Instance._state = State.DONE;
 		SceneLoader.GoToScene("Leaderboard_game",true);
 	}
-
+	static public int GetWinnerNumber(){
+		if(Instance.winner != null){
+			return Instance.winner.GetComponent<PlayerController>().playerNum;
+		}else{
+			return 0;
+		}
+	}
 
 	//Public Functions
 	public void PauseGame(){
@@ -137,11 +143,6 @@ public class GameController : Singleton<GameController> {
 		audioController.ResumeMusic();
 		Time.timeScale = 1.0f;
 	}
-
-	public GameObject GetWinner(){
-		return winner;
-	}
-
 
 	//Private Functions
 	IEnumerator StartCountdown(){

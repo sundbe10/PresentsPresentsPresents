@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ConfirmCharacterSelect : MonoBehaviour {
 
@@ -27,6 +28,17 @@ public class ConfirmCharacterSelect : MonoBehaviour {
 			}
 		}
 		return ready;
+	}
+	public List<int> GetActivePlayers(){
+		players = GameObject.FindGameObjectsWithTag("Player");
+		List<int> playerNumbers = new List<int>();
+		//If no active player, return empty
+		if(players.Length == 0) return playerNumbers;
+		//Determine if active players are ready
+		foreach(GameObject player in players){
+			playerNumbers.Add(player.GetComponent<CharacterSelectController>().playerNumber);
+		}
+		return playerNumbers;
 	}
 
 	public bool NoActivePlayers(){

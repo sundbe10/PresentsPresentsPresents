@@ -170,7 +170,8 @@ public class PlayerController : MonoBehaviour {
 	
 	public void EnablePlayer(){
 		_prevState = State.ACTIVE;
-		ChangeState(State.ACTIVE);
+		if(_state == State.MOVE_ONLY)
+			ChangeState(State.ACTIVE);
 	}
 
 	public void DisablePlayer(){
@@ -293,7 +294,7 @@ public class PlayerController : MonoBehaviour {
 	/***** Moving *****/
 
 	void MovePlayer(){
-		if(Input.GetButton("Horizontal_P"+playerNum)){
+		if(Input.GetAxis("Horizontal_P"+playerNum) != 0.0f){
 			float maxSpeed = (float) playerAttrs[Attributes.SPEED];
 			int direction = 1;
 			float axis = Input.GetAxis("Horizontal_P"+playerNum) * (float)playerAttrs[Attributes.CONTROLDIRECTION];
@@ -314,7 +315,7 @@ public class PlayerController : MonoBehaviour {
 	/***** Dashing *****/
 
 	void Dash(){
-		if(Input.GetButton("X_P"+playerNum)){
+		if(Input.GetButton("Dash_P"+playerNum)){
 			float dashDirection =  transform.localScale.x;
 			rigidBody.AddForce(Vector2.right * dashDirection * dashForce * Time.deltaTime);
 			gameObject.layer = LayerMask.NameToLayer(playerDashLayer);
@@ -372,7 +373,7 @@ public class PlayerController : MonoBehaviour {
 
 	/***** Stun *****/
 	void StunPlayer(){
-		ChangeState(State.STUNNED);
+		disabled = true;
 		PlaySound(stunnedSound);
 		StartCoroutine("StunCooldown");
 		bodyAnimator.SetBool("isStunned",true);
@@ -380,7 +381,7 @@ public class PlayerController : MonoBehaviour {
 	IEnumerator StunCooldown(){
 		yield return new WaitForSeconds(2f);
 		bodyAnimator.SetBool("isStunned",false);
-		ChangeState(_prevState);
+		disabled = false;
 	}
 
 

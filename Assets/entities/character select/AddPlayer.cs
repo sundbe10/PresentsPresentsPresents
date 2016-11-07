@@ -18,17 +18,16 @@ public class AddPlayer : MonoBehaviour {
 	public AudioClip backSound;
 
 	CharacterSelectController newPlayerController;
-	CharacterCollection characterCollection;
 	CharacterCollection.Character currentCharacter;
 	AudioSource audioSource;
 	State _state;
 	Text text;
+	bool axisButtonDown = false;
 
 	// Use this for initialization
 	void Awake () {
 		_state = State.ADD;
 		text = gameObject.GetComponent<Text>();
-		characterCollection = GameObject.Find("CharacterCollection").GetComponent<CharacterCollection>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 	}
 	
@@ -62,6 +61,7 @@ public class AddPlayer : MonoBehaviour {
 			GameObject newPlayer = Instantiate(playerObject, new Vector3(transform.position.x, transform.position.y-40,0), Quaternion.identity) as GameObject;
 			newPlayerController = newPlayer.GetComponent<CharacterSelectController>();
 			newPlayerController.SetCharacter(currentCharacter);
+			newPlayerController.playerNumber = playerNumber;
 			_state = State.SELECTING;
 			gameObject.GetComponent<Blink>().StopBlink();
 			PlaySound(joinSound);
@@ -70,7 +70,7 @@ public class AddPlayer : MonoBehaviour {
 
 	void HandlePlayerSelecting(){
 		//Select Character
-		if(Input.GetButtonDown("Horizontal_P"+playerNumber)){
+		if(Input.GetAxis("Horizontal_P"+playerNumber) != 0.0f && !axisButtonDown){
 			var axis = Input.GetAxis("Horizontal_P"+playerNumber);
 			if(axis > 0){
 				currentCharacter = CharacterCollection.GetNextOpenCharacter(playerNumber);
@@ -80,9 +80,10 @@ public class AddPlayer : MonoBehaviour {
 			}
 			newPlayerController.SetCharacter(currentCharacter);
 			PlaySound(selectionSound);
+			axisButtonDown = true;
 		}
 		//Select Costume
-		if(Input.GetButtonDown("Vertical_P"+playerNumber)){
+		if(Input.GetAxis("Vertical_P"+playerNumber) != 0.0f && !axisButtonDown){
 			var axis = Input.GetAxis("Vertical_P"+playerNumber);
 			if(axis > 0){
 				currentCharacter = CharacterCollection.GetNextOpenCostume(playerNumber);
@@ -93,7 +94,9 @@ public class AddPlayer : MonoBehaviour {
 
 			newPlayerController.SetCharacter(currentCharacter);
 			PlaySound(selectionSound);
+			axisButtonDown = true;
 		}
+		//Show character name
 		text.text = currentCharacter.locked ? "???" : currentCharacter.displayName.ToUpper();
 		//Finalize Selection
 		if(Input.GetButtonDown("Throw_P"+playerNumber) && !currentCharacter.locked){
@@ -102,6 +105,10 @@ public class AddPlayer : MonoBehaviour {
 			GameData.SetCharacter(playerNumber, currentCharacter);
 			gameObject.GetComponent<Blink>().StartBlink();
 			_state = State.READY;
+		}
+		//Reset axis button down
+		if(Input.GetAxis("Horizontal_P"+playerNumber) == 0 && Input.GetAxis("Vertical_P"+playerNumber) == 0){
+			axisButtonDown = false;
 		}
 	}
 

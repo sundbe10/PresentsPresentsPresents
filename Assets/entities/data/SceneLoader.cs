@@ -67,14 +67,17 @@ public class SceneLoader : Singleton<SceneLoader> {
 	}
 
 	void HandleCharacterSelection(){
-		if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
-			if(GameObject.Find("CharacterCollection").GetComponent<ConfirmCharacterSelect>().AllPlayersReady()){
-				StartCoroutine(Instance.LoadScene("Game"));
-				SceneForward();
+		ConfirmCharacterSelect characterManager = GameObject.Find("CharacterManager").GetComponent<ConfirmCharacterSelect>();
+		foreach(int playerNumber in characterManager.GetActivePlayers()){
+			if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
+				if(GameObject.Find("CharacterManager").GetComponent<ConfirmCharacterSelect>().AllPlayersReady()){
+					StartCoroutine(Instance.LoadScene("Game"));
+					SceneForward();
+				}
 			}
 		}
 		if(Input.GetButtonDown("Cancel")){
-			if(GameObject.Find("CharacterCollection").GetComponent<ConfirmCharacterSelect>().NoActivePlayers()){
+			if(GameObject.Find("CharacterManager").GetComponent<ConfirmCharacterSelect>().NoActivePlayers()){
 				StartCoroutine(Instance.LoadScene("Start"));
 				SceneBackward();
 			}

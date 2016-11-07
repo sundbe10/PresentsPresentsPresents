@@ -39,9 +39,13 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 
 	// Use this for initialization
 	void Start () {
-		playerChoices = new Costume[4];
+		InitializePlayerChoices();
 	}
 
+	void OnLevelWasLoaded(int level){
+		//If navigating to a new scene, reset character collection
+		Instance.InitializePlayerChoices();
+	}
 
 	//Static
 		
@@ -84,7 +88,19 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 	}
 
 
+
+
 	//private
+	void InitializePlayerChoices(){
+		//TODO: Change functionality so control of selected characters is separate from the library of characters
+		Instance.playerChoices = new Costume[4];
+		//Reset taken costumes
+		foreach(CharacterModel characterModel in characterModels){
+			foreach(Costume costume in characterModel.costumes){
+				costume.taken = false;
+			}
+		}
+	}
 
 	Character SelectNextOpenCharacter(int playerNumber){
 		int characterPosition = GetCharacterModelIndex(playerChoices[playerNumber-1]);

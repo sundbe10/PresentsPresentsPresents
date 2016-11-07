@@ -9,7 +9,7 @@ public class GameData : Singleton<GameData> {
 	// Use this for initialization
 	void Awake () {
 		DontDestroyOnLoad(gameObject);
-		playerCharacters = new CharacterCollection.Character[4];
+		InitializePlayerCharacters();
 	}
 
 	void Start(){
@@ -19,6 +19,11 @@ public class GameData : Singleton<GameData> {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	void OnLevelWasLoaded(int level){
+		//If navigating to a scene other than the game screen, reset all player choices for character selections
+		if(level == 1) InitializePlayerCharacters();
 	}
 
 	static public void SetCharacter(int playerNumber, CharacterCollection.Character character){
@@ -35,6 +40,10 @@ public class GameData : Singleton<GameData> {
 
 	static public void SetLevel(){
 		//Set Level
+	}
+
+	void InitializePlayerCharacters(){
+		playerCharacters = new CharacterCollection.Character[4];
 	}
 
 }

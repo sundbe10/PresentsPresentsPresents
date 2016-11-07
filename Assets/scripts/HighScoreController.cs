@@ -22,11 +22,13 @@ public class HighScoreController : MonoBehaviour {
 	string name = "";
 	int score;
 	string characterSpriteSheet;
+	bool axisButtonDown;
 
 	// Use this for initialization
 	void Start () {
 		SetCurrentLetter();
 		audioSource = gameObject.GetComponent<AudioSource>();
+		playerNumber = GameController.GetWinnerNumber();
 	}
 	
 	// Update is called once per frame
@@ -41,7 +43,7 @@ public class HighScoreController : MonoBehaviour {
 	}
 
 	void ChooseName(){
-		if(Input.GetButtonDown("Vertical_P"+playerNumber)){
+		if(Input.GetAxis("Vertical_P"+playerNumber) != 0 && !axisButtonDown){
 			var axis = Input.GetAxis("Vertical_P"+playerNumber);
 			char c = currentLetter[0];
 			if(axis > 0){
@@ -54,7 +56,15 @@ public class HighScoreController : MonoBehaviour {
 			if((int)c > 90) c = "A"[0];
 			currentLetterText.text = currentLetter = c.ToString();
 			PlaySound(blip);
+			axisButtonDown = true;
+			StartCoroutine("ResetAxisButtonDown");
 		}
+		//Reset Axis Button down
+		if(Input.GetAxis("Horizontal_P"+playerNumber) == 0 && Input.GetAxis("Vertical_P"+playerNumber) == 0){
+			axisButtonDown = false;
+			StopCoroutine("ResetAxisButtonDown");
+		}
+
 		if(Input.GetButtonDown("Throw_P"+playerNumber)){
 			if(letterNumber < 3){
 				PlaySound(confirmLetter);
@@ -98,5 +108,10 @@ public class HighScoreController : MonoBehaviour {
 
 	void PlaySound(AudioClip sound){
 		audioSource.PlayOneShot(sound);
+	}
+
+	IEnumerator ResetAxisButtonDown(){
+		yield return new WaitForSeconds(0.25f);
+		axisButtonDown = false;
 	}
 }

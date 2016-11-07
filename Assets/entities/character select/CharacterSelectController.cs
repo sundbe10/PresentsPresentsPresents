@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class CharacterSelectController : MonoBehaviour {
 
+	public int playerNumber;
+
 	private SpriteSwitch spriteSwitch;
 	private Animator avatarAnimator;
 	private bool isReady = false;
