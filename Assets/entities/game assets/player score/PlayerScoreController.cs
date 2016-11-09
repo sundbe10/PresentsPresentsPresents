@@ -41,12 +41,11 @@ public class PlayerScoreController : MonoBehaviour {
 	//Public
 	public void SetScore(int score, int multiplier){
 		initialScore = score;
-		//scoreBar.sizeDelta = new Vector2(Mathf.Round(maxWidth * score/maxScore), scoreBar.rect.height);
-		if(multiplier > 0){
-			animator.speed = multiplier * 2;
-			scoreBarImage.color = barColors[multiplier-1].barColor;
-			scoreStripesImage.color = barColors[multiplier-1].stripeColor;
-		}
+		//Ignore -1 multiplier, treat as 1
+		if(multiplier == -1) multiplier = 1;
+		animator.speed = multiplier * 2;
+		scoreBarImage.color = barColors[multiplier-1].barColor;
+		scoreStripesImage.color = barColors[multiplier-1].stripeColor;
 		scoreText.text = score.ToString();
 	}
 		

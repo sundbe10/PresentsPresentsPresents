@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour {
 
 	//Public vars
 	public AudioClip throwSound;
-	public AudioClip catchSound;
-	public AudioClip badCatchSound;
+	public AudioClip maxMultiplierSound;
+	public AudioClip multiplierEndSound;
 	public AudioClip dashSound;
 	public AudioClip swapSound;
 	public AudioClip stunnedSound;
@@ -204,7 +204,9 @@ public class PlayerController : MonoBehaviour {
 	
 	public int IncrementScore(int score){
 		int scoreIncrement;
-		if(scoreMultiplier == -1) scoreMultiplier = 1;
+		if(scoreMultiplier == -1){
+			scoreMultiplier = 1;
+		}
 		if(score > 0){
 			catches++;
 			switch (catches){
@@ -221,10 +223,10 @@ public class PlayerController : MonoBehaviour {
 				PlaySound(multiplier4x);
 				break;
 			}
+			if(catches > 8) PlaySound(maxMultiplierSound);
 			scoreIncrement = score*scoreMultiplier;
 		}else{
 			RemoveMultiplier();
-			scoreMultiplier = -1;
 			scoreIncrement = score;
 		}
 			
@@ -250,7 +252,8 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void RemoveMultiplier(){
-		scoreMultiplier = 1;
+		if(scoreMultiplier > 1) PlaySound(multiplierEndSound);
+		scoreMultiplier = -1;
 		catches = 0;
 	}
 
@@ -396,8 +399,7 @@ public class PlayerController : MonoBehaviour {
 		bodyAnimator.SetBool("isStunned",false);
 		disabled = false;
 	}
-
-
+		
 	/***** Dash Hit *****/
 	void Hit(Collider2D collider){
 		if(_state != State.STUNNED) ChangeState(State.HIT);
