@@ -46,10 +46,10 @@ public class HighScoreController : MonoBehaviour {
 		if(Input.GetAxis("Vertical_P"+playerNumber) != 0 && !axisButtonDown){
 			var axis = Input.GetAxis("Vertical_P"+playerNumber);
 			char c = currentLetter[0];
-			if(axis > 0){
+			if(axis < 0){
 				c++;
 			}
-			else if(axis < 0){
+			else if(axis > 0){
 				c--;
 			}
 			if((int)c < 65) c = "Z"[0];

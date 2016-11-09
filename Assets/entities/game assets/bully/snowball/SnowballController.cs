@@ -45,7 +45,6 @@ public class SnowballController : MonoBehaviour {
 	}
 
 	public void SetVelocity(Vector2 direction){
-		Debug.Log(direction);
 		rigidBody.velocity = throwSpeed * direction * Time.deltaTime;	
 	}
 

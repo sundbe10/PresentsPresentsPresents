@@ -270,10 +270,23 @@ public class PlayerController : MonoBehaviour {
 		return transform.localScale.x;
 	}
 
-	public void ApplyPowerup(Attributes attribute, float multiplier, float timeout){
-		Debug.Log ("Increase "+name+" "+attribute+" by "+multiplier.ToString());
-		//TODO: Add in switch statement for different object types (float and bool at least)
-		StartCoroutine(PowerupTimeout(attribute, multiplier, timeout));
+	public void ApplyPowerup(Attributes attribute, float multiplier){
+		var attributeType = playerAttrs[attribute].GetType();
+		if(attributeType == typeof(float)){
+			playerAttrs[attribute] = (float) playerAttrs[attribute] * multiplier;
+		}else if(attributeType == typeof(State)){
+			ChangeState((State)playerAttrs[attribute]);
+		}
+	}
+
+	public void RemovePowerup(Attributes attribute, float multiplier){
+		var attributeType = playerAttrs[attribute].GetType();
+		if(attributeType == typeof(float)){
+			playerAttrs[attribute] = (float) playerAttrs[attribute] /  multiplier;
+		}else if(attributeType == typeof(State)){
+			//If state was changed by a powerup, return the state to normal
+			if(_state == (State)playerAttrs[attribute]) ChangeState(_prevState);
+		}
 	}
 
 	public bool IsDashing(){
@@ -363,7 +376,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		presentController.SetThrower(gameObject);
 		if(currentCharacter != null) presentController.SetPresentSprite(currentCharacter.characterSpriteSheetName);
-		presentController.SetSpeed((float)playerAttrs[Attributes.PRESENTSPEED]);
+		presentController.SetSpeed((float)playerAttrs[Attributes.PRESENTSPEED] <= presentSpeed*3 ? (float)playerAttrs[Attributes.PRESENTSPEED] : presentSpeed*3);
 		canThrow = false;
 
 		//Prevent player from being able to throw immidiately 
@@ -423,23 +436,7 @@ public class PlayerController : MonoBehaviour {
 		yield return new WaitForSeconds(0.4f); 
 		_state = State.ACTIVE; 
 	} */
-
-
-	/***** Powerup *****/
-
-	IEnumerator PowerupTimeout(Attributes attribute, float multiplier, float timeout){
-		var attributeType = playerAttrs[attribute].GetType();
-		if(attributeType == typeof(float)){
-			playerAttrs[attribute] = (float) playerAttrs[attribute] * multiplier;
-			yield return new WaitForSeconds(timeout);
-			playerAttrs[attribute] = (float) playerAttrs[attribute] /  multiplier;
-		}else if(attributeType == typeof(State)){
-			ChangeState((State)playerAttrs[attribute]);
-			yield return new WaitForSeconds(timeout);
-		//If state was changed by a powerup, return the state to normal
-		if(_state == (State)playerAttrs[attribute]) ChangeState(_prevState);
-		}
-	}
+	
 
 	/***** Sound *****/
 

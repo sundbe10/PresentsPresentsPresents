@@ -84,7 +84,7 @@ public class AddPlayer : MonoBehaviour {
 		}
 		//Select Costume
 		if(Input.GetAxis("Vertical_P"+playerNumber) != 0.0f && !axisButtonDown){
-			var axis = Input.GetAxis("Vertical_P"+playerNumber);
+			var axis = -Input.GetAxis("Vertical_P"+playerNumber);
 			if(axis > 0){
 				currentCharacter = CharacterCollection.GetNextOpenCostume(playerNumber);
 			}

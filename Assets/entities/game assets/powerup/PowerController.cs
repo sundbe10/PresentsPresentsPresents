@@ -16,6 +16,8 @@ public class PowerController : MonoBehaviour {
 
 	// Use this for initialization
 	protected void Start () {
+		GameController.onGameEndEvent += EndPower;
+
 		playerRenderer = gameObject.GetComponentInParent<SpriteRenderer>();
 		ApplyPower();
 		if(powerSpriteObject != null){
@@ -32,13 +34,22 @@ public class PowerController : MonoBehaviour {
 	}
 
 	protected void ApplyPower(){
-		gameObject.GetComponentInParent<PlayerController>().ApplyPowerup(attribute, multiplier, timeout);
-		StartCoroutine(DestroyPower());
+		gameObject.GetComponentInParent<PlayerController>().ApplyPowerup(attribute, multiplier);
+		StartCoroutine("DestroyPower");
+	}
+
+	protected void EndPower(){
+		//Only used to end power when game ends
+		StopCoroutine("DestroyPower");
+		timeout = 0;
+		StartCoroutine("DestroyPower");
 	}
 
 	public virtual IEnumerator DestroyPower(){
 		yield return new WaitForSeconds(timeout);
 		playerRenderer.color = new Color32(255,255,255,255);
+		gameObject.GetComponentInParent<PlayerController>().RemovePowerup(attribute, multiplier);
+		GameController.onGameEndEvent -= EndPower;
 		Destroy(gameObject);
 	}
 

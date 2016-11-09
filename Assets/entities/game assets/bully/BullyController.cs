@@ -107,7 +107,6 @@ public class BullyController : MonoBehaviour {
 	}
 
 	public void OnTriggerStayChild2D(Collider2D collider){
-		Debug.Log(_state);
 		if(collider.CompareTag("Player") && !disabled){
 			switch(_state){
 			case State.WALKING:
