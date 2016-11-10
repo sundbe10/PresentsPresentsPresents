@@ -4,7 +4,6 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
 	void Awake() {
-		Debug.Log (Screen.height);
 		float screenScaler = Mathf.Round (Screen.height / 350f);
 		if(Screen.height/(2*screenScaler) < 640){
 			

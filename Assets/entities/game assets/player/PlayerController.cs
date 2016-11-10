@@ -231,12 +231,16 @@ public class PlayerController : MonoBehaviour {
 		}
 			
 		playerScore += scoreIncrement;
+
 		//Limit score values
 		if(playerScore > maxScore){
 			playerScore = maxScore;
 		}else if(playerScore < 0){
 			playerScore = 0;
 		}
+
+		//Save Stat
+		GameStats.IncrementStat(GameStats.Stat.TotalScore, scoreIncrement);
 
 		return scoreMultiplier;
 	}
@@ -249,6 +253,9 @@ public class PlayerController : MonoBehaviour {
 		}else if(playerScore < 0){
 			playerScore = 0;
 		}
+
+		//Save Stat
+		GameStats.IncrementStat(GameStats.Stat.TotalScore, score);
 	}
 	
 	public void RemoveMultiplier(){
@@ -280,6 +287,8 @@ public class PlayerController : MonoBehaviour {
 		}else if(attributeType == typeof(State)){
 			ChangeState((State)playerAttrs[attribute]);
 		}
+		//Save Stat
+		GameStats.IncrementStat(GameStats.Stat.PowerupsUsed);
 	}
 
 	public void RemovePowerup(Attributes attribute, float multiplier){
@@ -353,8 +362,12 @@ public class PlayerController : MonoBehaviour {
 	void ThrowPresent(){
 		if(Input.GetButton("Throw_P"+playerNum) && canThrow){
 			CreateDropItem(true);
+			//Save Stat
+			GameStats.IncrementStat(GameStats.Stat.PresentsThrown);
 		}else if(Input.GetButton("Back_P"+playerNum) && canThrow){
 			CreateDropItem(false);
+			//Save Stat
+			GameStats.IncrementStat(GameStats.Stat.CoalThrown);
 		}
 	}
 

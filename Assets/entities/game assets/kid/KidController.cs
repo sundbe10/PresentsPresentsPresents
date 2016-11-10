@@ -146,6 +146,9 @@ public class KidController : MonoBehaviour {
 			CryKid();
 		}
 
+		//Save Stat
+		GameStats.IncrementStat(GameStats.Stat.KidsCaught);
+
 		//Show score text
 		CreateScoreText(multiplier);
 		//Hold new object

@@ -76,10 +76,14 @@ public class GameController : Singleton<GameController> {
 			}
 		}else if(_state == State.POSTEND){
 			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
-				menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
-				menu.transform.parent = GameObject.Find("Game Canvas").transform;
-				audioController.PlayPauseSound();
-				_state = State.DONE;
+				if(GameStats.GetUnlockedCharacter() == null){
+					menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
+					menu.transform.parent = GameObject.Find("Game Canvas").transform;
+					audioController.PlayPauseSound();
+					_state = State.DONE;
+				}else{
+					SceneLoader.GoToScene("CharacterUnlock",true);
+				}
 			}
 		}else if(_state == State.HIGHSCORE){
 			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
@@ -121,7 +125,11 @@ public class GameController : Singleton<GameController> {
 	}
 	static public void CompleteHighScoreEntry(){
 		Instance._state = State.DONE;
-		SceneLoader.GoToScene("Leaderboard_game",true);
+		if(GameStats.GetUnlockedCharacter() == null){
+			SceneLoader.GoToScene("Leaderboard_game",true);
+		}else{
+			SceneLoader.GoToScene("CharacterUnlock",true);
+		}
 	}
 	static public int GetWinnerNumber(){
 		if(Instance.winner != null){
@@ -214,6 +222,10 @@ public class GameController : Singleton<GameController> {
 		winner = highScorer;
 		_state = State.ENDED;
 		StartCoroutine(AnnounceWinner(winner));
+
+		//Save game stats
+		GameStats.IncrementStat(GameStats.Stat.GamesPlayed);
+		GameStats.SaveStats();
 	}
 
 	IEnumerator AnnounceWinner(GameObject player){

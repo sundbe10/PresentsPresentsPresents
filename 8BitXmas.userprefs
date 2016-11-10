@@ -1,17 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/entities/game assets/player/PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/Leaderboard.cs">
     <Files>
-      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="379" Column="154" />
-      <File FileName="Assets/scripts/MenuController.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/GamePlayersController.cs" Line="1" Column="1" />
-      <File FileName="Assets/entities/data/SceneLoader.cs" Line="1" Column="1" />
-      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="87" Column="16" />
-      <File FileName="Assets/scripts/HighScoreController.cs" Line="52" Column="18" />
-      <File FileName="Assets/entities/game assets/powerup/ApplyPowerupController.cs" Line="33" Column="6" />
-      <File FileName="Assets/entities/game assets/powerup/PowerController.cs" Line="52" Column="34" />
-      <File FileName="Assets/entities/game assets/bully/BullyController.cs" Line="109" Column="56" />
-      <File FileName="Assets/entities/game assets/bully/snowball/SnowballController.cs" Line="47" Column="45" />
+      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/game assets/player score/PlayerScoreController.cs" Line="1" Column="1" />
+      <File FileName="Assets/entities/data/GameData.cs" Line="12" Column="32" />
+      <File FileName="Assets/scripts/GameStats.cs" Line="8" Column="24" />
+      <File FileName="Assets/scripts/LeaderboardController.cs" Line="10" Column="17" />
+      <File FileName="Assets/scripts/Leaderboard.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

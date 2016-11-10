@@ -52,7 +52,10 @@
      <Compile Include="Assets\entities\character select\AvatarController.cs" />
      <Compile Include="Assets\entities\character select\CharacterSelectController.cs" />
      <Compile Include="Assets\entities\character select\ConfirmCharacterSelect.cs" />
+     <Compile Include="Assets\entities\character unlock\CharacterUnlockController.cs" />
+     <Compile Include="Assets\entities\data\CharacterCollection.cs" />
      <Compile Include="Assets\entities\data\GameData.cs" />
+     <Compile Include="Assets\entities\data\GameStats.cs" />
      <Compile Include="Assets\entities\data\SceneLoader.cs" />
      <Compile Include="Assets\entities\game assets\bully\BullyController.cs" />
      <Compile Include="Assets\entities\game assets\bully\ThrowTrigger.cs" />
@@ -73,7 +76,6 @@
      <Compile Include="Assets\entities\initializer\InitializerController.cs" />
      <Compile Include="Assets\scripts\Blink.cs" />
      <Compile Include="Assets\scripts\CameraController.cs" />
-     <Compile Include="Assets\scripts\CharacterCollection.cs" />
      <Compile Include="Assets\scripts\CountdownController.cs" />
      <Compile Include="Assets\scripts\GameAudioController.cs" />
      <Compile Include="Assets\scripts\GameController.cs" />

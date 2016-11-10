@@ -158,6 +158,9 @@ public class BullyController : MonoBehaviour {
 			StartCoroutine("StunBully");
 		}
 
+		//Save Stat
+		GameStats.IncrementStat(GameStats.Stat.BulliesCaught);
+
 		//Show score text
 		CreateScoreText(multiplier);
 		//Catch new object
