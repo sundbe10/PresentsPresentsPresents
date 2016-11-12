@@ -140,6 +140,7 @@ public class AddPlayer : MonoBehaviour {
 				_state = State.ADD;
 				CharacterCollection.DeselectCharacter(playerNumber);
 				newPlayerController.RemoveCharacter();
+				auxText.text = "";
 				gameObject.GetComponent<Blink>().StartBlink();
 				break;
 			}

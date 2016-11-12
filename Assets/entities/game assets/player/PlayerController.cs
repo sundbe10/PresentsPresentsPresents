@@ -331,7 +331,7 @@ public class PlayerController : MonoBehaviour {
 			transform.localScale = new Vector3(direction,1,1);
 			playerTag.localScale = new Vector3(direction,1,1);
 			if(Mathf.Abs(rigidBody.velocity.x) < maxSpeed){ 
-				rigidBody.velocity = new Vector2(direction*maxSpeed*Time.deltaTime, 0);
+				rigidBody.velocity = new Vector2(direction*maxSpeed, 0);
 			}
 		}
 	}
@@ -342,7 +342,7 @@ public class PlayerController : MonoBehaviour {
 	void Dash(){
 		if(Input.GetButton("Dash_P"+playerNum)){
 			float dashDirection =  transform.localScale.x;
-			rigidBody.AddForce(Vector2.right * dashDirection * dashForce * Time.deltaTime);
+			rigidBody.AddForce(Vector2.right * dashDirection * dashForce);
 			gameObject.layer = LayerMask.NameToLayer(playerDashLayer);
 			dashAnimator.CrossFade("Dash", 0f);
 			PlaySound(dashSound);
