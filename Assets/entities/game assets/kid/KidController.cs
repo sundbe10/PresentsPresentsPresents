@@ -211,6 +211,8 @@ public class KidController : MonoBehaviour {
 
 	void GivePowerup(){
 		GameObject randomPowerup = powerups[Random.Range(0, powerups.Length)];
+		//If the game is 1 player, remove any powerups that affect other players
+		if(GameController.GetNumberOfPlayers() == 1 && randomPowerup.GetComponent<ApplyPowerupController>().applyToOtherPlayers) return;
 		powerup = Instantiate(randomPowerup, transform.position, Quaternion.identity) as GameObject;
 		HoldObject(powerup);
 	}

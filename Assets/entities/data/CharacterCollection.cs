@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
@@ -8,6 +9,7 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 
 	[System.Serializable]
 	public class CharacterModel{
+		public int order;
 		public string identifierName;
 		public string displayName;
 		public AudioClip taunt;
@@ -52,6 +54,7 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 
 	// Use this for initialization
 	void Start () {
+		characterModels = characterModels.OrderBy(o=>o.order).ToArray();
 		LoadUnlocks();
 		InitializePlayerChoices();
 	}

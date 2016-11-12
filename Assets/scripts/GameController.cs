@@ -138,6 +138,9 @@ public class GameController : Singleton<GameController> {
 			return 0;
 		}
 	}
+	static public int GetNumberOfPlayers(){
+		return GameObject.FindGameObjectsWithTag("Player").Length;
+	}
 
 	//Public Functions
 	public void PauseGame(){
@@ -234,10 +237,10 @@ public class GameController : Singleton<GameController> {
 		if(player){
 			player.GetComponent<PlayerController>().DeclareWinner();
 			yield return new WaitForSeconds(3);
-			winnerText.text = player.GetComponent<PlayerController>().GetName();
+			winnerText.text = GetWinText(1, player);
 			audioController.WinText();
 			yield return new WaitForSeconds(1);
-			winnerText.text += "\nWINS";
+			winnerText.text += GetWinText(2, player);
 			audioController.WinText();
 			if(Leaderboard.IsNewHighScore(player.GetComponent<PlayerController>().GetScore())){
 				_state = State.HIGHSCORE;
@@ -248,6 +251,15 @@ public class GameController : Singleton<GameController> {
 			yield return new WaitForSeconds(3);
 			winnerText.text = "DRAW";
 			audioController.WinText();
+		}
+	}
+
+	string GetWinText(int number, GameObject player){
+		int numberOfPLayers = GetNumberOfPlayers();
+		if(number == 1){
+			return numberOfPLayers == 1 ? "YOU" : player.GetComponent<PlayerController>().GetName();
+		}else{
+			return numberOfPLayers == 1 ? "\nROCK" : "\nWINS";
 		}
 	}
 
