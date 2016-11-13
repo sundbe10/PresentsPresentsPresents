@@ -149,10 +149,9 @@ public class GameController : Singleton<GameController> {
 	}
 		
 	public void ResumeGame(){
-		_state = State.PLAYING;
-		onGameResumeEvent();
 		audioController.ResumeMusic();
 		Time.timeScale = 1.0f;
+		StartCoroutine("ResumeGameForPlayers");
 	}
 
 	//Private Functions
@@ -162,7 +161,7 @@ public class GameController : Singleton<GameController> {
 		yield return new WaitForSeconds(countdownTime);
 		onGameStartEvent();
 		if(gameTime > 0){
-			StartCoroutine(IncrementTimer());
+			StartCoroutine("IncrementTimer");
 		}
 	}
 
@@ -174,8 +173,15 @@ public class GameController : Singleton<GameController> {
 			DeclareWinner();
 		}else{
 			if(gameTime <= 5) TimerWarning();
-			StartCoroutine(IncrementTimer());
+			StartCoroutine("IncrementTimer");
 		}
+	}
+
+	IEnumerator ResumeGameForPlayers(){
+		//Try to prevent players from being able to throw when unpausing
+		yield return new WaitForSeconds(0.2f);
+		_state = State.PLAYING;
+		onGameResumeEvent();
 	}
 	
 	void SetTimerText(int time){
@@ -221,14 +227,15 @@ public class GameController : Singleton<GameController> {
 			}
 		}
 
+		//Save game stats
+		GameStats.IncrementStat(GameStats.Stat.GamesPlayed);
+		GameStats.SaveStats();
+
 		//Set Winner
 		winner = highScorer;
 		_state = State.ENDED;
 		StartCoroutine(AnnounceWinner(winner));
 
-		//Save game stats
-		GameStats.IncrementStat(GameStats.Stat.GamesPlayed);
-		GameStats.SaveStats();
 	}
 
 	IEnumerator AnnounceWinner(GameObject player){

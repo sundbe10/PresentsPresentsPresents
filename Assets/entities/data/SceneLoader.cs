@@ -7,9 +7,10 @@ public class SceneLoader : Singleton<SceneLoader> {
 	public AudioClip forwardSound;
 	public AudioClip windSound;
 
-	private AudioSource audioSource;
-	private Animator animator;
-	private bool allowButtonPresses = true;
+	AudioSource audioSource;
+	Animator animator;
+	bool allowButtonPresses = true;
+	string sceneToLoad;
 
 	void Start () {
 		DontDestroyOnLoad(gameObject);
@@ -51,7 +52,7 @@ public class SceneLoader : Singleton<SceneLoader> {
 	}
 
 	static public void GoToScene(string scene, bool forward){
-		Instance.StartCoroutine(Instance.LoadScene(scene));
+		Instance.sceneToLoad = scene;
 		if(forward){
 			Instance.SceneForward();
 		}else{
@@ -71,14 +72,14 @@ public class SceneLoader : Singleton<SceneLoader> {
 		foreach(int playerNumber in characterManager.GetActivePlayers()){
 			if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
 				if(GameObject.Find("CharacterManager").GetComponent<ConfirmCharacterSelect>().AllPlayersReady()){
-					StartCoroutine(Instance.LoadScene("Game"));
+					Instance.sceneToLoad = "Game";
 					SceneForward();
 				}
 			}
 		}
 		if(Input.GetButtonDown("Cancel")){
 			if(GameObject.Find("CharacterManager").GetComponent<ConfirmCharacterSelect>().NoActivePlayers()){
-				StartCoroutine(Instance.LoadScene("Start"));
+				Instance.sceneToLoad = "Start";
 				SceneBackward();
 			}
 		}
@@ -86,7 +87,7 @@ public class SceneLoader : Singleton<SceneLoader> {
 
 	void HandleBack(){
 		if(Input.GetButtonDown("Cancel")){
-			StartCoroutine(Instance.LoadScene("Start"));
+			Instance.sceneToLoad = "Start";
 			SceneBackward();
 		}
 	}
@@ -105,10 +106,9 @@ public class SceneLoader : Singleton<SceneLoader> {
 		animator.CrossFade("SceneBackward", 0f);
 	}
 
-	IEnumerator LoadScene(string name){
-		yield return new WaitForSeconds(1f);
-		Debug.Log ("New Level load: " + name);
-		Application.LoadLevel (name);
+	void LoadScene(){
+		Debug.Log ("New Level load: " + sceneToLoad);
+		Application.LoadLevel (sceneToLoad);
 	}
 
 	void HandleGame(){

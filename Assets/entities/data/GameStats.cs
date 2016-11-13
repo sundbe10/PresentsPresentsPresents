@@ -86,7 +86,7 @@ public class GameStats : Singleton<GameStats> {
 
 	static public CharacterCollection.CharacterModel GetUnlockedCharacter(){
 		foreach(CharacterCollection.CharacterModel character in CharacterCollection.GetAllCharacters()){
-			if(character.locked == true && GetStat(character.unlockKey) > character.unlockValue){
+			if(character.locked == true && GetStat(character.unlockKey) >= character.unlockValue){
 				Debug.Log(character.displayName+" unlocked!");
 				return character;
 			}
