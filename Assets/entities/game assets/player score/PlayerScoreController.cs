@@ -21,12 +21,14 @@ public class PlayerScoreController : MonoBehaviour {
 	Image scoreBarImage;
 	Image scoreStripesImage;
 	Animator animator;
+    Animator avatarAnimator;
 	Text scoreText;
 
 	// Use this for initialization
 	void Awake () {
 		animator = transform.Find("Score Mask/Score Bar/Score Stripes").GetComponent<Animator>();
-		scoreBarImage = transform.Find("Score Mask/Score Bar").GetComponent<Image>();
+        avatarAnimator = transform.Find("Avatar Mask/Avatar").GetComponent<Animator>();
+        scoreBarImage = transform.Find("Score Mask/Score Bar").GetComponent<Image>();
 		scoreStripesImage = transform.Find("Score Mask/Score Bar/Score Stripes").GetComponent<Image>();
 		scoreBar = transform.Find("Score Mask/Score Bar").GetComponent<RectTransform>();
 		scoreText = transform.Find("Score").GetComponent<Text>();
@@ -46,6 +48,10 @@ public class PlayerScoreController : MonoBehaviour {
 		animator.speed = multiplier * 2;
 		scoreBarImage.color = barColors[multiplier-1].barColor;
 		scoreStripesImage.color = barColors[multiplier-1].stripeColor;
+        if(score > int.Parse(scoreText.text))
+        {
+            avatarAnimator.CrossFade("celebrate", 0);
+        }
 		scoreText.text = score.ToString();
 	}
 		
