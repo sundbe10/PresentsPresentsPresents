@@ -83,6 +83,10 @@ public class SceneLoader : Singleton<SceneLoader> {
 				SceneBackward();
 			}
 		}
+		if(Input.GetButtonDown("Escape")){
+			Instance.sceneToLoad = "Start";
+			SceneBackward();
+		}
 	}
 
 	void HandleBack(){

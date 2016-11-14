@@ -66,7 +66,7 @@ public class GameController : Singleton<GameController> {
 	// Update is called once per frame
 	void Update () {
 		if(_state == State.PLAYING){
-			if(Input.GetButtonDown("Start")){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Escape")){
 				_state = State.PAUSED;
 				onGamePauseEvent();
 				audioController.PlayPauseSound();
@@ -75,7 +75,7 @@ public class GameController : Singleton<GameController> {
 				PauseGame();
 			}
 		}else if(_state == State.POSTEND){
-			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm") || Input.GetButtonDown("Cancel")){
 				if(GameStats.GetUnlockedCharacter() == null){
 					menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
 					menu.transform.parent = GameObject.Find("Game Canvas").transform;
@@ -86,7 +86,7 @@ public class GameController : Singleton<GameController> {
 				}
 			}
 		}else if(_state == State.HIGHSCORE){
-			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm") || Input.GetButtonDown("Cancel")){
 				GameObject.Find("Winner Text").GetComponent<Text>().text = "";
 				menu = Instantiate(highScore, new Vector3(0,40f,0), Quaternion.identity) as GameObject;
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;

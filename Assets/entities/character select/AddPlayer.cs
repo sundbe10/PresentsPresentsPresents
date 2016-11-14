@@ -10,7 +10,7 @@ public class AddPlayer : MonoBehaviour {
 		READY
 	}
 
-	public string startText = "JOIN GAME";
+	public string startText = "PRESS START TO JOIN";
 	public GameObject playerObject;
 	public int playerNumber;
 	public AudioClip selectionSound;
@@ -107,7 +107,7 @@ public class AddPlayer : MonoBehaviour {
 			auxText.text = "";
 		}
 		//Finalize Selection
-		if(Input.GetButtonDown("Throw_P"+playerNumber)){
+		if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
 			if(currentCharacter.locked){
 				PlaySound(backSound);
 			}else{

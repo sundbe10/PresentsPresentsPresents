@@ -15,7 +15,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -54,11 +54,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: idle
+    - serializedVersion: 2
+      name: idle
       rect:
         serializedVersion: 2
         x: 0
@@ -68,15 +71,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -11, y: 18}
-        - {x: -15, y: 16}
-        - {x: -15, y: -4}
-        - {x: -7, y: -14}
-        - {x: 6, y: -14}
-        - {x: 11, y: -13}
-        - {x: 11, y: 18}
-    - name: throw
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: throw
       rect:
         serializedVersion: 2
         x: 48
@@ -86,16 +84,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -8, y: 15}
-        - {x: -15, y: 6}
-        - {x: -15, y: -5}
-        - {x: -7, y: -14}
-        - {x: 8, y: -14}
-        - {x: 11, y: -12}
-        - {x: 11, y: 6}
-        - {x: 7, y: 15}
-    - name: dead
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: dead
       rect:
         serializedVersion: 2
         x: 96
@@ -105,17 +97,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -10, y: 9}
-        - {x: -17, y: 7}
-        - {x: -17, y: -11}
-        - {x: -16, y: -14}
-        - {x: -11, y: -16}
-        - {x: 11, y: -16}
-        - {x: 14, y: -13}
-        - {x: 14, y: 4}
-        - {x: 11, y: 9}
-    - name: present
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: present
       rect:
         serializedVersion: 2
         x: 144
@@ -125,13 +110,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -6, y: 6}
-        - {x: -6, y: -6}
-        - {x: 5, y: -6}
-        - {x: 5, y: 4}
-        - {x: 3, y: 6}
-    - name: avatar1
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: avatar1
       rect:
         serializedVersion: 2
         x: 0
@@ -141,16 +123,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -19, y: 23}
-        - {x: -23, y: 8}
-        - {x: -23, y: -16}
-        - {x: -14, y: -24}
-        - {x: 18, y: -24}
-        - {x: 22, y: -16}
-        - {x: 22, y: 3}
-        - {x: 12, y: 23}
-    - name: avatar2
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: avatar2
       rect:
         serializedVersion: 2
         x: 48
@@ -160,15 +136,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -23, y: 22}
-        - {x: -23, y: -19}
-        - {x: -22, y: -24}
-        - {x: 14, y: -24}
-        - {x: 23, y: -15}
-        - {x: 23, y: 17}
-        - {x: 9, y: 22}
-    - name: avatar3
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: avatar3
       rect:
         serializedVersion: 2
         x: 96
@@ -178,16 +149,10 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -19, y: 23}
-        - {x: -23, y: 8}
-        - {x: -23, y: -16}
-        - {x: -14, y: -24}
-        - {x: 18, y: -24}
-        - {x: 22, y: -16}
-        - {x: 22, y: 3}
-        - {x: 12, y: 23}
-    - name: coal
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: coal
       rect:
         serializedVersion: 2
         x: 144
@@ -197,15 +162,8 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: 0, y: 6}
-        - {x: -4, y: 6}
-        - {x: -5, y: 4}
-        - {x: -5, y: -3}
-        - {x: -2, y: -6}
-        - {x: 2, y: -6}
-        - {x: 5, y: -3}
-        - {x: 5, y: 3}
+      outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

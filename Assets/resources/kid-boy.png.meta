@@ -22,7 +22,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -41,7 +41,7 @@ TextureImporter:
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 2048
   textureSettings:
     filterMode: 0
@@ -51,7 +51,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
-  compressionQuality: 50
+  compressionQuality: -1
   allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
@@ -61,11 +61,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: run1
+    - serializedVersion: 2
+      name: run1
       rect:
         serializedVersion: 2
         x: 0
@@ -76,7 +79,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: run2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: run2
       rect:
         serializedVersion: 2
         x: 20
@@ -87,7 +92,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: run3
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: run3
       rect:
         serializedVersion: 2
         x: 40
@@ -98,7 +105,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: run4
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: run4
       rect:
         serializedVersion: 2
         x: 60
@@ -109,7 +118,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: run5
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: run5
       rect:
         serializedVersion: 2
         x: 80
@@ -120,7 +131,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: run6
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: run6
       rect:
         serializedVersion: 2
         x: 100
@@ -131,7 +144,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry1
       rect:
         serializedVersion: 2
         x: 0
@@ -142,7 +157,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry2
       rect:
         serializedVersion: 2
         x: 20
@@ -153,7 +170,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry3
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry3
       rect:
         serializedVersion: 2
         x: 40
@@ -164,7 +183,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry4
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry4
       rect:
         serializedVersion: 2
         x: 60
@@ -175,7 +196,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry5
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry5
       rect:
         serializedVersion: 2
         x: 80
@@ -186,7 +209,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry6
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry6
       rect:
         serializedVersion: 2
         x: 100
@@ -197,7 +222,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: cry
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: cry
       rect:
         serializedVersion: 2
         x: 0
@@ -208,7 +235,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: fall1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: fall1
       rect:
         serializedVersion: 2
         x: 20
@@ -219,7 +248,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: fall2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: fall2
       rect:
         serializedVersion: 2
         x: 40
@@ -230,6 +261,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

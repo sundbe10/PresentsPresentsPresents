@@ -13,7 +13,7 @@ public class LeaderboardController : MonoBehaviour {
 		foreach(Leaderboard.Leader leader in leaderboard){
 			if(counter < 7){
 				//Create leader object
-				GameObject _leaderObject = Instantiate(leaderObject, new Vector3(0,70+(counter-1)*-40,0), Quaternion.identity) as GameObject;
+				GameObject _leaderObject = Instantiate(leaderObject, new Vector3(0,80+(counter-1)*-37,0), Quaternion.identity) as GameObject;
 				_leaderObject.transform.SetParent(transform);
 				//Set visible elements for leader
 				GameObject score = _leaderObject.transform.Find("Score").gameObject;
