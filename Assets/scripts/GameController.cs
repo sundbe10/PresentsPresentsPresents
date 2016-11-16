@@ -74,6 +74,11 @@ public class GameController : Singleton<GameController> {
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
 				PauseGame();
 			}
+		}else if(_state == State.PAUSED){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Escape")){
+				Destroy(menu);
+				ResumeGame();
+			}
 		}else if(_state == State.POSTEND){
 			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm") || Input.GetButtonDown("Cancel")){
 				if(GameStats.GetUnlockedCharacter() == null){
