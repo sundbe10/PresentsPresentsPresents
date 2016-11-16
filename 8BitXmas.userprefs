@@ -1,19 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/entities/backgrounds/scene fade/FadeOut.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scripts/GameController.cs">
     <Files>
-      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="121" Column="12" />
+      <File FileName="Assets/entities/game assets/player/PlayerController.cs" Line="458" Column="2" />
       <File FileName="Assets/entities/game assets/player score/PlayerScoreController.cs" Line="1" Column="1" />
       <File FileName="Assets/entities/data/GameData.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/LeaderboardController.cs" Line="1" Column="1" />
-      <File FileName="Assets/scripts/Leaderboard.cs" Line="1" Column="1" />
-      <File FileName="Assets/entities/game assets/powerup/PowerController.cs" Line="14" Column="32" />
-      <File FileName="Assets/entities/game assets/bully/snowball/SnowballController.cs" Line="24" Column="65" />
+      <File FileName="Assets/entities/game assets/bully/snowball/SnowballController.cs" Line="1" Column="1" />
       <File FileName="Assets/entities/game assets/scoring text/ScoringTextController.cs" Line="21" Column="45" />
-      <File FileName="Assets/entities/game assets/spawner/KidSpawnController.cs" Line="27" Column="23" />
       <File FileName="Assets/scripts/CountdownController.cs" Line="37" Column="23" />
-      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="143" Column="23" />
-      <File FileName="Assets/entities/backgrounds/scene fade/FadeOut.cs" Line="4" Column="1" />
+      <File FileName="Assets/entities/character select/AddPlayer.cs" Line="13" Column="42" />
+      <File FileName="Assets/scripts/Leaderboard.cs" Line="26" Column="10" />
+      <File FileName="Assets/entities/data/GameStats.cs" Line="38" Column="3" />
+      <File FileName="Assets/entities/data/CharacterCollection.cs" Line="57" Column="67" />
+      <File FileName="Assets/scripts/GameController.cs" Line="79" Column="19" />
+      <File FileName="Assets/scripts/LeaderboardGameController.cs" Line="4" Column="1" />
+      <File FileName="Assets/scripts/HighScoreController.cs" Line="5" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
