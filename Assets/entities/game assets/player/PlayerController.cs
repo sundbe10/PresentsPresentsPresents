@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 				break;
 			case State.HIT:
 				Score();
-				if(GameController.GameIsActive()) ThrowPresent();
+				if(_prevState != State.MOVE_ONLY) ThrowPresent();
 				break;
 			case State.STUNNED:
 				Score();
