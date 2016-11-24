@@ -123,8 +123,8 @@ public class PlayerController : MonoBehaviour {
 				Score();
 				break;
 			case State.HIT:
-				ThrowPresent();
 				Score();
+				if(GameController.GameIsActive()) ThrowPresent();
 				break;
 			case State.STUNNED:
 				Score();
