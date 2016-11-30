@@ -10,7 +10,7 @@ public class AddPlayer : MonoBehaviour {
 		READY
 	}
 
-	public string startText = "JOIN GAME";
+	public string startText = "PRESS START TO JOIN";
 	public GameObject playerObject;
 	public int playerNumber;
 	public AudioClip selectionSound;
@@ -22,12 +22,14 @@ public class AddPlayer : MonoBehaviour {
 	AudioSource audioSource;
 	State _state;
 	Text text;
+	Text auxText;
 	bool axisButtonDown = false;
 
 	// Use this for initialization
 	void Awake () {
 		_state = State.ADD;
 		text = gameObject.GetComponent<Text>();
+		auxText = text.transform.FindChild("Aux Text").GetComponent<Text>();
 		audioSource = gameObject.GetComponent<AudioSource>();
 	}
 	
@@ -97,14 +99,24 @@ public class AddPlayer : MonoBehaviour {
 			axisButtonDown = true;
 		}
 		//Show character name
-		text.text = currentCharacter.locked ? "???" : currentCharacter.displayName.ToUpper();
+		if(currentCharacter.locked){
+			text.text = currentCharacter.unlockMessage.Replace("\\n","\n").ToUpper();
+			auxText.text = GameStats.GetStat(currentCharacter.unlockKey).ToString()+"/"+currentCharacter.unlockValue.ToString()+"\nEARNED";
+		}else{
+			text.text = currentCharacter.displayName.ToUpper();
+			auxText.text = "";
+		}
 		//Finalize Selection
-		if(Input.GetButtonDown("Throw_P"+playerNumber) && !currentCharacter.locked){
-			PlaySound(currentCharacter.taunt);
-			newPlayerController.FinalizeSelection();
-			GameData.SetCharacter(playerNumber, currentCharacter);
-			gameObject.GetComponent<Blink>().StartBlink();
-			_state = State.READY;
+		if(Input.GetButtonDown("Start_P"+playerNumber) || Input.GetButtonDown("Throw_P"+playerNumber)){
+			if(currentCharacter.locked){
+				PlaySound(backSound);
+			}else{
+				PlaySound(currentCharacter.taunt);
+				newPlayerController.FinalizeSelection();
+				GameData.SetCharacter(playerNumber, currentCharacter);
+				gameObject.GetComponent<Blink>().StartBlink();
+				_state = State.READY;
+			}
 		}
 		//Reset axis button down
 		if(Input.GetAxis("Horizontal_P"+playerNumber) == 0 && Input.GetAxis("Vertical_P"+playerNumber) == 0){
@@ -128,6 +140,7 @@ public class AddPlayer : MonoBehaviour {
 				_state = State.ADD;
 				CharacterCollection.DeselectCharacter(playerNumber);
 				newPlayerController.RemoveCharacter();
+				auxText.text = "";
 				gameObject.GetComponent<Blink>().StartBlink();
 				break;
 			}

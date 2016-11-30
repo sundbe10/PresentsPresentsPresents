@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 public class CharacterCollection : Singleton<CharacterCollection> {
 
 	[System.Serializable]
 	public class CharacterModel{
+		public int order;
 		public string identifierName;
 		public string displayName;
 		public AudioClip taunt;
 		public Costume[] costumes;
 		public bool locked;
+		public GameStats.Stat unlockKey;
+		public float unlockValue;
+		public string unlockMessage;
 	}
 
 	[System.Serializable]
@@ -24,6 +31,9 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 		public string displayName;
 		public AudioClip taunt;
 		public string characterSpriteSheetName;
+		public string unlockMessage;
+		public GameStats.Stat unlockKey;
+		public float unlockValue;
 		public bool locked;
 		public Character(CharacterModel characterModel, Costume costume){
 			identifierName = characterModel.identifierName;
@@ -31,14 +41,21 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 			taunt = characterModel.taunt;
 			locked = characterModel.locked;
 			characterSpriteSheetName = costume.characterSpriteSheetName;
+			unlockMessage = characterModel.unlockMessage;
+			unlockKey = characterModel.unlockKey;
+			unlockValue = characterModel.unlockValue;
 		}
 	}
 
 	public CharacterModel[] characterModels;
 	public Costume[] playerChoices;
 
+	public List<string> unlockedCharacters;
+
 	// Use this for initialization
 	void Start () {
+		characterModels = characterModels.OrderBy(o=>o.order).ToArray();
+		LoadUnlocks();
 		InitializePlayerChoices();
 	}
 
@@ -87,7 +104,15 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 		return Instance.SelectPreviousOpenCostume(playerNumber);
 	}
 
+	static public CharacterModel[] GetAllCharacters(){
+		return Instance.characterModels;
+	}
 
+	static public void UnlockCharacter(CharacterModel character){
+		Instance.unlockedCharacters.Add(character.identifierName);
+		Instance.SetUnlockedCharacters();
+		Instance.SaveUnlocks();
+	}
 
 
 	//private
@@ -212,6 +237,31 @@ public class CharacterCollection : Singleton<CharacterCollection> {
 			if(_costume.taken) return true;
 		}
 		return false;
+	}
+
+	void SetUnlockedCharacters(){
+		foreach(CharacterModel characterModel in Instance.characterModels){
+			foreach(string unlockName in unlockedCharacters){
+				if(characterModel.identifierName == unlockName) characterModel.locked = false;
+			}
+		}
+	}
+
+	void SaveUnlocks(){
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create (Application.persistentDataPath + "/unlocks.gd");
+		bf.Serialize(file, Instance.unlockedCharacters);
+		file.Close();
+	}
+
+	void LoadUnlocks(){
+		if(File.Exists(Application.persistentDataPath + "/unlocks.gd")) {
+			BinaryFormatter bf = new BinaryFormatter();
+			FileStream file = File.Open(Application.persistentDataPath + "/unlocks.gd", FileMode.Open);
+			Instance.unlockedCharacters = (List<string>)bf.Deserialize(file);
+			file.Close();
+		}
+		SetUnlockedCharacters();
 	}
 
 }

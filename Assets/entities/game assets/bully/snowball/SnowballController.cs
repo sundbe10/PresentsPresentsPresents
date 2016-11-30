@@ -45,7 +45,7 @@ public class SnowballController : MonoBehaviour {
 	}
 
 	public void SetVelocity(Vector2 direction){
-		rigidBody.velocity = throwSpeed * direction * Time.deltaTime;	
+		rigidBody.velocity = throwSpeed * direction;	
 	}
 
 	//Private

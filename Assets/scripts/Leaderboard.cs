@@ -24,7 +24,7 @@ public class Leaderboard: Singleton<Leaderboard> {
 	// Use this for initialization
 	void Awake () {
 		Load();
-		if(Instance.leaderboard == null){
+		if(Instance.leaderboard == null || Instance.leaderboard.Length == 0){
 			InitializeLeaderboard();
 		}
 	}

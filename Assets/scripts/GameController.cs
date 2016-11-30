@@ -66,7 +66,7 @@ public class GameController : Singleton<GameController> {
 	// Update is called once per frame
 	void Update () {
 		if(_state == State.PLAYING){
-			if(Input.GetButtonDown("Start")){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Escape")){
 				_state = State.PAUSED;
 				onGamePauseEvent();
 				audioController.PlayPauseSound();
@@ -74,15 +74,24 @@ public class GameController : Singleton<GameController> {
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
 				PauseGame();
 			}
+		}else if(_state == State.PAUSED){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Escape")){
+				Destroy(menu);
+				ResumeGame();
+			}
 		}else if(_state == State.POSTEND){
-			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
-				menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
-				menu.transform.parent = GameObject.Find("Game Canvas").transform;
-				audioController.PlayPauseSound();
-				_state = State.DONE;
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm") || Input.GetButtonDown("Cancel")){
+				if(GameStats.GetUnlockedCharacter() == null){
+					menu = Instantiate(endMenu, Vector3.zero, Quaternion.identity) as GameObject;
+					menu.transform.parent = GameObject.Find("Game Canvas").transform;
+					audioController.PlayPauseSound();
+					_state = State.DONE;
+				}else{
+					SceneLoader.GoToScene("CharacterUnlock",true);
+				}
 			}
 		}else if(_state == State.HIGHSCORE){
-			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm") || Input.GetButtonDown("Cancel")){
 				GameObject.Find("Winner Text").GetComponent<Text>().text = "";
 				menu = Instantiate(highScore, new Vector3(0,40f,0), Quaternion.identity) as GameObject;
 				menu.transform.parent = GameObject.Find("Game Canvas").transform;
@@ -121,7 +130,11 @@ public class GameController : Singleton<GameController> {
 	}
 	static public void CompleteHighScoreEntry(){
 		Instance._state = State.DONE;
-		SceneLoader.GoToScene("Leaderboard_game",true);
+		if(GameStats.GetUnlockedCharacter() == null){
+			SceneLoader.GoToScene("Leaderboard_game",true);
+		}else{
+			SceneLoader.GoToScene("CharacterUnlock",true);
+		}
 	}
 	static public int GetWinnerNumber(){
 		if(Instance.winner != null){
@@ -129,6 +142,9 @@ public class GameController : Singleton<GameController> {
 		}else{
 			return 0;
 		}
+	}
+	static public int GetNumberOfPlayers(){
+		return GameObject.FindGameObjectsWithTag("Player").Length;
 	}
 
 	//Public Functions
@@ -138,10 +154,9 @@ public class GameController : Singleton<GameController> {
 	}
 		
 	public void ResumeGame(){
-		_state = State.PLAYING;
-		onGameResumeEvent();
 		audioController.ResumeMusic();
 		Time.timeScale = 1.0f;
+		StartCoroutine("ResumeGameForPlayers");
 	}
 
 	//Private Functions
@@ -151,7 +166,7 @@ public class GameController : Singleton<GameController> {
 		yield return new WaitForSeconds(countdownTime);
 		onGameStartEvent();
 		if(gameTime > 0){
-			StartCoroutine(IncrementTimer());
+			StartCoroutine("IncrementTimer");
 		}
 	}
 
@@ -163,8 +178,15 @@ public class GameController : Singleton<GameController> {
 			DeclareWinner();
 		}else{
 			if(gameTime <= 5) TimerWarning();
-			StartCoroutine(IncrementTimer());
+			StartCoroutine("IncrementTimer");
 		}
+	}
+
+	IEnumerator ResumeGameForPlayers(){
+		//Try to prevent players from being able to throw when unpausing
+		yield return new WaitForSeconds(0.2f);
+		_state = State.PLAYING;
+		onGameResumeEvent();
 	}
 	
 	void SetTimerText(int time){
@@ -210,10 +232,15 @@ public class GameController : Singleton<GameController> {
 			}
 		}
 
+		//Save game stats
+		GameStats.IncrementStat(GameStats.Stat.GamesPlayed);
+		GameStats.SaveStats();
+
 		//Set Winner
 		winner = highScorer;
 		_state = State.ENDED;
 		StartCoroutine(AnnounceWinner(winner));
+
 	}
 
 	IEnumerator AnnounceWinner(GameObject player){
@@ -222,10 +249,10 @@ public class GameController : Singleton<GameController> {
 		if(player){
 			player.GetComponent<PlayerController>().DeclareWinner();
 			yield return new WaitForSeconds(3);
-			winnerText.text = player.GetComponent<PlayerController>().GetName();
+			winnerText.text = GetWinText(1, player);
 			audioController.WinText();
 			yield return new WaitForSeconds(1);
-			winnerText.text += "\nWINS";
+			winnerText.text += GetWinText(2, player);
 			audioController.WinText();
 			if(Leaderboard.IsNewHighScore(player.GetComponent<PlayerController>().GetScore())){
 				_state = State.HIGHSCORE;
@@ -236,6 +263,15 @@ public class GameController : Singleton<GameController> {
 			yield return new WaitForSeconds(3);
 			winnerText.text = "DRAW";
 			audioController.WinText();
+		}
+	}
+
+	string GetWinText(int number, GameObject player){
+		int numberOfPLayers = GetNumberOfPlayers();
+		if(number == 1){
+			return numberOfPLayers == 1 ? "YOU" : player.GetComponent<PlayerController>().GetName();
+		}else{
+			return numberOfPLayers == 1 ? "\nROCK" : "\nWINS";
 		}
 	}
 

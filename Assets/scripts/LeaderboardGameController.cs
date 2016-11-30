@@ -22,7 +22,7 @@ public class LeaderboardGameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(_state == State.ACTIVE){
-			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm")){
+			if(Input.GetButtonDown("Start") || Input.GetButtonDown("Confirm") || Input.GetButtonDown("Cancel")){
 				menu = Instantiate(menu, Vector3.zero, Quaternion.identity) as GameObject;
 				menu.transform.SetParent(GameObject.Find("Canvas").transform);
 				audioSource.PlayOneShot(pauseSound,1f);

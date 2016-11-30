@@ -12,7 +12,6 @@ public class PowerController : MonoBehaviour {
 	public Color32 pulseColor;
 
 	SpriteRenderer playerRenderer;
-	int sinCounter = 0;
 
 	// Use this for initialization
 	protected void Start () {

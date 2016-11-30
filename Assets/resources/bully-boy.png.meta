@@ -21,7 +21,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -50,7 +50,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
-  compressionQuality: 50
+  compressionQuality: -1
   allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
@@ -60,11 +60,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: idle1
+    - serializedVersion: 2
+      name: idle1
       rect:
         serializedVersion: 2
         x: 0
@@ -75,7 +78,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: idle2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: idle2
       rect:
         serializedVersion: 2
         x: 24
@@ -86,7 +91,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: push1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: push1
       rect:
         serializedVersion: 2
         x: 48
@@ -97,7 +104,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: push2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: push2
       rect:
         serializedVersion: 2
         x: 72
@@ -108,7 +117,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: walk1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: walk1
       rect:
         serializedVersion: 2
         x: 0
@@ -119,7 +130,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: walk2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: walk2
       rect:
         serializedVersion: 2
         x: 24
@@ -130,7 +143,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: walk3
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: walk3
       rect:
         serializedVersion: 2
         x: 48
@@ -141,7 +156,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: walk4
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: walk4
       rect:
         serializedVersion: 2
         x: 72
@@ -152,7 +169,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: walk5
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: walk5
       rect:
         serializedVersion: 2
         x: 96
@@ -163,7 +182,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: walk6
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: walk6
       rect:
         serializedVersion: 2
         x: 120
@@ -174,7 +195,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: hit
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: hit
       rect:
         serializedVersion: 2
         x: 96
@@ -185,7 +208,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: throw1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: throw1
       rect:
         serializedVersion: 2
         x: 120
@@ -196,7 +221,9 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: throw2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: throw2
       rect:
         serializedVersion: 2
         x: 144
@@ -207,6 +234,7 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 

@@ -10,7 +10,7 @@ TextureImporter:
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -39,7 +39,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
-  compressionQuality: 50
+  compressionQuality: -1
   allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
@@ -49,11 +49,14 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
+  spriteTessellationDetail: -1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
+    serializedVersion: 2
     sprites:
-    - name: dash-streak_0
+    - serializedVersion: 2
+      name: dash-streak_0
       rect:
         serializedVersion: 2
         x: 0
@@ -64,7 +67,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: dash-streak_1
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: dash-streak_1
       rect:
         serializedVersion: 2
         x: 20
@@ -75,7 +80,9 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-    - name: dash-streak_2
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: dash-streak_2
       rect:
         serializedVersion: 2
         x: 40
@@ -86,6 +93,7 @@ TextureImporter:
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      tessellationDetail: -1
     outline: []
   spritePackingTag: 
   userData: 
